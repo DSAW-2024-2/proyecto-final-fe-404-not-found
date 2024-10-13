@@ -1,5 +1,5 @@
 import { Dispatch, useState } from 'react';
-import InputForm from '../components/InputForm';
+import InputForm from '../../components/InputForm';
 
 interface itemForms {
 	type:

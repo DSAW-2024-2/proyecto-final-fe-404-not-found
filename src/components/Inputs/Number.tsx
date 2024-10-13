@@ -33,7 +33,7 @@ function Input({
 				<AiOutlineMinus />
 			</span>
 			<input
-				type='text'
+				type='number'
 				value={valueNumber}
 				onChange={(e) => setvalueNumber(Number(e.target.value))}
 				required={required}
