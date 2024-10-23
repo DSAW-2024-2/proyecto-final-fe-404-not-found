@@ -47,7 +47,7 @@ function Input({
 				onChange={changeId}
 				onKeyDown={handleKeyDown}
 				placeholder={placeholder || '123456'}
-				className={`mt-1 block w-full py-2 px-3 border rounded-lg shadow-sm focus:outline-none transition duration-200 ${
+				className={`mt-1 mx-5 block w-[250px] py-2 px-3 border rounded-lg shadow-sm focus:outline-none transition duration-200 ${
 					isFocused
 						? 'focus:ring-2 focus:ring-green-700'
 						: 'focus:ring-2 focus:ring-blue-500'

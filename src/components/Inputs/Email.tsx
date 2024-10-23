@@ -34,7 +34,7 @@ function Input({
 				onChange={changeEmail}
 				required={required}
 				placeholder={placeholder || 'ejemplo@correo.com'}
-				className={`mt-1 block w-full py-2 pr-10 pl-3 border rounded-lg shadow-sm focus:outline-none transition duration-200 ${
+				className={`mt-1 mx-5 block w-[250px] py-2 px-3 border rounded-lg shadow-sm focus:outline-none transition duration-200 ${
 					isFocused
 						? 'focus:ring-2 focus:ring-green-700'
 						: 'focus:ring-2 focus:ring-blue-500'
@@ -42,7 +42,7 @@ function Input({
 				onFocus={() => setIsFocused(true)}
 				onBlur={() => setIsFocused(false)}
 			/>
-			<span className='absolute inset-y-0 right-0 pr-3 flex items-center'>
+			<span className='absolute inset-y-0 right-0 pr-7 flex items-center'>
 				<FaEnvelope className='h-5 w-5 text-gray-400' />
 			</span>
 		</div>

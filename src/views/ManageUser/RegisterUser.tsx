@@ -36,8 +36,15 @@ function ViewSignInUser() {
 			required: true,
 			placeholder: 'Ingresa tu Nombre',
 		},
+		/*{
+			type: 'image',
+			handleInputChange: setName,
+			value: name,
+			required: true,
+			placeholder: 'Ingresa tu Nombre',
+		},*/
 		{
-			type: 'number',
+			type: 'text',
 			label: 'Apellido',
 			handleInputChange: setLastName,
 			value: lastName,
@@ -88,7 +95,16 @@ function ViewSignInUser() {
 
 	return (
 		<div className='container'>
-			<h1>Formulario de registro</h1>
+			<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
+				UNIHOP
+			</h1>
+			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-2'></div>
+			<div className='flex flex-col items-center'>
+				<div className='w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center border border-gray-300'>
+					<span className='text-2xl'>+</span>
+				</div>
+				<p className='text-sm text-gray-500  mb-3'>Añadir imagen</p>
+			</div>
 			<form>
 				{listForms.map((data: itemForms, index) => (
 					<InputForm

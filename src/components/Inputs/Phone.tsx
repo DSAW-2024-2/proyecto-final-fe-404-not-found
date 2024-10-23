@@ -37,13 +37,13 @@ function Input({
 				onChange={changePhone}
 				placeholder={placeholder}
 				required={required}
-				className={`w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
+				className={`mt-1 mx-5 block w-[250px] py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
 					isFocused ? 'focus:ring-green-700' : 'focus:ring-blue-500'
 				} ${!isValid ? 'border-red-500' : 'border-gray-300'} transition duration-200`}
 				onFocus={() => setIsFocused(true)}
 				onBlur={() => setIsFocused(false)}
 			/>
-			<span className='absolute inset-y-0 right-0 pr-3 flex items-center'>
+			<span className='absolute inset-y-0 right-0 pr-7 flex items-center'>
 				<FaPhone className='h-5 w-5 text-gray-400' />{' '}
 			</span>
 		</div>

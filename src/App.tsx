@@ -6,7 +6,6 @@ import Button from './components/Buttons/Regular';
 import Accept from './components/Buttons/Accept';
 import Delete from './components/Buttons/Delete';
 import SignInUser from './views/ManageUser/RegisterUser';
-
 import InicialPage from './views/General/InicialPage';
 import SwitchPage from './views/General/SwitchPage';
 import HomePage from './views/General/HomePage';
@@ -26,12 +25,6 @@ function App() {
 			<div className='p-4 max-w-80'>
 				<SignInUser />
 				<Button onClick={() => alert('hola')}>Registrarse</Button>
-				<Accept
-					acceptFun={() => console.log('aceptado')}
-					denyFun={() => console.log('deny')}
-				/>
-				<Delete />
-				<Prueba />
 			</div>
 			<Router>
 				<Routes>

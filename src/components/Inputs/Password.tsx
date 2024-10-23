@@ -42,7 +42,7 @@ function Input({
 				onChange={onChange}
 				required={required}
 				placeholder={placeholder}
-				className={`w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
+				className={`mt-1 mx-5 block w-[250px] py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2  ${
 					isFocused ? 'focus:ring-green-700' : 'focus:ring-blue-500'
 				} ${!isValid ? 'border-red-500' : 'border-gray-300'} transition duration-200 `}
 				onFocus={() => setIsFocused(true)}
@@ -51,7 +51,7 @@ function Input({
 			<button
 				type='button'
 				onClick={togglePasswordVisibility}
-				className='absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none'
+				className='pr-5 absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none'
 			>
 				{showPassword ? (
 					<AiFillEyeInvisible className='h-5 w-5 text-gray-500' />
