@@ -45,7 +45,7 @@ function ViewCreateTrip() {
 				<h1 className='text-xl text-center font-bold mb-4'>NUEVO VIAJE</h1>
 			</div>
 			<h2 className='mt-2 text-xs font-bold text-center'>Fecha y hora</h2>
-			<div className='container w-[100%] bg-[#6D9773] pt-4 mt-7 rounded-md'>
+			<div className='container w-[100%] bg-[#6D9773] pt-4 pb-5 mt-7 rounded-md'>
 				<h2 className=' text-white text-xs text-center mb-3 font-medium'>
 					¿A dónde quieres ir hoy?
 				</h2>
