@@ -1,5 +1,5 @@
-function Page() {
+function ViewSwitchPage() {
 	return <></>;
 }
 
-export default Page;
+export default ViewSwitchPage;

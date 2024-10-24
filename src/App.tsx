@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Prueba from './components/prueba';
-import Button from './components/Buttons/Regular';
 import Accept from './components/Buttons/Accept';
 import Delete from './components/Buttons/Delete';
 import SignInUser from './views/ManageUser/RegisterUser';
@@ -22,10 +21,7 @@ import Circular from './components/Buttons/Circular';
 function App() {
 	return (
 		<>
-			<div className='p-4 max-w-80'>
-				<SignInUser />
-				<Button onClick={() => alert('hola')}>Registrarse</Button>
-			</div>
+			<div className='p-4 max-w-80'></div>
 			<Router>
 				<Routes>
 					<Route path='/' element={<InicialPage />} />

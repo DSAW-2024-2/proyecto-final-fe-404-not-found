@@ -1,5 +1,6 @@
 import { Dispatch, useState } from 'react';
 import InputForm from '../../components/InputForm';
+import Button from '../../components/Buttons/Regular';
 
 interface itemForms {
 	type:
@@ -18,7 +19,7 @@ interface itemForms {
 	handleInputChange: Dispatch<React.SetStateAction<string>>;
 }
 
-function ViewSignInUser() {
+function ViewRegisterUser() {
 	const [name, setName] = useState<string>('');
 	const [lastName, setLastName] = useState<string>('');
 	const [id, setId] = useState<string>('');
@@ -118,8 +119,9 @@ function ViewSignInUser() {
 					/>
 				))}
 			</form>
+			<Button onClick={() => alert('hola')}>Registrarse</Button>
 		</div>
 	);
 }
 
-export default ViewSignInUser;
+export default ViewRegisterUser;

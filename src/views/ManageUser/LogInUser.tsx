@@ -1,5 +1,6 @@
 import { Dispatch, useState } from 'react';
 import InputForm from '../../components/InputForm';
+import Button from '../../components/Buttons/Regular';
 
 interface signInForms {
 	type: 'email' | 'password';
@@ -10,25 +11,25 @@ interface signInForms {
 	handleInputChange: Dispatch<React.SetStateAction<string>>;
 }
 
-function Page() {
+function ViewLogInUser() {
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
 	const listForms: signInForms[] = [
 		{
 			type: 'email',
-			label: 'Correo',
+			label: 'Usuario',
 			handleInputChange: setEmail,
 			value: email,
-			required: true,
-			placeholder: '',
+			required: false,
+			placeholder: ' ',
 		},
 		{
 			type: 'password',
 			label: 'Contraseña',
 			handleInputChange: setPassword,
 			value: password,
-			required: true,
+			required: false,
 			placeholder: 'Ingresa tu Contraseña',
 		},
 	];
@@ -38,9 +39,9 @@ function Page() {
 			<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
 				UNIHOP
 			</h1>
-			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-2'></div>
+			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-12'></div>
 
-			<form>
+			<form className='mb-0'>
 				{listForms.map((data: signInForms, index) => (
 					<InputForm
 						key={index}
@@ -52,9 +53,16 @@ function Page() {
 						required={data.required}
 					/>
 				))}
+				<div className='mb-5  mr-5 text-right text-xs'>
+					¿Olvidaste tu contraseña?
+				</div>
+				<Button onClick={() => alert('hola')}>Iniciar Sesión</Button>
+				<div className='text-left ml-5 mt-2 text-xs'>
+					¿No estás registado? Haz click aquí
+				</div>
 			</form>
 		</div>
 	);
 }
 
-export default Page;
+export default ViewLogInUser;

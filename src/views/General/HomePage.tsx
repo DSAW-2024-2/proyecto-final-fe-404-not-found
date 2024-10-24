@@ -1,5 +1,5 @@
-function Page() {
+function ViewHomePage() {
 	return <></>;
 }
 
-export default Page;
+export default ViewHomePage;
