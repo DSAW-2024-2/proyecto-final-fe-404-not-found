@@ -3,15 +3,7 @@ import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
 
 interface itemForms {
-	type:
-		| 'text'
-		| 'email'
-		| 'password'
-		| 'number'
-		| 'date'
-		| 'tel'
-		| 'time'
-		| 'id';
+	type: 'text';
 	placeholder: string;
 	label: string;
 	value: string;
@@ -20,89 +12,56 @@ interface itemForms {
 }
 
 function ViewRegisterCar() {
-	const [name, setName] = useState<string>('');
-	const [lastName, setLastName] = useState<string>('');
-	const [id, setId] = useState<string>('');
-	const [email, setEmail] = useState<string>('');
-	const [phone, setPhone] = useState<string>('');
-	const [password, setPassword] = useState<string>('');
-	const [verifyPassword, setVerifyPassword] = useState<string>('');
+	const [brand, setName] = useState<string>('');
+	const [model, setLastName] = useState<string>('');
+	const [plate, setId] = useState<string>('');
+	const [capacity, setEmail] = useState<string>('');
 
 	const listForms: itemForms[] = [
 		{
 			type: 'text',
-			label: 'Nombre',
+			label: 'Marca',
 			handleInputChange: setName,
-			value: name,
+			value: brand,
 			required: true,
-			placeholder: 'Ingresa tu Nombre',
+			placeholder: ' ',
 		},
-		/*{
-			type: 'image',
-			handleInputChange: setName,
-			value: name,
-			required: true,
-			placeholder: 'Ingresa tu Nombre',
-		},*/
+
 		{
 			type: 'text',
-			label: 'Apellido',
+			label: 'Modelo',
 			handleInputChange: setLastName,
-			value: lastName,
+			value: model,
 			required: true,
-			placeholder: 'Ingresa tu Apellido',
+			placeholder: ' ',
 		},
 		{
-			type: 'id',
-			label: 'ID Universitario',
-			handleInputChange: setId,
-			value: id,
+			type: 'text',
+			label: 'Placa',
+			handleInputChange: setName,
+			value: plate,
 			required: true,
-			placeholder: 'Ingresa tu id',
+			placeholder: ' ',
 		},
 		{
-			type: 'email',
-			label: 'Correo',
-			handleInputChange: setEmail,
-			value: email,
+			type: 'text',
+			label: 'Capacidad',
+			handleInputChange: setName,
+			value: capacity,
 			required: true,
-			placeholder: 'ejemplo@unisabana.edu.co',
-		},
-		{
-			type: 'tel',
-			label: 'Número de Teléfono',
-			handleInputChange: setPhone,
-			value: phone,
-			required: true,
-			placeholder: '(123) 456-5678',
-		},
-		{
-			type: 'password',
-			label: 'Contraseña',
-			handleInputChange: setPassword,
-			value: password,
-			required: true,
-			placeholder: 'Ingresa tu Contraseña',
-		},
-		{
-			type: 'password',
-			label: 'Confirma tu Contraseña',
-			handleInputChange: setVerifyPassword,
-			value: verifyPassword,
-			required: true,
-			placeholder: 'Confirma tu Contraseña',
+			placeholder: ' ',
 		},
 	];
 
 	return (
-		<div className='container'>
+		<div className='container p-4 max-w-80'>
 			<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
-				UNIHOP
+				VEHÍCULO
 			</h1>
-			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-2'></div>
+			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-7'></div>
 			<div className='flex flex-col items-center'>
-				<div className='w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center border border-gray-300'>
-					<span className='text-2xl'>+</span>
+				<div className='w-10 h-10 bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300'>
+					<span className='text-2xl text-white'>+</span>
 				</div>
 				<p className='text-sm text-gray-500  mb-3'>Añadir imagen</p>
 			</div>
@@ -119,7 +78,9 @@ function ViewRegisterCar() {
 					/>
 				))}
 			</form>
-			<Button onClick={() => alert('hola')}>Registrarse</Button>
+			<div className='ml-7'>SOAT</div>
+			<div className='ml-7'>Licencia de conducción</div>
+			<Button onClick={() => alert('hola')}>Guardar</Button>
 		</div>
 	);
 }

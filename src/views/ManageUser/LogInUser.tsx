@@ -35,7 +35,7 @@ function ViewLogInUser() {
 	];
 
 	return (
-		<div className='container'>
+		<div className='container p-4 max-w-80'>
 			<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
 				UNIHOP
 			</h1>

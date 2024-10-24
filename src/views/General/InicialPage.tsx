@@ -4,7 +4,7 @@ import whiteLogo from '../../components/pictures/whiteLogo.png';
 
 function ViewInitialPage() {
 	return (
-		<div className='container'>
+		<div className='container p-4 max-w-80'>
 			<div className='absolute inset-0'>
 				<div className='absolute w-[320px] h-[338px] border border-1 border-[#6D9773] rounded-full top-0 left-1/3 opacity-40'></div>
 				<div className='absolute w-[320px] h-[338px] border border-1 border-[#6D9773] rounded-full top-20 right-0 opacity-40'></div>

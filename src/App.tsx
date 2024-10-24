@@ -7,6 +7,7 @@ import Delete from './components/Buttons/Delete';
 import SignInUser from './views/ManageUser/RegisterUser';
 import InicialPage from './views/General/InicialPage';
 import SwitchPage from './views/General/SwitchPage';
+import LoadingPage from './views/General/LoadingPage';
 import HomePage from './views/General/HomePage';
 import ProfileCar from './views/ManageCar/ProfileCar';
 import RegisterCar from './views/ManageCar/RegisterCar';
@@ -21,12 +22,15 @@ import Circular from './components/Buttons/Circular';
 function App() {
 	return (
 		<>
-			<div className='p-4 max-w-80'></div>
+			<div>
+				<CreateTrip />
+			</div>
 			<Router>
 				<Routes>
-					<Route path='/' element={<InicialPage />} />
+					<Route path='/InicialPage' element={<InicialPage />} />
 					<Route path='/Home' element={<HomePage />} />
 					<Route path='/SwitchPage' element={<SwitchPage />} />
+					<Route path='/LoadingPage' element={<LoadingPage />} />
 					<Route path='/Car/Info' element={<ProfileCar />} />
 					<Route path='/Car/Register' element={<RegisterCar />} />
 					<Route path='/Trip/Create' element={<CreateTrip />} />
