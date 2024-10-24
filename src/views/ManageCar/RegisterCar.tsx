@@ -12,16 +12,16 @@ interface itemForms {
 }
 
 function ViewRegisterCar() {
-	const [brand, setName] = useState<string>('');
-	const [model, setLastName] = useState<string>('');
-	const [plate, setId] = useState<string>('');
-	const [capacity, setEmail] = useState<string>('');
+	const [brand, setBrand] = useState<string>('');
+	const [model, setModel] = useState<string>('');
+	const [plate, setPlate] = useState<string>('');
+	const [capacity, setCapacity] = useState<string>('');
 
 	const listForms: itemForms[] = [
 		{
 			type: 'text',
 			label: 'Marca',
-			handleInputChange: setName,
+			handleInputChange: setBrand,
 			value: brand,
 			required: true,
 			placeholder: ' ',
@@ -30,7 +30,7 @@ function ViewRegisterCar() {
 		{
 			type: 'text',
 			label: 'Modelo',
-			handleInputChange: setLastName,
+			handleInputChange: setModel,
 			value: model,
 			required: true,
 			placeholder: ' ',
@@ -38,7 +38,7 @@ function ViewRegisterCar() {
 		{
 			type: 'text',
 			label: 'Placa',
-			handleInputChange: setName,
+			handleInputChange: setPlate,
 			value: plate,
 			required: true,
 			placeholder: ' ',
@@ -46,7 +46,7 @@ function ViewRegisterCar() {
 		{
 			type: 'text',
 			label: 'Capacidad',
-			handleInputChange: setName,
+			handleInputChange: setCapacity,
 			value: capacity,
 			required: true,
 			placeholder: ' ',
