@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaTrash, FaCheck } from 'react-icons/fa';
 function Button() {
 	const [isClicked, setIsClicked] = useState(false);

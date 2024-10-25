@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from 'react';
-import Button from '../../components/Buttons/Regular';
 import whiteLogo from '../../components/pictures/whiteLogo.png';
 
 function ViewLoadingPage() {

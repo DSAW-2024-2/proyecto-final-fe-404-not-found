@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from 'react';
-
 function ViewTermsAndConditions() {
 	return (
 		<div className='container p-4 max-w-80'>

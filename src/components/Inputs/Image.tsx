@@ -39,3 +39,5 @@ function ImageUpload() {
 		<p className='text-sm text-gray-500 mt-2'>Añadir imagen</p>
 	</div>;
 }
+
+export default ImageUpload;

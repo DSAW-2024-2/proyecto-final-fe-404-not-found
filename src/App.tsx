@@ -24,6 +24,7 @@ function App() {
 		<>
 			<Router>
 				<Routes>
+					<Route path='/' element={<InicialPage />} />
 					<Route path='/LoadingPage' element={<LoadingPage />} />
 					<Route path='/InicialPage' element={<InicialPage />} />
 					<Route path='/Home' element={<HomePage />} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Modal from './Modals/MainModal'; // Asegúrate de importar el componente Modal
 
 const App = () => {
