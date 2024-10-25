@@ -118,7 +118,7 @@ function Input({
 
 	return (
 		<div className='mb-4'>
-			<label className='block text-lg font-medium text-gray-700 mb-1 ml-2'>
+			<label className='block text-lg ml-5 font-normal text-gray-700 mb-1 ml-2'>
 				{label}
 				{required && <span className='text-red-500'>*</span>}
 			</label>

@@ -1,7 +1,6 @@
-// import './App.css
+// import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Button from './components/Buttons/Regular';
-import SignInUser from './views/ManageUser/RegisterUser';
+
 import InicialPage from './views/General/InicialPage';
 import SwitchPage from './views/General/SwitchPage';
 import HomePage from './views/General/HomePage';
@@ -18,9 +17,8 @@ import ProtectedRoutes from './utils/ProtectedRoutes';
 function App() {
 	return (
 		<>
-			<div className='p-4 max-w-80'>
-				<SignInUser />
-				<Button onClick={() => alert('hola')}>Registrarse</Button>
+			<div>
+				<CreateTrip />
 			</div>
 			<Router>
 				<Routes>
