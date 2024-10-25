@@ -12,6 +12,7 @@ import RecoverAccount from './views/ManageUser/RecoverAccount';
 import RegisterUser from './views/ManageUser/RegisterUser';
 import ProfileUser from './views/ManageUser/ProfileUser';
 import InfoTrip from './views/ManageTrips/InfoTrip';
+import LoadingPage from './views/General/LoadingPage';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 
 function App() {
@@ -22,7 +23,6 @@ function App() {
 			</div>
 			<Router>
 				<Routes>
-<<<<<<< HEAD
 					<Route path='/LoadingPage' element={<LoadingPage />} />
 					<Route path='/InicialPage' element={<InicialPage />} />
 					<Route path='/Home' element={<HomePage />} />
@@ -31,9 +31,6 @@ function App() {
 					<Route path='/Car/Register' element={<RegisterCar />} />
 					<Route path='/Trip/Create' element={<CreateTrip />} />
 					<Route path='/Trip/Info' element={<InfoTrip />} />
-=======
-					<Route path='/' element={<InicialPage />} />
->>>>>>> 66d63d80547b54cc50668ea7cdd812a4d5e47ac0
 					<Route path='/User/Login' element={<LogInUser />} />
 					<Route path='/User/Register' element={<RegisterUser />} />
 					<Route path='/SwitchPage' element={<SwitchPage />} />
