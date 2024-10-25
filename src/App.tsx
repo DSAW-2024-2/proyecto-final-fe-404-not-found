@@ -24,17 +24,17 @@ function App() {
 				<Routes>
 					<Route path='/' element={<InicialPage />} />
 					<Route path='/User/Login' element={<LogInUser />} />
+					<Route path='/User/Register' element={<RegisterUser />} />
+					<Route path='/SwitchPage' element={<SwitchPage />} />
 
 					<Route element={<ProtectedRoutes />}>
 						<Route path='/Home' element={<HomePage />} />
-						<Route path='/SwitchPage' element={<SwitchPage />} />
 						<Route path='/Car/Info' element={<ProfileCar />} />
 						<Route path='/Car/Register' element={<RegisterCar />} />
 						<Route path='/Trip/Create' element={<CreateTrip />} />
 						<Route path='/Trip/Info' element={<InfoTrip />} />
 						<Route path='/User/Info' element={<ProfileUser />} />
 						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
-						<Route path='/User/Register' element={<RegisterUser />} />
 					</Route>
 				</Routes>
 			</Router>
