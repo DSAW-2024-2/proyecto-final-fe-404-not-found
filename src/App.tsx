@@ -19,7 +19,7 @@ function App() {
 	return (
 		<>
 			<div>
-				<RegisterUser />
+				<InicialPage />
 			</div>
 			<Router>
 				<Routes>

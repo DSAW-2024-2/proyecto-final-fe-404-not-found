@@ -79,8 +79,8 @@ function ViewRegisterCar() {
 					/>
 				))}
 			</form>
-			<div className='ml-7'>SOAT</div>
-			<div className='ml-7'>Licencia de conducción</div>
+			<div className='ml-7'>SOAT+</div>
+			<div className='ml-7'>Licencia de conducción+</div>
 			<div className='pl-5'>
 				<Button onClick={() => alert('hola')}>Guardar</Button>
 			</div>
