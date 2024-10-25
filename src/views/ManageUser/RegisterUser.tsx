@@ -1,6 +1,10 @@
 import { Dispatch, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
+import Checkbox from '../../components/Buttons/Checkbox';
+import Button2 from '../../components/Buttons/TextButton';
 
 interface itemForms {
 	type:
@@ -94,6 +98,11 @@ function ViewRegisterUser() {
 		},
 	];
 
+	const [isChecked, setIsChecked] = useState<boolean>(false);
+
+	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setIsChecked(event.target.checked);
+	};
 	return (
 		<div className='container p-4 max-w-80'>
 			<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
@@ -119,6 +128,19 @@ function ViewRegisterUser() {
 					/>
 				))}
 			</form>
+			<div className='ml-7 mt-8'>
+				<Checkbox
+					id='checkbox'
+					label='Aceptar términos y condiciones'
+					checked={isChecked}
+					onChange={handleCheckboxChange}
+				/>
+				<div className='ml-5'>
+					<Button2 onClick={() => alert('hola')}>
+						Leer términos y condiciones
+					</Button2>
+				</div>
+			</div>
 			<Button onClick={() => alert('hola')}>Registrarse</Button>
 		</div>
 	);

@@ -1,4 +1,5 @@
 import { Dispatch, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
 
@@ -78,9 +79,11 @@ function ViewRegisterCar() {
 					/>
 				))}
 			</form>
-			<div className='ml-7'>SOAT</div>
-			<div className='ml-7'>Licencia de conducción</div>
-			<Button onClick={() => alert('hola')}>Guardar</Button>
+			<div className='ml-7'>SOAT+</div>
+			<div className='ml-7'>Licencia de conducción+</div>
+			<div className='pl-5'>
+				<Button onClick={() => alert('hola')}>Guardar</Button>
+			</div>
 		</div>
 	);
 }
