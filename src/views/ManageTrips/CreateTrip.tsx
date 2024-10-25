@@ -2,6 +2,8 @@ import { Dispatch, useState } from 'react';
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
 import whiteLogo from '../../components/pictures/whiteLogo.png';
+import SingleSelect from '../../components/Inputs/Select';
+import MultiSelect from '../../components/Inputs/MultipleSelect';
 
 interface itemForms {
 	type: 'text';
@@ -35,6 +37,12 @@ function ViewCreateTrip() {
 			placeholder: ' ',
 		},
 	];
+	const optionsPayment = [
+		'Efectivo',
+		'Nequi',
+		'DaviPlata',
+		'Transferencia a cuentas bancarias',
+	];
 
 	return (
 		<div className='container p-4 max-w-80'>
@@ -61,6 +69,20 @@ function ViewCreateTrip() {
 							required={data.required}
 						/>
 					))}
+
+					<div className='ml-5'>
+						<SingleSelect
+							options={['Ruta 1', 'Ruta 2', 'Ruta 3']}
+							label='Selecciona una ruta'
+						/>
+					</div>
+					<div className='ml-5 mt-5'>
+						<MultiSelect
+							options={optionsPayment}
+							label='Métodos de pago que recibes'
+						/>
+					</div>
+					<Button onClick={() => alert('hola')}>Crear viaje</Button>
 				</form>
 			</div>
 		</div>
