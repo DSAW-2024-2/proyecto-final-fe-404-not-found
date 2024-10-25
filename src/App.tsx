@@ -16,6 +16,8 @@ import ProfileUser from './views/ManageUser/ProfileUser';
 import InfoTrip from './views/ManageTrips/InfoTrip';
 import LoadingPage from './views/General/LoadingPage';
 import ProtectedRoutes from './utils/ProtectedRoutes';
+import RoutesBefore from './utils/RoutesBefore';
+import ViewTermsAndConditions from './views/General/TermsCondition';
 
 function App() {
 	useEffect(() => {
@@ -27,25 +29,31 @@ function App() {
 	}, []); // Dependencia vacía para que se ejecute solo una vez
 
 	return (
-		<Router>
-			<Routes>
-				<Route path='/' element={<InicialPage />} />
-				<Route path='/loadingpage' element={<LoadingPage />} />
-				<Route path='/SwitchPage' element={<SwitchPage />} />
-				<Route path='/User/Login' element={<LogInUser />} />
-				<Route path='/User/Register' element={<RegisterUser />} />
-				<Route path='/User/Info/Recover' element={<RecoverAccount />} />
+		<div>
+			<Router>
+				<Routes>
+					<Route path='/loadingpage' element={<LoadingPage />} />
+					<Route path='/SwitchPage' element={<SwitchPage />} />
+					<Route path='/' element={<InicialPage />} />
+					<Route path='/condiciones' element={<ViewTermsAndConditions />} />
 
-				<Route element={<ProtectedRoutes />}>
-					<Route path='/Home' element={<HomePage />} />
-					<Route path='/Car/Info' element={<ProfileCar />} />
-					<Route path='/Car/Register' element={<RegisterCar />} />
-					<Route path='/Trip/Create' element={<CreateTrip />} />
-					<Route path='/Trip/Info' element={<InfoTrip />} />
-					<Route path='/User/Info' element={<ProfileUser />} />
-				</Route>
-			</Routes>
-		</Router>
+					<Route element={<RoutesBefore />}>
+						<Route path='/User/Login' element={<LogInUser />} />
+						<Route path='/User/Register' element={<RegisterUser />} />
+						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
+					</Route>
+
+					<Route element={<ProtectedRoutes />}>
+						<Route path='/Home' element={<HomePage />} />
+						<Route path='/Car/Info' element={<ProfileCar />} />
+						<Route path='/Car/Register' element={<RegisterCar />} />
+						<Route path='/Trip/Create' element={<CreateTrip />} />
+						<Route path='/Trip/Info' element={<InfoTrip />} />
+						<Route path='/User/Info' element={<ProfileUser />} />
+					</Route>
+				</Routes>
+			</Router>
+		</div>
 	);
 }
 
