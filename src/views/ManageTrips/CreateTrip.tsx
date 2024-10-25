@@ -6,19 +6,37 @@ import SingleSelect from '../../components/Inputs/Select';
 import MultiSelect from '../../components/Inputs/MultipleSelect';
 
 interface itemForms {
-	type: 'text';
+	type: 'text' | 'date';
 	placeholder: string;
 	label: string;
 	value: string;
 	required: boolean;
 	handleInputChange: Dispatch<React.SetStateAction<string>>;
+	style_label?: string;
 }
 
 function ViewCreateTrip() {
 	const [startPoint, setStartPoint] = useState<string>('');
 	const [endPoint, setEndPoint] = useState<string>('');
+	const [date, setDate] = useState<string>('');
+	const [time, setTime] = useState<string>('');
+	const [route, setRoute] = useState<string>('');
+	const [fare, setFare] = useState<string>('');
+	const [seatCount, setSeatCount] = useState<string>('');
+	const [paymentMethods, setPaymentMethods] = useState<Array<string>>([]);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	const listForms: itemForms[] = [
+		{
+			type: 'date',
+			placeholder: 'Select a date',
+			label: 'Fecha',
+			value: date,
+			required: true,
+			handleInputChange: setDate,
+			style_label: 'text-white-300',
+		},
 		{
 			type: 'text',
 			label: 'Punto de partida',
@@ -27,7 +45,6 @@ function ViewCreateTrip() {
 			required: true,
 			placeholder: ' ',
 		},
-
 		{
 			type: 'text',
 			label: 'Punto de llegada',
@@ -37,12 +54,55 @@ function ViewCreateTrip() {
 			placeholder: ' ',
 		},
 	];
+
 	const optionsPayment = [
 		'Efectivo',
 		'Nequi',
 		'DaviPlata',
 		'Transferencia a cuentas bancarias',
 	];
+
+	const createTrip = async (event: React.FormEvent) => {
+		event.preventDefault();
+		setLoading(true);
+		setErrorMessage(null);
+
+		try {
+			const url = localStorage.getItem('API') + '/trip';
+			const token = localStorage.getItem('token');
+			const bodyRequest = {
+				startPoint,
+				endPoint,
+				date,
+				time,
+				route,
+				fare,
+				seatCount,
+				paymentMethods,
+			};
+
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(bodyRequest),
+			});
+			const data = await response.json();
+
+			if (response.ok) {
+				console.log(data);
+			} else {
+				setErrorMessage('Error al crear el viaje. Inténtalo nuevamente.');
+			}
+		} catch (error) {
+			console.error(error);
+			setErrorMessage('Hubo un problema al conectar con el servidor.');
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<div className='container p-4 max-w-80'>
@@ -57,7 +117,7 @@ function ViewCreateTrip() {
 				<h2 className=' text-white text-xs text-center mb-3 font-medium'>
 					¿A dónde quieres ir hoy?
 				</h2>
-				<form className=''>
+				<form onSubmit={createTrip}>
 					{listForms.map((data: itemForms, index) => (
 						<InputForm
 							key={index}
@@ -82,7 +142,14 @@ function ViewCreateTrip() {
 							label='Métodos de pago que recibes'
 						/>
 					</div>
-					<Button onClick={() => alert('hola')}>Crear viaje</Button>
+
+					{errorMessage && (
+						<p className='text-red-500 text-center'>{errorMessage}</p>
+					)}
+
+					<Button onClick={() => {}} disabled={loading}>
+						{loading ? 'Guardando...' : 'Crear viaje'}
+					</Button>
 				</form>
 			</div>
 		</div>

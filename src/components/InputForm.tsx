@@ -17,6 +17,7 @@ function Input({
 	handleInputChange, //funcion del hook que setState
 	required, //saber si es obligatorio
 	placeholder = '',
+	style_label = '',
 }: {
 	type?:
 		| 'text'
@@ -32,6 +33,7 @@ function Input({
 	value: string;
 	required?: boolean;
 	handleInputChange: Dispatch<React.SetStateAction<string>>;
+	style_label?: string;
 }) {
 	const typeInput = () => {
 		switch (type) {
@@ -118,7 +120,13 @@ function Input({
 
 	return (
 		<div className='mb-4'>
-			<label className='block text-lg ml-5 font-normal text-gray-700 mb-1 ml-2'>
+			<label
+				className={
+					style_label +
+					' block text-lg font-normal text-gray-700 mb-1 ml-5 ' +
+					style_label
+				}
+			>
 				{label}
 				{required && <span className='text-red-500'>*</span>}
 			</label>
