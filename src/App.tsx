@@ -1,13 +1,8 @@
 // import './App.css'
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Prueba from './components/prueba';
-import Accept from './components/Buttons/Accept';
-import Delete from './components/Buttons/Delete';
-import SignInUser from './views/ManageUser/RegisterUser';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import InicialPage from './views/General/InicialPage';
 import SwitchPage from './views/General/SwitchPage';
-import LoadingPage from './views/General/LoadingPage';
 import HomePage from './views/General/HomePage';
 import ProfileCar from './views/ManageCar/ProfileCar';
 import RegisterCar from './views/ManageCar/RegisterCar';
@@ -17,7 +12,7 @@ import RecoverAccount from './views/ManageUser/RecoverAccount';
 import RegisterUser from './views/ManageUser/RegisterUser';
 import ProfileUser from './views/ManageUser/ProfileUser';
 import InfoTrip from './views/ManageTrips/InfoTrip';
-import Circular from './components/Buttons/Circular';
+import ProtectedRoutes from './utils/ProtectedRoutes';
 
 function App() {
 	return (
@@ -27,6 +22,7 @@ function App() {
 			</div>
 			<Router>
 				<Routes>
+<<<<<<< HEAD
 					<Route path='/LoadingPage' element={<LoadingPage />} />
 					<Route path='/InicialPage' element={<InicialPage />} />
 					<Route path='/Home' element={<HomePage />} />
@@ -35,10 +31,22 @@ function App() {
 					<Route path='/Car/Register' element={<RegisterCar />} />
 					<Route path='/Trip/Create' element={<CreateTrip />} />
 					<Route path='/Trip/Info' element={<InfoTrip />} />
+=======
+					<Route path='/' element={<InicialPage />} />
+>>>>>>> 66d63d80547b54cc50668ea7cdd812a4d5e47ac0
 					<Route path='/User/Login' element={<LogInUser />} />
-					<Route path='/User/Info' element={<ProfileUser />} />
-					<Route path='/User/Info/Recover' element={<RecoverAccount />} />
 					<Route path='/User/Register' element={<RegisterUser />} />
+					<Route path='/SwitchPage' element={<SwitchPage />} />
+
+					<Route element={<ProtectedRoutes />}>
+						<Route path='/Home' element={<HomePage />} />
+						<Route path='/Car/Info' element={<ProfileCar />} />
+						<Route path='/Car/Register' element={<RegisterCar />} />
+						<Route path='/Trip/Create' element={<CreateTrip />} />
+						<Route path='/Trip/Info' element={<InfoTrip />} />
+						<Route path='/User/Info' element={<ProfileUser />} />
+						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
+					</Route>
 				</Routes>
 			</Router>
 		</>
