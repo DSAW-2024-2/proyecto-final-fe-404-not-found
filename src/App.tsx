@@ -14,28 +14,25 @@ import ProfileUser from './views/ManageUser/ProfileUser';
 import InfoTrip from './views/ManageTrips/InfoTrip';
 import LoadingPage from './views/General/LoadingPage';
 import ProtectedRoutes from './utils/ProtectedRoutes';
+import { useEffect } from 'react';
 
 function App() {
-	localStorage.setItem(
-		'API',
-		'https://proyecto-final-be-404-not-found-befi8md2q-maosuarezs-projects.vercel.app'
-	);
+	useEffect(() => {
+		localStorage.clear();
+		localStorage.setItem(
+			'API',
+			'https://proyecto-final-be-404-not-found-befi8md2q-maosuarezs-projects.vercel.app'
+		);
+	}, []);
 	return (
 		<>
 			<Router>
 				<Routes>
 					<Route path='/' element={<InicialPage />} />
 					<Route path='/LoadingPage' element={<LoadingPage />} />
-					<Route path='/InicialPage' element={<InicialPage />} />
-					<Route path='/Home' element={<HomePage />} />
 					<Route path='/SwitchPage' element={<SwitchPage />} />
-					<Route path='/Car/Info' element={<ProfileCar />} />
-					<Route path='/Car/Register' element={<RegisterCar />} />
-					<Route path='/Trip/Create' element={<CreateTrip />} />
-					<Route path='/Trip/Info' element={<InfoTrip />} />
 					<Route path='/User/Login' element={<LogInUser />} />
 					<Route path='/User/Register' element={<RegisterUser />} />
-					<Route path='/SwitchPage' element={<SwitchPage />} />
 					<Route path='/User/Info/Recover' element={<RecoverAccount />} />
 
 					<Route element={<ProtectedRoutes />}>
