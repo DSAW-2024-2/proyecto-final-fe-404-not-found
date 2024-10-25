@@ -1,6 +1,7 @@
 import { Dispatch, useState } from 'react';
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
+import { Link, Navigate } from 'react-router-dom';
 
 interface signInForms {
 	type: 'email' | 'password';
@@ -14,6 +15,63 @@ interface signInForms {
 function ViewLogInUser() {
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
+	const [loading, setLoading] = useState<boolean>(false); // Para manejar el estado de carga
+	const [errorMessage, setErrorMessage] = useState<string | null>(null); // Para manejar mensajes de error
+
+	const ApiLogIn = async () => {
+		// Validación simple de que el email y password no estén vacíos
+		if (!email || !password) {
+			setErrorMessage('Por favor, ingresa un correo y una contraseña.');
+			return;
+		}
+
+		// API call para iniciar sesión
+		setLoading(true); // Desactivar el botón mientras se realiza la solicitud
+
+		try {
+			const url = localStorage.getItem('API') + '/user/login';
+			console.log(url);
+			console.log(email);
+			console.log('!' + password + '!');
+
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json', // Indicar que el contenido es JSON
+				},
+				body: JSON.stringify({
+					email: email,
+					password: password,
+				}),
+			});
+
+			const data = await response.json();
+
+			if (data.token) {
+				// Guardar el token en el localStorage si el inicio de sesión fue exitoso
+				localStorage.setItem('token', data.token);
+			} else {
+				// Si hubo un error en la respuesta de la API
+				setErrorMessage('Usuario o contraseña incorrectos.');
+			}
+		} catch (error) {
+			// Manejo de errores de red
+			setErrorMessage('Ocurrió un error al iniciar sesión. Intenta de nuevo.');
+			console.error(error);
+		} finally {
+			setLoading(false); // Rehabilitar el botón después de la solicitud
+		}
+	};
+
+	// Redireccionar si el usuario ya tiene un token
+	if (localStorage.getItem('token')) {
+		return <Navigate to='/' />;
+	}
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault(); // Prevenir el comportamiento por defecto (recarga de la página)
+		ApiLogIn(); // Llamar a la API para iniciar sesión
+	};
 
 	const listForms: signInForms[] = [
 		{
@@ -41,7 +99,11 @@ function ViewLogInUser() {
 			</h1>
 			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-12'></div>
 
-			<form className='mb-0'>
+			<form
+				className='mb-0'
+				onSubmit={handleSubmit}
+				onClick={() => setErrorMessage(null)}
+			>
 				{listForms.map((data: signInForms, index) => (
 					<InputForm
 						key={index}
@@ -53,12 +115,23 @@ function ViewLogInUser() {
 						required={data.required}
 					/>
 				))}
-				<div className='mb-5  mr-5 text-right text-xs'>
-					¿Olvidaste tu contraseña?
+
+				{/* Mostrar mensaje de error si existe */}
+				{errorMessage && <p className='text-red-500 text-sm'>{errorMessage}</p>}
+
+				<div className='mb-5 mr-5 text-right text-xs cursor-pointer'>
+					<Link to='/User/Info/Recover'>¿Olvidaste tu contraseña?</Link>
 				</div>
-				<Button onClick={() => alert('hola')}>Iniciar Sesión</Button>
-				<div className='text-left ml-5 mt-2 text-xs'>
-					¿No estás registado? Haz click aquí
+
+				<Button onClick={() => {}} disabled={loading}>
+					{loading ? 'Cargando...' : 'Iniciar Sesión'}
+				</Button>
+
+				<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
+					¿No estás registrado?{' '}
+					<Link to={'/user/register'} className='text-blue-500'>
+						Haz click aquí
+					</Link>
 				</div>
 			</form>
 		</div>

@@ -24,10 +24,11 @@ function Input({
 		const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 		const input = e.target.value;
 
+		console.log(regex.test(input));
 		//Verifica la longitud del input y los caracteres utilizados
 		if (input.length < 20) {
 			setValuePassword(input);
-			handleInputChange(regex.test(input) ? valuePassword : ''); // Actualizar el estado con el valor del input
+			handleInputChange(regex.test(input) ? input : ''); // Actualizar el estado con el valor del input
 			setIsValid(regex.test(input));
 		} else {
 			e.target.value.slice(0, 20); //La corta a 20 en caso de que sea superior
@@ -42,7 +43,7 @@ function Input({
 				onChange={onChange}
 				required={required}
 				placeholder={placeholder}
-				className={`mt-1 mx-5 block w-[250px] py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2  ${
+				className={`mt-1 mx-5 block w-[250px] py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 appearance-none ${
 					isFocused ? 'focus:ring-green-700' : 'focus:ring-blue-500'
 				} ${!isValid ? 'border-red-500' : 'border-gray-300'} transition duration-200 `}
 				onFocus={() => setIsFocused(true)}

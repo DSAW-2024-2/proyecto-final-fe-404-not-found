@@ -15,17 +15,19 @@ import InfoTrip from './views/ManageTrips/InfoTrip';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 
 function App() {
+	localStorage.setItem(
+		'API',
+		'https://proyecto-final-be-404-not-found-befi8md2q-maosuarezs-projects.vercel.app'
+	);
 	return (
 		<>
-			<div>
-				<CreateTrip />
-			</div>
 			<Router>
 				<Routes>
 					<Route path='/' element={<InicialPage />} />
-					<Route path='/User/Login' element={<LogInUser />} />
-					<Route path='/User/Register' element={<RegisterUser />} />
+					<Route path='/user/login' element={<LogInUser />} />
+					<Route path='/user/register' element={<RegisterUser />} />
 					<Route path='/SwitchPage' element={<SwitchPage />} />
+					<Route path='/User/Info/Recover' element={<RecoverAccount />} />
 
 					<Route element={<ProtectedRoutes />}>
 						<Route path='/Home' element={<HomePage />} />
@@ -34,7 +36,6 @@ function App() {
 						<Route path='/Trip/Create' element={<CreateTrip />} />
 						<Route path='/Trip/Info' element={<InfoTrip />} />
 						<Route path='/User/Info' element={<ProfileUser />} />
-						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
 					</Route>
 				</Routes>
 			</Router>
