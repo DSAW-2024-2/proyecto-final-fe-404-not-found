@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Button from '../../components/Buttons/Regular';
 import whiteLogo from '../../components/pictures/whiteLogo.png';
 
@@ -16,8 +17,12 @@ function ViewInitialPage() {
 				<img className='w-[89px] h-[94px]' src={whiteLogo} alt='Logo' />
 			</div>
 			<div className='flex w-full justify-center space-x-[16px] mt-[60px] z-10 relative '>
-				<Button onClick={() => alert('hola')}>Iniciar Sesión</Button>
-				<Button onClick={() => alert('hola')}>Registrarse</Button>
+				<Button onClick={() => {}}>
+					<Link to={'/User/Login'}>Iniciar Sesión</Link>
+				</Button>
+				<Button onClick={() => {}}>
+					<Link to={'/User/Register'}>Registrarse</Link>
+				</Button>
 			</div>
 		</div>
 	);
