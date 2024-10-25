@@ -13,10 +13,10 @@ function ViewInitialPage() {
 				<div className='absolute w-[320px] h-[338px] border border-1 border-[#6D9773] rounded-full bottom-0 left-3/4 opacity-40'></div>
 				<div className='absolute w-[320px] h-[338px] border border-1 border-[#6D9773] rounded-full bottom-0 left-2/3 opacity-40'></div>
 			</div>
-			<div className='ml-[76px] mt-16 w-[156px] h-[156px] bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300'>
+			<div className='ml-[65px] mt-16 w-[156px] h-[156px] bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300'>
 				<img className='w-[89px] h-[94px]' src={whiteLogo} alt='Logo' />
 			</div>
-			<div className='flex space-x-[16px] mt-[60px] mr-5'>
+			<div className='flex w-full justify-center space-x-[16px] mt-[60px] '>
 				<Button onClick={() => alert('hola')}>Iniciar Sesión</Button>
 				<Button onClick={() => alert('hola')}>Registrarse</Button>
 			</div>

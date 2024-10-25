@@ -23,14 +23,14 @@ function App() {
 	return (
 		<>
 			<div>
-				<CreateTrip />
+				<RegisterUser />
 			</div>
 			<Router>
 				<Routes>
+					<Route path='/LoadingPage' element={<LoadingPage />} />
 					<Route path='/InicialPage' element={<InicialPage />} />
 					<Route path='/Home' element={<HomePage />} />
 					<Route path='/SwitchPage' element={<SwitchPage />} />
-					<Route path='/LoadingPage' element={<LoadingPage />} />
 					<Route path='/Car/Info' element={<ProfileCar />} />
 					<Route path='/Car/Register' element={<RegisterCar />} />
 					<Route path='/Trip/Create' element={<CreateTrip />} />
