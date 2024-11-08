@@ -16,6 +16,62 @@ function ViewRegisterCar() {
 	const [model, setModel] = useState<string>('');
 	const [plate, setPlate] = useState<string>('');
 	const [capacity, setCapacity] = useState<string>('');
+	const [soat, setSoat] = useState<string>(
+		'https://example.com/soat-photo.jpg'
+	);
+	const [license, setLicense] = useState<string>(
+		'https://example.com/license-photo.jpg'
+	);
+	const [vehiclePhoto, setVehiclePhoto] = useState<string>(
+		'https://example.com/vehicle-photo.jpg'
+	);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const createCar = async (event: React.FormEvent) => {
+		event.preventDefault();
+		setLoading(true); // Comienza la carga
+		setErrorMessage(null); // Limpia cualquier mensaje de error previo
+
+		const url = localStorage.getItem('API') + '/car';
+		const token = localStorage.getItem('token');
+
+		const bodyRequest = {
+			brand,
+			model,
+			licensePlate: plate,
+			capacity,
+			licensePhoto: license,
+			vehiclePhoto,
+			soatPhoto: soat,
+		};
+
+		try {
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(bodyRequest),
+			});
+			const data = await response.json();
+			if (data._id) {
+				console.log(data);
+				localStorage.setItem('car', 'true');
+				// Acciones adicionales en caso de éxito, como redirigir o mostrar un mensaje de éxito
+			} else {
+				setErrorMessage(
+					'Error al crear el vehículo. Inténtalo nuevamente.\n' + data.message
+				);
+			}
+		} catch (error) {
+			console.error(error);
+			setErrorMessage('Hubo un problema al conectar con el servidor.');
+		} finally {
+			setLoading(false); // Termina la carga
+		}
+	};
 
 	const listForms: itemForms[] = [
 		{
@@ -26,7 +82,6 @@ function ViewRegisterCar() {
 			required: true,
 			placeholder: ' ',
 		},
-
 		{
 			type: 'text',
 			label: 'Modelo',
@@ -61,11 +116,11 @@ function ViewRegisterCar() {
 			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-7'></div>
 			<div className='flex flex-col items-center'>
 				<div className='w-10 h-10 bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300'>
-					<span className='text-2xl text-white'>+</span>
+					<span className='text-2xl mb-[5px] text-white'>+</span>
 				</div>
-				<p className='text-sm text-gray-500  mb-3'>Añadir imagen</p>
+				<p className='text-sm text-gray-500 mb-3'>Añadir imagen</p>
 			</div>
-			<form>
+			<form onSubmit={createCar}>
 				{listForms.map((data: itemForms, index) => (
 					<InputForm
 						key={index}
@@ -77,12 +132,17 @@ function ViewRegisterCar() {
 						required={data.required}
 					/>
 				))}
+				<div className='ml-7'>SOAT+</div>
+				<div className='ml-7'>Licencia de conducción+</div>
+
+				{errorMessage && (
+					<p className='text-red-500 text-center'>{errorMessage}</p>
+				)}
+
+				<Button onClick={() => {}} disabled={loading}>
+					{loading ? 'Guardando...' : 'Guardar'}
+				</Button>
 			</form>
-			<div className='ml-7'>SOAT+</div>
-			<div className='ml-7'>Licencia de conducción+</div>
-			<div className='pl-5'>
-				<Button onClick={() => alert('hola')}>Guardar</Button>
-			</div>
 		</div>
 	);
 }
