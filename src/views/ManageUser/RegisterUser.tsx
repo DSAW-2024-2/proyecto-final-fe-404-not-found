@@ -1,4 +1,5 @@
 import { Dispatch, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
@@ -103,44 +104,47 @@ function ViewRegisterUser() {
 		setIsChecked(event.target.checked);
 	};
 	return (
-		<div className='container p-4 max-w-80'>
-			<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
-				UNIHOP
-			</h1>
-			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-2'></div>
-			<div className='flex flex-col items-center'>
-				<div className='w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center border border-gray-300'>
-					<span className='text-2xl'>+</span>
+		<div className='md:flex'>
+			<div className='sm:hidden w-full h-full bg-[#6D9773]'></div>
+			<div className='container p-4 max-w-80 md:w-full md:h-full'>
+				<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
+					UNIHOP
+				</h1>
+				<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-2'></div>
+				<div className='flex flex-col items-center'>
+					<div className='w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center border border-gray-300'>
+						<span className='text-2xl'>+</span>
+					</div>
+					<p className='text-sm text-gray-500  mb-3'>Añadir imagen</p>
 				</div>
-				<p className='text-sm text-gray-500  mb-3'>Añadir imagen</p>
-			</div>
-			<form>
-				{listForms.map((data: itemForms, index) => (
-					<InputForm
-						key={index}
-						type={data.type}
-						label={data.label}
-						handleInputChange={data.handleInputChange}
-						placeholder={data.placeholder}
-						value={data.value}
-						required={data.required}
+				<form>
+					{listForms.map((data: itemForms, index) => (
+						<InputForm
+							key={index}
+							type={data.type}
+							label={data.label}
+							handleInputChange={data.handleInputChange}
+							placeholder={data.placeholder}
+							value={data.value}
+							required={data.required}
+						/>
+					))}
+				</form>
+				<div className='ml-7 mt-8'>
+					<Checkbox
+						id='checkbox'
+						label='Aceptar términos y condiciones'
+						checked={isChecked}
+						onChange={handleCheckboxChange}
 					/>
-				))}
-			</form>
-			<div className='ml-7 mt-8'>
-				<Checkbox
-					id='checkbox'
-					label='Aceptar términos y condiciones'
-					checked={isChecked}
-					onChange={handleCheckboxChange}
-				/>
-				<div className='ml-5'>
-					<Button2 onClick={() => alert('hola')}>
-						Leer términos y condiciones
-					</Button2>
+					<div className='ml-5'>
+						<Button2 onClick={() => {}}>
+							<Link to={'/condiciones'}>Leer términos y condiciones</Link>
+						</Button2>
+					</div>
 				</div>
+				<Button onClick={() => alert('hola')}>Registrarse</Button>
 			</div>
-			<Button onClick={() => alert('hola')}>Registrarse</Button>
 		</div>
 	);
 }

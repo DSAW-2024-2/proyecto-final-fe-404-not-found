@@ -37,14 +37,12 @@ function App() {
 					<Route path='/SwitchPage' element={<SwitchPage />} />
 					<Route path='/' element={<InicialPage />} />
 					<Route path='/condiciones' element={<ViewTermsAndConditions />} />
-
 					{/* Rutas antes de autenticarse (login, registro, etc.) */}
 					<Route element={<RoutesBefore />}>
 						<Route path='/User/Login' element={<LogInUser />} />
 						<Route path='/User/Register' element={<RegisterUser />} />
 						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
 					</Route>
-
 					{/* Rutas protegidas */}
 					<Route element={<ProtectedRoutes />}>
 						<Route path='/Home' element={<HomePage />} />
