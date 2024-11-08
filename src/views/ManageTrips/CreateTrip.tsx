@@ -6,7 +6,7 @@ import SingleSelect from '../../components/Inputs/Select';
 import MultiSelect from '../../components/Inputs/MultipleSelect';
 
 interface itemForms {
-	type: 'text' | 'date';
+	type: 'text' | 'date' | 'time';
 	placeholder: string;
 	label: string;
 	value: string;
@@ -36,6 +36,14 @@ function ViewCreateTrip() {
 			required: true,
 			handleInputChange: setDate,
 			style_label: 'text-white-300',
+		},
+		{
+			type: 'time',
+			placeholder: 'Select a time',
+			label: 'Hora',
+			value: time,
+			required: true,
+			handleInputChange: setTime,
 		},
 		{
 			type: 'text',
@@ -146,10 +154,11 @@ function ViewCreateTrip() {
 					{errorMessage && (
 						<p className='text-red-500 text-center'>{errorMessage}</p>
 					)}
-
-					<Button onClick={() => {}} disabled={loading}>
-						{loading ? 'Guardando...' : 'Crear viaje'}
-					</Button>
+					<div className='ml-5'>
+						<Button onClick={() => {}} disabled={loading}>
+							{loading ? 'Guardando...' : 'Crear viaje'}
+						</Button>
+					</div>
 				</form>
 			</div>
 		</div>

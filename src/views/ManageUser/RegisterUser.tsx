@@ -143,7 +143,15 @@ function ViewRegisterUser() {
 						</Button2>
 					</div>
 				</div>
-				<Button onClick={() => alert('hola')}>Registrarse</Button>
+				<div className='ml-5'>
+					<Button onClick={() => alert('hola')}>Registrarse</Button>
+				</div>
+				<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
+					¿Ya estás registrado?{' '}
+					<Link to={'/user/register'} className='text-blue-500'>
+						Haz click aquí
+					</Link>
+				</div>
 			</div>
 		</div>
 	);
