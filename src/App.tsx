@@ -30,27 +30,32 @@ function App() {
 
 	return (
 		<Router>
-			<Routes>
-				<Route path='/loadingpage' element={<LoadingPage />} />
-				<Route path='/SwitchPage' element={<SwitchPage />} />
-				<Route path='/' element={<InicialPage />} />
-				<Route path='/condiciones' element={<ViewTermsAndConditions />} />
+			{/* Contenedor principal con padding y fondo general */}
+			<div className='min-h-screen bg-gray-100'>
+				<Routes>
+					<Route path='/loadingpage' element={<LoadingPage />} />
+					<Route path='/SwitchPage' element={<SwitchPage />} />
+					<Route path='/' element={<InicialPage />} />
+					<Route path='/condiciones' element={<ViewTermsAndConditions />} />
 
-				<Route element={<RoutesBefore />}>
-					<Route path='/User/Login' element={<LogInUser />} />
-					<Route path='/User/Register' element={<RegisterUser />} />
-					<Route path='/User/Info/Recover' element={<RecoverAccount />} />
-				</Route>
+					{/* Rutas antes de autenticarse (login, registro, etc.) */}
+					<Route element={<RoutesBefore />}>
+						<Route path='/User/Login' element={<LogInUser />} />
+						<Route path='/User/Register' element={<RegisterUser />} />
+						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
+					</Route>
 
-				<Route element={<ProtectedRoutes />}>
-					<Route path='/Home' element={<HomePage />} />
-					<Route path='/Car/Info' element={<ProfileCar />} />
-					<Route path='/Car/Register' element={<RegisterCar />} />
-					<Route path='/Trip/Create' element={<CreateTrip />} />
-					<Route path='/Trip/Info' element={<InfoTrip />} />
-					<Route path='/User/Info' element={<ProfileUser />} />
-				</Route>
-			</Routes>
+					{/* Rutas protegidas */}
+					<Route element={<ProtectedRoutes />}>
+						<Route path='/Home' element={<HomePage />} />
+						<Route path='/Car/Info' element={<ProfileCar />} />
+						<Route path='/Car/Register' element={<RegisterCar />} />
+						<Route path='/Trip/Create' element={<CreateTrip />} />
+						<Route path='/Trip/Info' element={<InfoTrip />} />
+						<Route path='/User/Info' element={<ProfileUser />} />
+					</Route>
+				</Routes>
+			</div>
 		</Router>
 	);
 }
