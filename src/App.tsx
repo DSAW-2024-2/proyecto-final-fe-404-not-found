@@ -29,7 +29,7 @@ function App() {
 	}, []); // Dependencia vacía para que se ejecute solo una vez
 
 	return (
-		<div>
+		<div className='w-screen h-screen'>
 			<Router>
 				<Routes>
 					<Route path='/loadingpage' element={<LoadingPage />} />

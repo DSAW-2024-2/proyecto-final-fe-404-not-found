@@ -93,47 +93,51 @@ function ViewLogInUser() {
 	];
 
 	return (
-		<div className='container p-4 max-w-80'>
-			<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
-				UNIHOP
-			</h1>
-			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-12'></div>
+		<div className='sm:bg-white md:w-screen md:h-screen md:bg-[#6D9773] flex justify-center items-center'>
+			<div className='container p-4 max-w-80 md:w-[50%] md:h-[70%] md:bg-white'>
+				<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
+					UNIHOP
+				</h1>
+				<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-12'></div>
 
-			<form
-				className='mb-0'
-				onSubmit={handleSubmit}
-				onClick={() => setErrorMessage(null)}
-			>
-				{listForms.map((data: signInForms, index) => (
-					<InputForm
-						key={index}
-						type={data.type}
-						label={data.label}
-						handleInputChange={data.handleInputChange}
-						placeholder={data.placeholder}
-						value={data.value}
-						required={data.required}
-					/>
-				))}
+				<form
+					className='mb-0'
+					onSubmit={handleSubmit}
+					onClick={() => setErrorMessage(null)}
+				>
+					{listForms.map((data: signInForms, index) => (
+						<InputForm
+							key={index}
+							type={data.type}
+							label={data.label}
+							handleInputChange={data.handleInputChange}
+							placeholder={data.placeholder}
+							value={data.value}
+							required={data.required}
+						/>
+					))}
 
-				{/* Mostrar mensaje de error si existe */}
-				{errorMessage && <p className='text-red-500 text-sm'>{errorMessage}</p>}
+					{/* Mostrar mensaje de error si existe */}
+					{errorMessage && (
+						<p className='text-red-500 text-sm'>{errorMessage}</p>
+					)}
 
-				<div className='mb-5 mr-5 text-right text-xs cursor-pointer'>
-					<Link to='/User/Info/Recover'>¿Olvidaste tu contraseña?</Link>
-				</div>
-
-				<Button onClick={() => {}} disabled={loading}>
-					{loading ? 'Cargando...' : 'Iniciar Sesión'}
-				</Button>
-
-				<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
-					¿No estás registrado?{' '}
-					<Link to={'/user/register'} className='text-blue-500'>
-						Haz click aquí
-					</Link>
-				</div>
-			</form>
+					<div className='mb-5 mr-5 text-right text-xs cursor-pointer'>
+						<Link to='/User/Info/Recover'>¿Olvidaste tu contraseña?</Link>
+					</div>
+					<div className='pl-5'>
+						<Button onClick={() => {}} disabled={loading}>
+							{loading ? 'Cargando...' : 'Iniciar Sesión'}
+						</Button>
+					</div>
+					<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
+						¿No estás registrado?{' '}
+						<Link to={'/user/register'} className='text-blue-500'>
+							Haz click aquí
+						</Link>
+					</div>
+				</form>
+			</div>
 		</div>
 	);
 }
