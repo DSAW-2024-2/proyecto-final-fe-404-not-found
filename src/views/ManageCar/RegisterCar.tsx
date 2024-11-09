@@ -56,9 +56,12 @@ function ViewRegisterCar() {
 				body: JSON.stringify(bodyRequest),
 			});
 			const data = await response.json();
+
 			if (data._id) {
 				console.log(data);
 				localStorage.setItem('car', 'true');
+				alert('User created successfully');
+				window.location.href = '/home';
 				// Acciones adicionales en caso de éxito, como redirigir o mostrar un mensaje de éxito
 			} else {
 				setErrorMessage(

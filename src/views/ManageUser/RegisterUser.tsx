@@ -1,7 +1,5 @@
 import { Dispatch, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
-
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
 import Checkbox from '../../components/Buttons/Checkbox';
@@ -53,13 +51,6 @@ function ViewRegisterUser() {
 		try {
 			const url = localStorage.getItem('API') + '/user/register';
 			console.log(url);
-			console.log(name);
-			console.log(id);
-			console.log(lastName);
-			console.log(email);
-			console.log(phone);
-			console.log('!' + password + '!');
-			console.log('!' + verifyPassword + '!');
 
 			const response = await fetch(url, {
 				method: 'POST',
@@ -77,7 +68,6 @@ function ViewRegisterUser() {
 				}),
 			});
 			const data = await response.json();
-			console.log(data);
 			if (data.status === 200) {
 				alert('User created successfully');
 				window.location.href = '/home';
@@ -86,12 +76,15 @@ function ViewRegisterUser() {
 			}
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
-	if (localStorage.getItem('token')) {
-		return <Navigate to='/home' />;
-	}
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		apiRegister();
+	};
 
 	const listForms: itemForms[] = [
 		{
@@ -102,13 +95,6 @@ function ViewRegisterUser() {
 			required: true,
 			placeholder: 'Ingresa tu Nombre',
 		},
-		/*{
-			type: 'image',
-			handleInputChange: setName,
-			value: name,
-			required: true,
-			placeholder: 'Ingresa tu Nombre',
-		},*/
 		{
 			type: 'text',
 			label: 'Apellido',
@@ -164,6 +150,7 @@ function ViewRegisterUser() {
 	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setIsChecked(event.target.checked);
 	};
+
 	return (
 		<div className='md:flex'>
 			<div className='sm:hidden w-full h-full bg-[#6D9773]'></div>
@@ -172,13 +159,7 @@ function ViewRegisterUser() {
 					UNIHOP
 				</h1>
 				<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-2'></div>
-				<div className='flex flex-col items-center'>
-					<div className='w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center border border-gray-300'>
-						<span className='text-2xl'>+</span>
-					</div>
-					<p className='text-sm text-gray-500  mb-3'>Añadir imagen</p>
-				</div>
-				<form>
+				<form onSubmit={handleSubmit}>
 					{listForms.map((data: itemForms, index) => (
 						<InputForm
 							key={index}
@@ -190,30 +171,34 @@ function ViewRegisterUser() {
 							required={data.required}
 						/>
 					))}
-				</form>
-				{/* Mostrar mensaje de error si existe */}
-				{errorMessage && <p className='text-red-500 text-sm'>{errorMessage}</p>}
-				<div className='ml-7 mt-8'>
-					<Checkbox
-						id='checkbox'
-						label='Aceptar términos y condiciones'
-						checked={isChecked}
-						onChange={handleCheckboxChange}
-					/>
-					<div className='ml-5'>
-						<Button2 onClick={() => {}}>
-							<Link to={'/condiciones'}>Leer términos y condiciones</Link>
-						</Button2>
+					{/* Mostrar mensaje de error si existe */}
+					{errorMessage && (
+						<p className='text-red-500 text-sm'>{errorMessage}</p>
+					)}
+
+					<div className='ml-7 mt-8'>
+						<Checkbox
+							id='checkbox'
+							label='Aceptar términos y condiciones'
+							checked={isChecked}
+							onChange={handleCheckboxChange}
+						/>
+						<div className='ml-5'>
+							<Button2 onClick={() => {}}>
+								<Link to={'/condiciones'}>Leer términos y condiciones</Link>
+							</Button2>
+						</div>
 					</div>
-				</div>
-				<div className='pl-5 ml-5'>
-					<Button onClick={() => {}} disabled={loading}>
-						{loading ? 'Cargando...' : 'Iniciar Sesión'}
-					</Button>
-				</div>
+
+					<div className='ml-5'>
+						<Button onClick={() => {}} disabled={loading}>
+							{loading ? 'Cargando...' : 'Registrarse'}
+						</Button>
+					</div>
+				</form>
 				<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
 					¿Ya estás registrado?{' '}
-					<Link to={'/user/register'} className='text-blue-500'>
+					<Link to={'/user/login'} className='text-blue-500'>
 						Haz click aquí
 					</Link>
 				</div>
