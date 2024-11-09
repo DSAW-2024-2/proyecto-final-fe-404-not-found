@@ -56,8 +56,7 @@ function ViewRegisterUser() {
 		setLoading(true);
 
 		try {
-			const url = localStorage.getItem('API') + '/user/register';
-			console.log(url);
+			const url = localStorage.getItem('API') + '/user';
 
 			const response = await fetch(url, {
 				method: 'POST',
