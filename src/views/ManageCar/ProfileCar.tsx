@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProfileData } from '../../utils/fetchProfileData';
 
-const carInfo: React.FC = () => {
-	const [vehicleData, setVehicleData] = useState<any | null>(null);
+const CarProfile: React.FC = () => {
+	const [carData, setCarData] = useState<any | null>(null);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	useEffect(() => {
-		const loadVehicleData = async () => {
-			const data = await fetchProfileData('vehicle', setErrorMessage);
-			if (data) setVehicleData(data);
+		const loadCarData = async () => {
+			const data = await fetchProfileData('car', setErrorMessage);
+			if (data) setCarData(data);
 		};
-		loadVehicleData();
+		loadCarData();
 	}, []);
 
 	return (
@@ -19,13 +19,15 @@ const carInfo: React.FC = () => {
 				<p className='text-red-500'>{errorMessage}</p>
 			) : (
 				<div>
-					<h1>Vehicle Profile</h1>
-					{vehicleData && (
+					<h1>Car Profile</h1>
+					{carData ? (
 						<>
-							<p>Brand: {vehicleData.brand}</p>
-							<p>Model: {vehicleData.model}</p>
-							<p>License Plate: {vehicleData.licensePlate}</p>
+							<p>Brand: {carData.brand}</p>
+							<p>Model: {carData.model}</p>
+							<p>License Plate: {carData.licensePlate}</p>
 						</>
+					) : (
+						<p>Loading...</p>
 					)}
 				</div>
 			)}
@@ -33,4 +35,4 @@ const carInfo: React.FC = () => {
 	);
 };
 
-export default carInfo;
+export default CarProfile;

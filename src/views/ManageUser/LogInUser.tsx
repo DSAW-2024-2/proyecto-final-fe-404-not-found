@@ -65,7 +65,7 @@ function ViewLogInUser() {
 
 	// Redireccionar si el usuario ya tiene un token
 	if (localStorage.getItem('token')) {
-		return <Navigate to='/' />;
+		return <Navigate to='/home' />;
 	}
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

@@ -1,34 +1,37 @@
 export const fetchProfileData = async (
-	endpoint: string,
-	setErrorMessage: (message: string | null) => void
+	type: 'user' | 'car',
+	setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
-	const url = `${localStorage.getItem('API')}/${endpoint}`;
 	const token = localStorage.getItem('token');
+	if (!token) {
+		setErrorMessage('Token not found. Please sign in.');
+		return null;
+	}
 
+	const url = `${localStorage.getItem('API')}/${type}`;
 	try {
 		const response = await fetch(url, {
+			method: 'GET',
 			headers: {
-				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 		});
 
 		if (!response.ok) {
-			throw new Error(`Server responded with status: ${response.status}`);
+			const errorData = await response.json();
+			setErrorMessage(
+				`Error fetching ${type} data: ${errorData.message || response.statusText}`
+			);
+			return null;
 		}
 
-		const contentType = response.headers.get('content-type');
-		if (contentType && contentType.includes('application/json')) {
-			const data = await response.json();
-			return data;
-		} else {
-			throw new Error(
-				'Expected JSON response but received a different format.'
-			);
-		}
+		return await response.json();
 	} catch (error) {
-		console.error('Error fetching profile data:', error);
-		setErrorMessage('Failed to load profile data. Please try again later.');
+		if (error instanceof Error) {
+			setErrorMessage(`Error fetching ${type} data: ${error.message}`);
+		} else {
+			setErrorMessage(`Error fetching ${type} data: Unknown error`);
+		}
 		return null;
 	}
 };
