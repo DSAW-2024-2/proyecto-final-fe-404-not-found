@@ -22,7 +22,7 @@ const CarProfile: React.FC = () => {
 			) : (
 				<div>
 					<div className='flex gap-x-[65px]'>
-						<Link to='/home'>
+						<Link to='/driver'>
 							<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
 						</Link>{' '}
 						<div className='w-[120px] h-[120px] mt-5 border rounded-full border-black'>
