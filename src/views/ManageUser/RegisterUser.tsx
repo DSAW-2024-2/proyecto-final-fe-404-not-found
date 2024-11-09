@@ -43,9 +43,15 @@ function ViewRegisterUser() {
 			!password ||
 			!verifyPassword
 		) {
-			setErrorMessage('Por favor, ingresa la información requerida.');
+			setErrorMessage('Por favor, completa la información requerida');
 			return;
+		} else {
+			if (!isChecked) {
+				setErrorMessage('Por favor, acepta Términos y Condiciones');
+				return;
+			}
 		}
+
 		setLoading(true);
 
 		try {
