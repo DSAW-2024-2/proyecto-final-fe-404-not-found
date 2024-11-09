@@ -37,23 +37,14 @@ function App() {
 					<Route path='/SwitchPage' element={<SwitchPage />} />
 					<Route path='/' element={<InicialPage />} />
 					<Route path='/condiciones' element={<ViewTermsAndConditions />} />
-					{/*para probar BORRAR después*/}
-					<Route path='/Home' element={<HomePage />} />
-					<Route path='/Car/Info' element={<ProfileCar />} />
-					<Route path='/Car/Register' element={<RegisterCar />} />
-					<Route path='/Trip/Create' element={<CreateTrip />} />
-					<Route path='/Trip/Info' element={<InfoTrip />} />
-					<Route path='/User/Info' element={<ProfileUser />} />
-					<Route path='/User/Login' element={<LogInUser />} />
-					<Route path='/User/Register' element={<RegisterUser />} />
-					<Route path='/User/Info/Recover' element={<RecoverAccount />} />
+
 					{/* Rutas antes de autenticarse (login, registro, etc.) */}
-					{/*<Route element={<RoutesBefore />}>
+					<Route element={<RoutesBefore />}>
 						<Route path='/User/Login' element={<LogInUser />} />
 						<Route path='/User/Register' element={<RegisterUser />} />
 						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
 					</Route>
-					{/* Rutas protegidas }
+					{/* Rutas protegidas */}
 					<Route element={<ProtectedRoutes />}>
 						<Route path='/Home' element={<HomePage />} />
 						<Route path='/Car/Info' element={<ProfileCar />} />
@@ -61,7 +52,7 @@ function App() {
 						<Route path='/Trip/Create' element={<CreateTrip />} />
 						<Route path='/Trip/Info' element={<InfoTrip />} />
 						<Route path='/User/Info' element={<ProfileUser />} />
-					</Route>*/}
+					</Route>
 				</Routes>
 			</div>
 		</Router>

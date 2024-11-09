@@ -4,6 +4,7 @@ import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
 import Checkbox from '../../components/Buttons/Checkbox';
 import Button2 from '../../components/Buttons/TextButton';
+import { Navigate } from 'react-router-dom';
 
 interface itemForms {
 	type:
@@ -86,6 +87,10 @@ function ViewRegisterUser() {
 			setLoading(false);
 		}
 	};
+
+	if (localStorage.getItem('token')) {
+		return <Navigate to='/home' />;
+	}
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
