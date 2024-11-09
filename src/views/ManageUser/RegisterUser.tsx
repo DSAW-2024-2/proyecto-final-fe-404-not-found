@@ -1,5 +1,6 @@
 import { Dispatch, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
@@ -31,6 +32,66 @@ function ViewRegisterUser() {
 	const [phone, setPhone] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [verifyPassword, setVerifyPassword] = useState<string>('');
+	const [loading, setLoading] = useState<boolean>(false); // Para manejar el estado de carga
+	const [errorMessage, setErrorMessage] = useState<string | null>(null); // Para manejar mensajes de error
+
+	const apiRegister = async () => {
+		if (
+			!name ||
+			!lastName ||
+			!id ||
+			!email ||
+			!phone ||
+			!password ||
+			!verifyPassword
+		) {
+			setErrorMessage('Por favor, ingresa la información requerida.');
+			return;
+		}
+		setLoading(true);
+
+		try {
+			const url = localStorage.getItem('API') + '/user/register';
+			console.log(url);
+			console.log(name);
+			console.log(id);
+			console.log(lastName);
+			console.log(email);
+			console.log(phone);
+			console.log('!' + password + '!');
+			console.log('!' + verifyPassword + '!');
+
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					name: name,
+					lastName: lastName,
+					id: id,
+					email: email,
+					phone: phone,
+					password: password,
+					verifyPassword: verifyPassword,
+				}),
+			});
+			const data = await response.json();
+			console.log(data);
+			if (data.status === 200) {
+				alert('User created successfully');
+				window.location.href = '/home';
+			} else {
+				alert('Error creating user');
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	if (localStorage.getItem('token')) {
+		return <Navigate to='/home' />;
+	}
 
 	const listForms: itemForms[] = [
 		{
@@ -130,6 +191,8 @@ function ViewRegisterUser() {
 						/>
 					))}
 				</form>
+				{/* Mostrar mensaje de error si existe */}
+				{errorMessage && <p className='text-red-500 text-sm'>{errorMessage}</p>}
 				<div className='ml-7 mt-8'>
 					<Checkbox
 						id='checkbox'
@@ -143,8 +206,10 @@ function ViewRegisterUser() {
 						</Button2>
 					</div>
 				</div>
-				<div className='ml-5'>
-					<Button onClick={() => alert('hola')}>Registrarse</Button>
+				<div className='pl-5 ml-5'>
+					<Button onClick={() => {}} disabled={loading}>
+						{loading ? 'Cargando...' : 'Iniciar Sesión'}
+					</Button>
 				</div>
 				<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
 					¿Ya estás registrado?{' '}
