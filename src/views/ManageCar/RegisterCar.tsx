@@ -30,8 +30,8 @@ function ViewRegisterCar() {
 
 	const createCar = async (event: React.FormEvent) => {
 		event.preventDefault();
-		setLoading(true); // Comienza la carga
-		setErrorMessage(null); // Limpia cualquier mensaje de error previo
+		setLoading(true);
+		setErrorMessage(null);
 
 		const url = localStorage.getItem('API') + '/car';
 		const token = localStorage.getItem('token');
@@ -62,7 +62,6 @@ function ViewRegisterCar() {
 				localStorage.setItem('car', 'true');
 				alert('User created successfully');
 				window.location.href = '/home';
-				// Acciones adicionales en caso de éxito, como redirigir o mostrar un mensaje de éxito
 			} else {
 				setErrorMessage(
 					'Error al crear el vehículo. Inténtalo nuevamente.\n' + data.message
@@ -72,7 +71,7 @@ function ViewRegisterCar() {
 			console.error(error);
 			setErrorMessage('Hubo un problema al conectar con el servidor.');
 		} finally {
-			setLoading(false); // Termina la carga
+			setLoading(false);
 		}
 	};
 
