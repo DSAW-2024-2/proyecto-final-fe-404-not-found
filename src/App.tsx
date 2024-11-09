@@ -18,7 +18,7 @@ import LoadingPage from './views/General/LoadingPage';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import RoutesBefore from './utils/RoutesBefore';
 import ViewTermsAndConditions from './views/General/TermsCondition';
-
+import HomeDrivers from './views/General/HomeDrivers';
 function App() {
 	useEffect(() => {
 		// Establece la URL de la API en el localStorage solo una vez al cargar
@@ -46,12 +46,13 @@ function App() {
 					</Route>
 					{/* Rutas protegidas */}
 					<Route element={<ProtectedRoutes />}>
-						<Route path='/Home' element={<HomePage />} />
-						<Route path='/Car/Info' element={<ProfileCar />} />
-						<Route path='/Car/Register' element={<RegisterCar />} />
-						<Route path='/Trip/Create' element={<CreateTrip />} />
-						<Route path='/Trip/Info' element={<InfoTrip />} />
-						<Route path='/User/Info' element={<ProfileUser />} />
+						<Route path='/home' element={<HomePage />} />
+						<Route path='/driver' element={<HomeDrivers />} />
+						<Route path='/car/info' element={<ProfileCar />} />
+						<Route path='/car/register' element={<RegisterCar />} />
+						<Route path='/trip/create' element={<CreateTrip />} />
+						<Route path='/trip/info' element={<InfoTrip />} />
+						<Route path='/user/info' element={<ProfileUser />} />
 					</Route>
 				</Routes>
 			</div>

@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
 import Button from '../../components/Buttons/Regular';
 import whiteLogo from '../../components/pictures/whiteLogo.png';
+import { Navigate } from 'react-router-dom';
 
 function ViewInitialPage() {
+	if (localStorage.getItem('token')) {
+		return <Navigate to='/home' />;
+	}
 	return (
 		<div className='container sm:p-4 md:w-screen lg:w-screen h-full'>
 			<div className='absolute inset-0 overflow-hidden'>
