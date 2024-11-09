@@ -9,10 +9,10 @@ function ViewHomePage() {
 	const navigate = useNavigate();
 
 	const handleCarLinkClick = async () => {
-		setLoading(true); // Start loading
+		setLoading(true);
 
 		try {
-			const url = `${localStorage.getItem('API')}/check-car`; // Your API endpoint to check if car is registered
+			const url = `${localStorage.getItem('API')}/car`; // Ajusta al endpoint correcto
 			const token = localStorage.getItem('token');
 
 			const response = await fetch(url, {
@@ -24,18 +24,15 @@ function ViewHomePage() {
 
 			const data = await response.json();
 
-			if (data.isCarRegistered) {
-				// If car is registered, redirect to driver page
-				navigate('/driver/home');
+			if (data.brand) {
+				navigate('/driver');
 			} else {
-				// If car is not registered, redirect to register page
 				navigate('/car/register');
 			}
 		} catch (error) {
 			console.error('Error fetching data:', error);
-			// Handle error, maybe show a message to the user
 		} finally {
-			setLoading(false); // End loading
+			setLoading(false);
 		}
 	};
 
@@ -51,15 +48,11 @@ function ViewHomePage() {
 					Bienvenido
 				</h1>
 
-				{/* Make the onClick work on the div and inside FaCar logo */}
 				<div
 					onClick={handleCarLinkClick}
 					className='cursor-pointer w-[35px] h-[35px] bg-black rounded-full flex items-center justify-center border border-gray-300'
 				>
-					<FaCar
-						className='text-white'
-						style={{ cursor: 'pointer' }} // Ensure the cursor is a pointer on the FaCar icon too
-					/>
+					<FaCar className='text-white' style={{ cursor: 'pointer' }} />
 				</div>
 			</div>
 		</div>
