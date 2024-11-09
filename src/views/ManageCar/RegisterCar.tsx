@@ -109,7 +109,7 @@ function ViewRegisterCar() {
 	];
 
 	return (
-		<div className='container p-4 max-w-80'>
+		<div className='container p-4 max-w-80 bg-white'>
 			<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
 				VEHÍCULO
 			</h1>
@@ -138,10 +138,11 @@ function ViewRegisterCar() {
 				{errorMessage && (
 					<p className='text-red-500 text-center'>{errorMessage}</p>
 				)}
-
-				<Button onClick={() => {}} disabled={loading}>
-					{loading ? 'Guardando...' : 'Guardar'}
-				</Button>
+				<div className='ml-5'>
+					<Button onClick={() => {}} disabled={loading}>
+						{loading ? 'Guardando...' : 'Guardar'}
+					</Button>{' '}
+				</div>
 			</form>
 		</div>
 	);

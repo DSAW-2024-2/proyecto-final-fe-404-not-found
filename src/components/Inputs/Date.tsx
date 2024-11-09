@@ -31,7 +31,7 @@ function Input({
 				placeholder={placeholder}
 				maxLength={20}
 				className={
-					'border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500 ' +
+					'ml-5 border border-gray-300 rounded-lg w-[87%] py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500 ' +
 					className
 				}
 			/>

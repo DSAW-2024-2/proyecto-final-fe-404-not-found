@@ -26,7 +26,7 @@ function Input({
 			required={required}
 			onChange={changeTime}
 			className={
-				'py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ' +
+				'ml-5 py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ' +
 				className
 			}
 		/>
