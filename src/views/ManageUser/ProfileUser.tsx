@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProfileData } from '../../utils/fetchProfileData';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import Button2 from '../../components/Buttons/TextButton';
+import Button from '../../components/Buttons/Delete';
 
 const UserProfile: React.FC = () => {
 	const [userData, setUserData] = useState<any | null>(null);
@@ -26,6 +27,87 @@ const UserProfile: React.FC = () => {
 		};
 		loadUserData();
 	}, []);
+
+	const handleEdit = async () => {
+		try {
+			const result = await Swal.fire({
+				title: 'Edit Profile',
+				html: `
+				<style>
+					.swal2-popup .swal2-input {
+						margin: 0; 
+						width: 100%; 
+						box-sizing: border-box; 
+						margin-bottom: 10px;
+					}
+					.swal2-popup .swal2-content {
+						padding: 0 20px; 
+						
+					}
+				</style>
+				<input id="swal-input1" class="swal2-input" placeholder="Name" value="${userData?.name || ''}">
+				<input id="swal-input2" class="swal2-input" placeholder="Last Name" value="${userData?.lastName || ''}">
+				<input id="swal-input4" class="swal2-input" placeholder="Phone" value="${userData?.phone || ''}">
+				<input id="swal-input3" class="swal2-input" placeholder="Password" value="${userData?.password || ''}">
+
+			`,
+				preConfirm: () => {
+					const name = (
+						document.getElementById('swal-input1') as HTMLInputElement
+					).value;
+					const lastName = (
+						document.getElementById('swal-input2') as HTMLInputElement
+					).value;
+					const phone = (
+						document.getElementById('swal-input4') as HTMLInputElement
+					).value;
+					const password = (
+						document.getElementById('swal-input3') as HTMLInputElement
+					).value;
+
+					return { name, lastName, phone, password };
+				},
+				showCancelButton: true,
+				confirmButtonText: 'OK',
+				cancelButtonText: 'Cancel',
+				confirmButtonColor: '#6D9773',
+				cancelButtonColor: 'black',
+			});
+			if (result.isConfirmed) {
+				const formValues = result.value;
+
+				setLoading(true);
+				const url = `${localStorage.getItem('API')}/user`; // Update the endpoint as per your API
+				const token = localStorage.getItem('token');
+
+				const response = await fetch(url, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(formValues),
+				});
+
+				if (response.ok) {
+					setUserData({ ...userData, ...formValues });
+					Swal.fire('Profile updated!', '', 'success');
+				} else {
+					const error = await response.json();
+					Swal.fire(
+						'Error',
+						error.message || 'Failed to update profile',
+						'error'
+					);
+				}
+			}
+		} catch (error) {
+			setErrorMessage(`Failed to edit data: ${error}`);
+			Swal.fire('Error', 'Failed to update profile', 'error');
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	const handleLogout = () => {
 		localStorage.removeItem('token');
@@ -83,7 +165,7 @@ const UserProfile: React.FC = () => {
 				<p className='text-red-500'>{errorMessage}</p>
 			) : (
 				<div>
-					<div className='flex gap-x-[65px]'>
+					<div className='flex gap-x-[65px] mb-2'>
 						<Link to='/home'>
 							<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
 						</Link>
@@ -91,23 +173,29 @@ const UserProfile: React.FC = () => {
 							<img src='' alt='' />
 						</div>
 					</div>
-
-					<h1 className='text-center'>Perfil</h1>
+					<div className='flex justify-center gap-x-2'>
+						<p className='text-center'>Perfil</p>
+						<div className='mt-1 text-[#0C3B2E]'>
+							<FaEdit onClick={handleEdit}>Editar Perfil</FaEdit>
+						</div>
+					</div>
 					<br />
 					{userData ? (
 						<div className='ml-5'>
-							<p>Nombre: {userData.name}</p>
-							<p>Apellido: {userData.lastName}</p>
-							<p>Email: {userData.email}</p>
-							<p>Teléfono: {userData.phone}</p>
+							<p className='text-gray-500'>Nombre</p>
+							<p>{userData.name}</p>
+							<p className='text-gray-500 mt-2'>Apellido</p>
+							<p>{userData.lastName}</p>
+							<p className='text-gray-500 mt-2'>Email</p>
+							<p>{userData.email}</p>
+							<p className='text-gray-500 mt-2'>Teléfono</p>
+							<p>{userData.phone}</p>
 						</div>
 					) : (
 						<p>Loading...</p>
 					)}
-					<div className='ml-5'>
+					<div className='pl-5'>
 						<Button2 onClick={handleLogout}>Cerrar Sesión</Button2>
-					</div>
-					<div className='flex justify-center ml-5'>
 						<Button2 onClick={handleDeleteAccount}>Eliminar Cuenta</Button2>
 					</div>
 				</div>
