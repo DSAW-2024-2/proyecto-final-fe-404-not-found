@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProfileData } from '../../utils/fetchProfileData';
 import { Link } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import Button2 from '../../components/Buttons/TextButton';
 
@@ -67,34 +67,66 @@ const CarProfile: React.FC = () => {
 	};
 
 	return (
-		<div className='container p-4 max-w-80'>
-			{errorMessage ? (
-				<p className='text-red-500'>{errorMessage}</p>
-			) : (
-				<div>
-					<div className='flex gap-x-[65px]'>
-						<Link to='/driver'>
-							<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
-						</Link>{' '}
-						<div className='w-[120px] h-[120px] mt-5 border rounded-full border-black'>
-							<img src='' alt='' />
+		<div className='container mx-auto p-6 max-w-sm  rounded-lg shadow-lg'>
+			<div className='w-full h-full p-5 border border-black'>
+				{errorMessage ? (
+					<p className='text-red-500'>{errorMessage}</p>
+				) : (
+					<div>
+						{/* Header */}
+						<div className='flex items-center mb-4'>
+							<Link to='/driver'>
+								<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
+							</Link>
+						</div>
+
+						{/* Car Image and License Plate */}
+						<div className='text-center'>
+							<div className='w-full h-[150px] mb-4'>
+								<img
+									src={carData?.image || 'path/to/car-image.png'}
+									alt='Car'
+									className='w-full h-full object-contain'
+								/>
+							</div>
+							<div className='flex items-center justify-center mb-4'>
+								<h2 className='text-xl font-semibold'>
+									{carData?.licensePlate || 'CVJ606'}
+								</h2>
+								<FaEdit className='ml-2 h-4 w-4 text-gray-500 cursor-pointer' />
+							</div>
+						</div>
+
+						{/* Car Details */}
+						<div className=' mb-4'>
+							<p className='text-gray-500'>Marca</p>
+							<p className='font-semibold'>{carData?.brand || 'Mercedes'}</p>
+
+							<p className='text-gray-500 mt-2'>Modelo</p>
+							<p className='font-semibold'>{carData?.model || 'A-Class'}</p>
+
+							<p className='text-gray-500 mt-2'>Capacidad</p>
+							<p className='font-semibold'>
+								{carData?.capacity || '5 puestos'}
+							</p>
+
+							<p className='text-gray-500 mt-2'>SOAT</p>
+							<a
+								href={carData?.soatPdf || '#'}
+								target='_blank'
+								className='inline-block mt-1 px-3 py-1 border border-gray-500 rounded-md text-gray-700 text-sm'
+							>
+								📄 SOAT PDF
+							</a>
+						</div>
+
+						{/* Delete Button */}
+						<div className='flex justify-center'>
+							<Button2 onClick={handleDeleteAccount}>Eliminar vehículo</Button2>
 						</div>
 					</div>
-					<h1>Car Profile</h1>
-					{carData ? (
-						<>
-							<p>Brand: {carData.brand}</p>
-							<p>Model: {carData.model}</p>
-							<p>License Plate: {carData.licensePlate}</p>
-						</>
-					) : (
-						<p>Loading...</p>
-					)}
-					<div className='flex justify-center '>
-						<Button2 onClick={handleDeleteAccount}>Eliminar vehículo</Button2>
-					</div>
-				</div>
-			)}
+				)}
+			</div>
 		</div>
 	);
 };
