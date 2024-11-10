@@ -4,7 +4,6 @@ import { BsPeopleFill } from 'react-icons/bs';
 import { useState } from 'react';
 
 function EmailVerify() {
-	// Adjusted the name to match import
 	const [loading, setLoading] = useState<boolean>(false); // Manage loading state
 
 	const apiRegister = async () => {
