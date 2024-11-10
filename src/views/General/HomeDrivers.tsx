@@ -7,7 +7,7 @@ function HomeDriverPage() {
 		<div className='container p-4 mx-auto'>
 			{/* Contenedor centralizado */}
 			<div className='flex justify-center items-center mt-3 gap-[50px] sm:flex-row sm:justify-center sm:gap-x-10'>
-				<Link to='/user/info'>
+				<Link to='/car/info'>
 					<div className='w-[40px] h-[40px] bg-black rounded-full flex items-center justify-center border border-gray-300'>
 						<img className='w-[20px] h-[20px]' src={whiteLogo} alt='Logo' />
 					</div>

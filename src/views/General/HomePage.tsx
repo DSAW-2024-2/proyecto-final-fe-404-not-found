@@ -37,8 +37,8 @@ function ViewHomePage() {
 	};
 
 	return (
-		<div className='container p-4 mx-auto'>
-			<div className='flex justify-center items-center mt-3 gap-[50px] sm:flex-row sm:justify-center sm:gap-x-10'>
+		<div className='container mx-auto'>
+			<div className='flex justify-center items-center m-4 mt-3 gap-[50px] sm:flex-row sm:justify-center sm:gap-x-10'>
 				<Link to='/user/info'>
 					<div className='w-[40px] h-[40px] bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300'>
 						<img className='w-[20px] h-[20px]' src={whiteLogo} alt='Logo' />
@@ -53,6 +53,26 @@ function ViewHomePage() {
 					className='cursor-pointer w-[35px] h-[35px] bg-black rounded-full flex items-center justify-center border border-gray-300'
 				>
 					<FaCar className='text-white' style={{ cursor: 'pointer' }} />
+				</div>
+			</div>
+			<div className='flex items-center h-13 rounded-md bg-[#6D9773] pt-3 pl-5 m-4 mt-2 mb-5'>
+				<div className='h-[30px] w-[200px] mb-4 bg-white rounded-full border px-3 py-2'>
+					<button className='p-1'></button>
+				</div>
+			</div>
+			<div className='w-full bg-[#6D9773] p-4'>
+				<div className='bg-white rounded-lg p-3 mb-4'>
+					<h3 className='text-gray-800 font-semibold mb-2'>Mis viajes</h3>
+					<div className='info viaje'></div>
+				</div>
+
+				<div className='bg-white rounded-lg p-3 shadow-md'>
+					<h3 className='text-gray-800 font-semibold mb-2'>VIAJES</h3>
+					<p className='text-gray-600 mb-2'>Recomendaciones</p>
+					<div className='flex items-center'>
+						<span className='text-yellow-500 mr-2'>★</span>
+						<div className='info tarjetas'></div>
+					</div>
 				</div>
 			</div>
 		</div>
