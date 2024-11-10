@@ -29,7 +29,7 @@ function ViewLogInUser() {
 		setLoading(true); // Desactivar el botón mientras se realiza la solicitud
 
 		try {
-			const url = localStorage.getItem('API') + '/user/';
+			const url = localStorage.getItem('API') + '/user/login';
 			console.log(url);
 			console.log(email);
 			console.log('!' + password + '!');
