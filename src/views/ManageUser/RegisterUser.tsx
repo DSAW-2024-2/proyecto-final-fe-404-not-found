@@ -56,7 +56,7 @@ function ViewRegisterUser() {
 		setLoading(true);
 
 		try {
-			const url = localStorage.getItem('API') + '/user/register';
+			const url = localStorage.getItem('API') + '/email/validate';
 
 			const response = await fetch(url, {
 				method: 'POST',
@@ -75,8 +75,7 @@ function ViewRegisterUser() {
 			});
 			const data = await response.json();
 			if (data.status === 200) {
-				alert('User created successfully');
-				window.location.href = '/home';
+				alert('Email sent');
 			} else {
 				alert('Error creating user');
 			}

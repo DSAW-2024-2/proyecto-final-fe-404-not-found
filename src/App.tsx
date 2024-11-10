@@ -19,6 +19,8 @@ import ProtectedRoutes from './utils/ProtectedRoutes';
 import RoutesBefore from './utils/RoutesBefore';
 import ViewTermsAndConditions from './views/General/TermsCondition';
 import HomeDrivers from './views/General/HomeDrivers';
+import EmailVerify from './views/General/emailVerify';
+
 function App() {
 	useEffect(() => {
 		// Establece la URL de la API en el localStorage solo una vez al cargar
@@ -41,6 +43,7 @@ function App() {
 					{/* Rutas antes de autenticarse (login, registro, etc.) */}
 					<Route element={<RoutesBefore />}>
 						<Route path='/User/Login' element={<LogInUser />} />
+						<Route path='/verify' element={<EmailVerify />} />
 						<Route path='/User/Register' element={<RegisterUser />} />
 						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
 					</Route>
