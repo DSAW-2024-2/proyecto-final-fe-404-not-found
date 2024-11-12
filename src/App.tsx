@@ -19,7 +19,7 @@ import ProtectedRoutes from './utils/ProtectedRoutes';
 import RoutesBefore from './utils/RoutesBefore';
 import ViewTermsAndConditions from './views/General/TermsCondition';
 import HomeDrivers from './views/General/HomeDrivers';
-import EmailVerify from './views/General/emailVerify';
+import EmailVerify from './views/General/EmailVerify';
 
 function App() {
 	useEffect(() => {
