@@ -4,6 +4,8 @@ import Button from '../../components/Buttons/Regular';
 import whiteLogo from '../../components/pictures/whiteLogo.png';
 import SingleSelect from '../../components/Inputs/Select';
 import MultiSelect from '../../components/Inputs/MultipleSelect';
+import { Link } from 'react-router-dom';
+import { PiHouseLine } from 'react-icons/pi';
 
 interface itemForms {
 	type: 'text' | 'date' | 'time';
@@ -114,11 +116,16 @@ function ViewCreateTrip() {
 
 	return (
 		<div className='container p-4 max-w-80'>
-			<div className='flex mt-3 gap-x-10'>
+			<div className='flex mt-3 gap-x-9'>
 				<div className='ml-[5px] w-[35px] h-[35px] bg-black rounded-full flex items-center justify-center border border-gray-300'>
 					<img className='w-[20px] h-[20px]' src={whiteLogo} alt='Logo' />
 				</div>
 				<h1 className='text-xl text-center font-bold mb-4'>NUEVO VIAJE</h1>
+				<Link to='/user/info'>
+					<div className='w-[33px] h-[33px] bg-black rounded-full flex items-center justify-center border border-gray-300'>
+						<PiHouseLine className='text-white w-[15px] h-[15px]' />
+					</div>
+				</Link>
 			</div>
 			<h2 className='mt-2 text-xs font-bold text-center'>Fecha y hora</h2>
 			<div className='container w-[100%] bg-[#6D9773] pt-4 pb-5 mt-7 rounded-md'>

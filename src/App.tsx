@@ -40,7 +40,7 @@ function App() {
 					{/* Rutas antes de autenticarse (login, registro, etc.) */}
 					<Route element={<RoutesBefore />}>
 						<Route path='/User/Login' element={<LogInUser />} />
-						<Route path='/verify' element={<EmailVerify />} />
+						<Route path='/email/verify' element={<EmailVerify />} />
 						<Route path='/User/Register' element={<RegisterUser />} />
 						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
 					</Route>
