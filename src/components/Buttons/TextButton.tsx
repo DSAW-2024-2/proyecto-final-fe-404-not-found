@@ -1,9 +1,11 @@
 function Button2({
 	children, //Para pasar la info dentro de las etiquetas
 	onClick, //Funcion que se pasa cuando haya un click
+	className,
 }: {
 	children: React.ReactNode; //Tipo de variable
 	onClick: () => void; //Definicion de funcion
+	className?: string;
 }) {
 	return (
 		<button

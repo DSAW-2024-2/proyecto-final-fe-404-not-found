@@ -24,10 +24,7 @@ import EmailVerify from './views/General/EmailVerify';
 function App() {
 	useEffect(() => {
 		// Establece la URL de la API en el localStorage solo una vez al cargar
-		localStorage.setItem(
-			'API',
-			'https://proyecto-final-be-404-not-found-befi8md2q-maosuarezs-projects.vercel.app'
-		);
+		localStorage.setItem('API', 'http://149.130.182.245:3001/api-wheels/v1');
 	}, []); // Dependencia vacía para que se ejecute solo una vez
 
 	return (

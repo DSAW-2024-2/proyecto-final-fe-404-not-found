@@ -26,6 +26,7 @@ interface itemForms {
 function ViewRegisterUser() {
 	const [name, setName] = useState<string>('');
 	const [lastName, setLastName] = useState<string>('');
+	const [userName, setUser] = useState<string>('');
 	const [id, setId] = useState<string>('');
 	const [email, setEmail] = useState<string>('');
 	const [phone, setPhone] = useState<string>('');
@@ -38,6 +39,7 @@ function ViewRegisterUser() {
 		if (
 			!name ||
 			!lastName ||
+			!userName ||
 			!id ||
 			!email ||
 			!phone ||
@@ -66,6 +68,7 @@ function ViewRegisterUser() {
 				body: JSON.stringify({
 					name: name,
 					lastName: lastName,
+					userName: userName,
 					id: id,
 					email: email,
 					phone: phone,
@@ -111,6 +114,14 @@ function ViewRegisterUser() {
 			value: lastName,
 			required: true,
 			placeholder: 'Ingresa tu Apellido',
+		},
+		{
+			type: 'text',
+			label: 'Usuario',
+			handleInputChange: setUser,
+			value: userName,
+			required: true,
+			placeholder: 'Ingresa tu usuario',
 		},
 		{
 			type: 'id',

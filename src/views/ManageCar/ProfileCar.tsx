@@ -91,7 +91,7 @@ const CarProfile: React.FC = () => {
 							</div>
 							<div className='flex items-center justify-center mb-4'>
 								<h2 className='text-xl font-semibold'>
-									{carData?.licensePlate || 'CVJ606'}
+									{carData?.licensePlate}
 								</h2>
 								<FaEdit className='ml-2 h-4 w-4 text-gray-500 cursor-pointer' />
 							</div>
@@ -100,15 +100,13 @@ const CarProfile: React.FC = () => {
 						{/* Car Details */}
 						<div className=' mb-4'>
 							<p className='text-gray-500'>Marca</p>
-							<p className='font-semibold'>{carData?.brand || 'Mercedes'}</p>
+							<p className='font-semibold'>{carData?.brand}</p>
 
 							<p className='text-gray-500 mt-2'>Modelo</p>
-							<p className='font-semibold'>{carData?.model || 'A-Class'}</p>
+							<p className='font-semibold'>{carData?.model}</p>
 
 							<p className='text-gray-500 mt-2'>Capacidad</p>
-							<p className='font-semibold'>
-								{carData?.capacity || '5 puestos'}
-							</p>
+							<p className='font-semibold'>{carData?.capacity}</p>
 
 							<p className='text-gray-500 mt-2'>SOAT</p>
 							<a

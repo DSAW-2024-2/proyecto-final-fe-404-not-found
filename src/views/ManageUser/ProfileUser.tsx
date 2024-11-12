@@ -181,11 +181,15 @@ const UserProfile: React.FC = () => {
 					</div>
 					<br />
 					{userData ? (
-						<div className='ml-5'>
+						<div className='ml-5 mb-5'>
 							<p className='text-gray-500'>Nombre</p>
-							<p>{userData.name}</p>
+							<p>{userData.firstName}</p>
 							<p className='text-gray-500 mt-2'>Apellido</p>
 							<p>{userData.lastName}</p>
+							<p className='text-gray-500'>ID</p>
+							<p>{userData.idUniversidad}</p>
+							<p className='text-gray-500'>User Name</p>
+							<p>{userData.userName}</p>
 							<p className='text-gray-500 mt-2'>Email</p>
 							<p>{userData.email}</p>
 							<p className='text-gray-500 mt-2'>Teléfono</p>
