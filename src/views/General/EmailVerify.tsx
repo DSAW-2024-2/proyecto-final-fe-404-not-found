@@ -43,7 +43,7 @@ export default function EmailConfirmationView() {
 	}, [token]);
 
 	const handleRedirect = () => {
-		navigate('/login');
+		navigate('/home/login');
 	};
 
 	if (isLoading) {
