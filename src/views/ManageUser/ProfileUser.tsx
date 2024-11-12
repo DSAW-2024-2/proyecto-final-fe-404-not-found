@@ -45,10 +45,10 @@ const UserProfile: React.FC = () => {
 						
 					}
 				</style>
-				<input id="swal-input1" class="swal2-input" placeholder="Name" value="${userData?.name || ''}">
+				<input id="swal-input1" class="swal2-input" placeholder="Name" value="${userData?.firstName || ''}">
 				<input id="swal-input2" class="swal2-input" placeholder="Last Name" value="${userData?.lastName || ''}">
 				<input id="swal-input4" class="swal2-input" placeholder="Phone" value="${userData?.phone || ''}">
-				<input id="swal-input3" class="swal2-input" placeholder="Password" value="${userData?.password || ''}">
+				<input id="swal-input3" class="swal2-input" placeholder="Password" value="${''}">
 
 			`,
 				preConfirm: () => {
