@@ -24,7 +24,6 @@ export default function EmailConfirmationView() {
 				const response = await fetch(`${localStorage.getItem('API')}/user`, {
 					method: 'POST',
 					headers: {
-						'Content-Type': 'application/json',
 						Authorization: `Bearer ${token}`,
 					},
 				});
