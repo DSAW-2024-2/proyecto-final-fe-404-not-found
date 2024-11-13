@@ -6,10 +6,9 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/api': {
-				target: 'http://149.130.182.245:3001', // La URL base de tu backend
+				target: 'http://149.130.182.245:3001/api-wheels/v1', // Cambia esta URL por la de tu backend
 				changeOrigin: true,
 				secure: false, // Permite usar HTTP sin errores de certificado
-				rewrite: (path) => path.replace(/^\/api/, '/api-wheels/v1'), // Reemplaza el prefijo en la ruta
 			},
 		},
 	},
