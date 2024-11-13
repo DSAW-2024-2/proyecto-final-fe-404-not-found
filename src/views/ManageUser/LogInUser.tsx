@@ -63,7 +63,7 @@ function ViewLogInUser() {
 
 	// Redireccionar si el usuario ya tiene un token
 	if (localStorage.getItem('token')) {
-		return <Navigate to={searchRoute('HomePage')?.path || '/'} />;
+		return <Navigate to={searchRoute('HomePage')?.path || prefix} />;
 	}
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
