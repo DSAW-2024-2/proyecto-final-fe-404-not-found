@@ -5,6 +5,7 @@ import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import Button2 from '../../components/Buttons/TextButton';
 import Button from '../../components/Buttons/Delete';
+import { searchRoute } from '../../utils/Routes';
 
 const UserProfile: React.FC = () => {
 	const [userData, setUserData] = useState<any | null>(null);
@@ -166,7 +167,7 @@ const UserProfile: React.FC = () => {
 			) : (
 				<div>
 					<div className='flex gap-x-[65px] mb-2'>
-						<Link to='/home'>
+						<Link to={searchRoute('HomePage')?.path || '/'}>
 							<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
 						</Link>
 						<div className='w-[120px] h-[120px] mt-5 border rounded-full border-black'>

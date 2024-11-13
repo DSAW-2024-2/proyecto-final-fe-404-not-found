@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaCar } from 'react-icons/fa';
 import whiteLogo from '../../components/pictures/whiteLogo.png';
 import { Link } from 'react-router-dom';
+import { searchRoute } from '../../utils/Routes';
 
 function ViewHomePage() {
 	const [loading, setLoading] = useState(false);
@@ -25,9 +26,9 @@ function ViewHomePage() {
 			const data = await response.json();
 
 			if (data.brand) {
-				navigate('/driver');
+				navigate(searchRoute('HomeDriver')?.path || '/');
 			} else {
-				navigate('/car/register');
+				navigate(searchRoute('RegisterCar')?.path || '/');
 			}
 		} catch (error) {
 			console.error('Error fetching data:', error);
@@ -39,7 +40,7 @@ function ViewHomePage() {
 	return (
 		<div className='container mx-auto'>
 			<div className='flex justify-center items-center m-4 mt-3 gap-[50px] sm:flex-row sm:justify-center sm:gap-x-10'>
-				<Link to='/user/info'>
+				<Link to={searchRoute('ProfileUser')?.path || '/'}>
 					<div className='w-[40px] h-[40px] bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300'>
 						<img className='w-[20px] h-[20px]' src={whiteLogo} alt='Logo' />
 					</div>

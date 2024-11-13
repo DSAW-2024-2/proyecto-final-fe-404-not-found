@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import Button2 from '../../components/Buttons/TextButton';
+import { searchRoute } from '../../utils/Routes';
 
 const CarProfile: React.FC = () => {
 	const [carData, setCarData] = useState<any | null>(null);
@@ -75,7 +76,7 @@ const CarProfile: React.FC = () => {
 					<div>
 						{/* Header */}
 						<div className='flex items-center mb-4'>
-							<Link to='/driver'>
+							<Link to={searchRoute('HomeDriver')?.path || '/'}>
 								<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
 							</Link>
 						</div>

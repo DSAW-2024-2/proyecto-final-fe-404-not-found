@@ -1,5 +1,5 @@
-function Page() {
+function RecoverAccoount() {
 	return <></>;
 }
 
-export default Page;
+export default RecoverAccoount;

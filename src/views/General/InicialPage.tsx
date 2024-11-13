@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import Button from '../../components/Buttons/Regular';
 import whiteLogo from '../../components/pictures/whiteLogo.png';
 import { Navigate } from 'react-router-dom';
+import { searchRoute } from '../../utils/Routes';
 
 function ViewInitialPage() {
 	if (localStorage.getItem('token')) {
-		return <Navigate to='/home' />;
+		return <Navigate to={searchRoute('HomePage')?.path || '/'} />;
 	}
 	return (
 		<div className='container sm:p-4 md:w-screen lg:w-screen h-full'>
@@ -31,10 +32,10 @@ function ViewInitialPage() {
 			{/* Buttons */}
 			<div className='flex w-full justify-center p-5 mt-[60px] space-x-[10px] z-10 relative md:space-x-[52px] md:mt-[80px] md:pr-[220px]'>
 				<Button onClick={() => {}}>
-					<Link to={'/User/Login'}>Iniciar Sesión</Link>
+					<Link to={searchRoute('Login')?.path || '/'}>Iniciar Sesión</Link>
 				</Button>
 				<Button onClick={() => {}}>
-					<Link to={'/User/Register'}>Registrarse</Link>
+					<Link to={searchRoute('Register')?.path || '/'}>Registrarse</Link>
 				</Button>
 			</div>
 		</div>

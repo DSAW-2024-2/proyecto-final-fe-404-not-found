@@ -2,6 +2,7 @@ import { Dispatch, useState } from 'react';
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
 import { Link, Navigate } from 'react-router-dom';
+import { searchRoute } from '../../utils/Routes';
 
 interface signInForms {
 	type: 'email' | 'password';
@@ -30,9 +31,6 @@ function ViewLogInUser() {
 
 		try {
 			const url = localStorage.getItem('API') + '/user/login';
-			console.log(url);
-			console.log(email);
-			console.log('!' + password + '!');
 
 			const response = await fetch(url, {
 				method: 'POST',
@@ -65,7 +63,7 @@ function ViewLogInUser() {
 
 	// Redireccionar si el usuario ya tiene un token
 	if (localStorage.getItem('token')) {
-		return <Navigate to='/home' />;
+		return <Navigate to={searchRoute('HomePage')?.path || '/'} />;
 	}
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -123,7 +121,9 @@ function ViewLogInUser() {
 					)}
 
 					<div className='mb-5 mr-5 text-right text-xs cursor-pointer'>
-						<Link to='/User/Info/Recover'>¿Olvidaste tu contraseña?</Link>
+						<Link to={searchRoute('RecoverPassword')?.path || '/'}>
+							¿Olvidaste tu contraseña?
+						</Link>
 					</div>
 					<div className='pl-5'>
 						<Button onClick={() => {}} disabled={loading}>
@@ -132,7 +132,10 @@ function ViewLogInUser() {
 					</div>
 					<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
 						¿No estás registrado?{' '}
-						<Link to={'/user/register'} className='text-blue-500'>
+						<Link
+							to={searchRoute('Register')?.path || '/'}
+							className='text-blue-500'
+						>
 							Haz click aquí
 						</Link>
 					</div>

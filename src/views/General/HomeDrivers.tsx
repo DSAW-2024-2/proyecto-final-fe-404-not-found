@@ -1,13 +1,14 @@
 import whiteLogo from '../../components/pictures/whiteLogo.png';
 import { Link } from 'react-router-dom';
 import { BsPeopleFill } from 'react-icons/bs';
+import { searchRoute } from '../../utils/Routes';
 
 function HomeDriverPage() {
 	return (
 		<div className='container  mx-auto'>
 			{/* Contenedor centralizado */}
 			<div className='flex justify-center items-center m-5 mt-3 gap-[50px] sm:flex-row sm:justify-center sm:gap-x-10'>
-				<Link to='/car/info'>
+				<Link to={searchRoute('ProfileCar')?.path || '/'}>
 					<div className='w-[40px] h-[40px] bg-black rounded-full flex items-center justify-center border border-gray-300'>
 						<img className='w-[20px] h-[20px]' src={whiteLogo} alt='Logo' />
 					</div>
@@ -16,14 +17,14 @@ function HomeDriverPage() {
 				<h1 className='font-xsm text-xl text-center font-normal mb-4 pt-4 sm:text-2xl'>
 					Bienvenido
 				</h1>
-				<Link to='/home'>
+				<Link to={searchRoute('HomePage')?.path || '/'}>
 					<div className='w-[35px] h-[35px] bg-black rounded-full flex items-center justify-center border border-gray-300'>
 						<BsPeopleFill className='text-white' />
 					</div>
 				</Link>{' '}
 			</div>
 			<div className='bg-black text-white rounded-lg p-3 m-4 mb-4'>
-				<Link to='/trip/create'>
+				<Link to={searchRoute('CreateTrip')?.path || '/'}>
 					<h3 className='text-lg font-semibold'>Nuevo viaje</h3>
 				</Link>{' '}
 			</div>
