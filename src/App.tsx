@@ -18,6 +18,7 @@ import ProtectedRoutes from './utils/ProtectedRoutes';
 import RoutesBefore from './utils/RoutesBefore';
 import HomeDrivers from './views/General/HomeDrivers';
 import EmailVerify from './views/General/EmailVerify';
+import ConfirmEmail from './views/ManageUser/ConfirmEmail';
 
 function App() {
 	useEffect(() => {
@@ -46,6 +47,7 @@ function App() {
 						<Route path='/email/verify' element={<EmailVerify />} />
 						<Route path='/User/Register' element={<RegisterUser />} />
 						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
+						<Route path='/varify/email' element={<ConfirmEmail />} />
 					</Route>
 					{/* Rutas protegidas */}
 					<Route element={<ProtectedRoutes />}>
