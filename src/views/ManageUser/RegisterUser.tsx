@@ -5,7 +5,7 @@ import Button from '../../components/Buttons/Regular';
 import Checkbox from '../../components/Buttons/Checkbox';
 import Button2 from '../../components/Buttons/TextButton';
 import { Navigate } from 'react-router-dom';
-import { searchRoute } from '../../utils/Routes';
+import { prefix, searchRoute } from '../../utils/Routes';
 
 interface itemForms {
 	type:
@@ -213,7 +213,7 @@ function ViewRegisterUser() {
 						/>
 						<div className='ml-5'>
 							<Button2 onClick={() => {}}>
-								<Link to={searchRoute('Conditions')?.path || '/'}>
+								<Link to={searchRoute('Conditions')?.path || prefix}>
 									Leer términos y condiciones
 								</Link>
 							</Button2>
@@ -229,7 +229,7 @@ function ViewRegisterUser() {
 				<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
 					¿Ya estás registrado?{' '}
 					<Link
-						to={searchRoute('Login')?.path || '/'}
+						to={searchRoute('Login')?.path || prefix}
 						className='text-blue-500'
 					>
 						Haz click aquí

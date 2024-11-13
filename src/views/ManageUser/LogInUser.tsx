@@ -2,7 +2,7 @@ import { Dispatch, useState } from 'react';
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
 import { Link, Navigate } from 'react-router-dom';
-import { searchRoute } from '../../utils/Routes';
+import { prefix, searchRoute } from '../../utils/Routes';
 
 interface signInForms {
 	type: 'email' | 'password';
@@ -121,7 +121,7 @@ function ViewLogInUser() {
 					)}
 
 					<div className='mb-5 mr-5 text-right text-xs cursor-pointer'>
-						<Link to={searchRoute('RecoverPassword')?.path || '/'}>
+						<Link to={searchRoute('RecoverPassword')?.path || prefix}>
 							¿Olvidaste tu contraseña?
 						</Link>
 					</div>
@@ -133,7 +133,7 @@ function ViewLogInUser() {
 					<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
 						¿No estás registrado?{' '}
 						<Link
-							to={searchRoute('Register')?.path || '/'}
+							to={searchRoute('Register')?.path || prefix}
 							className='text-blue-500'
 						>
 							Haz click aquí

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
-import { searchRoute } from '../../utils/Routes';
+import { prefix, searchRoute } from '../../utils/Routes';
 
 export default function EmailConfirmationView() {
 	const [searchParams] = useSearchParams();
@@ -45,7 +45,7 @@ export default function EmailConfirmationView() {
 	}, [token]);
 
 	const handleRedirect = () => {
-		navigate(searchRoute('Login')?.path || '/');
+		navigate(searchRoute('Login')?.path || prefix);
 	};
 
 	if (isLoading) {

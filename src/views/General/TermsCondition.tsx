@@ -1,12 +1,12 @@
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { searchRoute } from '../../utils/Routes';
+import { prefix, searchRoute } from '../../utils/Routes';
 
 function ViewTermsAndConditions() {
 	return (
 		<div className='container p-4 pl-5 max-w-80'>
 			<div className='flex gap-5'>
-				<Link to={searchRoute('Register')?.path || '/'}>
+				<Link to={searchRoute('Register')?.path || prefix}>
 					<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
 				</Link>
 				<h1 className='text-3xl font-bold'>
