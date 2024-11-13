@@ -2,9 +2,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 
+import routesList from './utils/Routes';
+
 // Importación de vistas
-import InicialPage from './views/General/InicialPage';
-import SwitchPage from './views/General/SwitchPage';
 import HomePage from './views/General/HomePage';
 import ProfileCar from './views/ManageCar/ProfileCar';
 import RegisterCar from './views/ManageCar/RegisterCar';
@@ -14,10 +14,8 @@ import RecoverAccount from './views/ManageUser/RecoverAccount';
 import RegisterUser from './views/ManageUser/RegisterUser';
 import ProfileUser from './views/ManageUser/ProfileUser';
 import InfoTrip from './views/ManageTrips/InfoTrip';
-import LoadingPage from './views/General/LoadingPage';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import RoutesBefore from './utils/RoutesBefore';
-import ViewTermsAndConditions from './views/General/TermsCondition';
 import HomeDrivers from './views/General/HomeDrivers';
 import EmailVerify from './views/General/EmailVerify';
 
@@ -32,15 +30,20 @@ function App() {
 			{/* Contenedor principal con padding y fondo general */}
 			<div className=''>
 				<Routes>
-					<Route path='/loadingpage' element={<LoadingPage />} />
-					<Route path='/SwitchPage' element={<SwitchPage />} />
-					<Route path='/' element={<InicialPage />} />
-					<Route path='/condiciones' element={<ViewTermsAndConditions />} />
+					{routesList.map((route, index) => {
+						return route.filter === 'General' ? (
+							<Route
+								key={index}
+								path={route.path}
+								element={<route.component />}
+							/>
+						) : null;
+					})}
 
 					{/* Rutas antes de autenticarse (login, registro, etc.) */}
 					<Route element={<RoutesBefore />}>
 						<Route path='/User/Login' element={<LogInUser />} />
-						<Route path='/verify' element={<EmailVerify />} />
+						<Route path='/email/verify' element={<EmailVerify />} />
 						<Route path='/User/Register' element={<RegisterUser />} />
 						<Route path='/User/Info/Recover' element={<RecoverAccount />} />
 					</Route>
