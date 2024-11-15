@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import Password from './Inputs/Password';
 import NumberInput from './Inputs/Number';
@@ -8,13 +8,15 @@ import Time from './Inputs/Time';
 import Text from './Inputs/Text';
 import Email from './Inputs/Email';
 import Id from './Inputs/Id';
+import Image from './Inputs/Image';
 
 //Funcion de Componente
 function Input({
 	type = 'text', //tipo del input
 	label = ' ', //titulo del input
 	value, //valor que toma
-	handleInputChange, //funcion del hook que setState
+	handleInputChange = () => {}, //funcion del hook que setState
+	handleImageChange = () => {},
 	required, //saber si es obligatorio
 	placeholder = '',
 	style_label = '',
@@ -27,12 +29,14 @@ function Input({
 		| 'date'
 		| 'tel'
 		| 'time'
-		| 'id';
+		| 'id'
+		| 'image';
 	placeholder?: string;
 	label: string;
 	value: string;
 	required?: boolean;
-	handleInputChange: Dispatch<React.SetStateAction<string>>;
+	handleInputChange?: Dispatch<React.SetStateAction<string>>;
+	handleImageChange?: Dispatch<SetStateAction<File | undefined>>;
 	style_label?: string;
 }) {
 	const typeInput = () => {
@@ -104,6 +108,8 @@ function Input({
 						required={required}
 					/>
 				);
+			case 'image':
+				return <Image handleImageChange={handleImageChange} />;
 			default:
 				return (
 					<input
