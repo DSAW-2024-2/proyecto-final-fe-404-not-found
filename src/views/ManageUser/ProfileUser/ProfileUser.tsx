@@ -1,20 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProfileData } from '../../../utils/fetchProfileData';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import Button2 from '../../../components/Buttons/TextButton';
 import { prefix, searchRoute } from '../../../utils/Routes';
+import LoadingPage from '../../General/LoadingPage';
+import LoadingState from '../../../utils/Loader';
+import withReactContent from 'sweetalert2-react-content';
+
+interface UserProfile {
+	firstName: string;
+	lastName: string;
+	profileImage: string;
+	idUniversidad: string;
+	userName: string;
+	email: string;
+	phone: string;
+	password: string;
+}
+
+interface UserData {
+	firstName: string;
+	lastName: string;
+	phone: string;
+	password?: string;
+}
 
 const UserProfile: React.FC = () => {
-	const [userData, setUserData] = useState<any | null>(null);
+	const [userData, setUserData] = useState<UserProfile | null>(null);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
+	const MySwal = withReactContent(Swal);
+
 	useEffect(() => {
 		const loadUserData = async () => {
 			try {
+				setLoading(true);
 				const data = await fetchProfileData('user', setErrorMessage);
 				if (data) {
 					setUserData(data);
@@ -30,75 +54,70 @@ const UserProfile: React.FC = () => {
 
 	const handleEdit = async () => {
 		try {
-			const result = await Swal.fire({
+			const { value: formValues } = await MySwal.fire({
 				title: 'Edit Profile',
 				html: `
-				<style>
-					.swal2-popup .swal2-input {
-						margin: 0; 
-						width: 100%; 
-						box-sizing: border-box; 
-						margin-bottom: 10px;
-					}
-					.swal2-popup .swal2-content {
-						padding: 0 20px; 
-						
-					}
-				</style>
-				<input id="swal-input1" class="swal2-input" placeholder="Name" value="${userData?.firstName || ''}">
-				<input id="swal-input2" class="swal2-input" placeholder="Last Name" value="${userData?.lastName || ''}">
-				<input id="swal-input4" class="swal2-input" placeholder="Phone" value="${userData?.phone || ''}">
-				<input id="swal-input3" class="swal2-input" placeholder="Password" value="${''}">
-
-			`,
-				preConfirm: () => {
-					const name = (
-						document.getElementById('swal-input1') as HTMLInputElement
-					).value;
-					const lastName = (
-						document.getElementById('swal-input2') as HTMLInputElement
-					).value;
-					const phone = (
-						document.getElementById('swal-input4') as HTMLInputElement
-					).value;
-					const password = (
-						document.getElementById('swal-input3') as HTMLInputElement
-					).value;
-
-					return { name, lastName, phone, password };
-				},
+          <input id="swal-input1" class="swal2-input" placeholder="First Name" value="${userData?.firstName || ''}">
+          <input id="swal-input2" class="swal2-input" placeholder="Last Name" value="${userData?.lastName || ''}">
+          <input id="swal-input3" class="swal2-input" placeholder="Phone" value="${userData?.phone || ''}">
+          <input id="swal-input4" class="swal2-input" type="password" placeholder="New Password">
+        `,
+				focusConfirm: false,
 				showCancelButton: true,
-				confirmButtonText: 'OK',
+				confirmButtonText: 'Save',
 				cancelButtonText: 'Cancel',
 				confirmButtonColor: '#6D9773',
-				cancelButtonColor: 'black',
+				cancelButtonColor: '#374151',
+				preConfirm: () => {
+					return {
+						firstName: (
+							document.getElementById('swal-input1') as HTMLInputElement
+						).value,
+						lastName: (
+							document.getElementById('swal-input2') as HTMLInputElement
+						).value,
+						phone: (document.getElementById('swal-input3') as HTMLInputElement)
+							.value,
+						password: (
+							document.getElementById('swal-input4') as HTMLInputElement
+						).value,
+					};
+				},
 			});
-			if (result.isConfirmed) {
-				const formValues = result.value;
 
-				setLoading(true);
-				const url = `${localStorage.getItem('API')}/user`; // Update the endpoint as per your API
-				const token = localStorage.getItem('token');
-
-				const response = await fetch(url, {
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
-					},
-					body: JSON.stringify(formValues),
+			if (formValues) {
+				const changedData: Partial<UserData> = {};
+				Object.entries(formValues).forEach(([key, value]) => {
+					if (value !== '' && value !== userData?.[key as keyof UserProfile]) {
+						changedData[key as keyof UserData] = value;
+					}
 				});
 
-				if (response.ok) {
-					setUserData({ ...userData, ...formValues });
-					Swal.fire('Profile updated!', '', 'success');
-				} else {
-					const error = await response.json();
-					Swal.fire(
-						'Error',
-						error.message || 'Failed to update profile',
-						'error'
-					);
+				if (Object.keys(changedData).length > 0) {
+					setLoading(true);
+					const url = `${localStorage.getItem('API')}/user`;
+					const token = localStorage.getItem('token');
+
+					const response = await fetch(url, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify(changedData),
+					});
+
+					if (response.ok) {
+						setUserData((prevData) => ({ ...prevData!, ...changedData }));
+						Swal.fire('Profile updated!', '', 'success');
+					} else {
+						const error = await response.json();
+						Swal.fire(
+							'Error',
+							error.message || 'Failed to update profile',
+							'error'
+						);
+					}
 				}
 			}
 		} catch (error) {
@@ -159,6 +178,10 @@ const UserProfile: React.FC = () => {
 		}
 	};
 
+	if (loading) {
+		return <LoadingPage />;
+	}
+
 	return (
 		<div className='container p-4 max-w-80'>
 			{errorMessage ? (
@@ -170,7 +193,7 @@ const UserProfile: React.FC = () => {
 							<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
 						</Link>
 						<div className='w-[120px] h-[120px] mt-5 border rounded-full border-black'>
-							<img src='' alt='' />
+							<img src={userData?.profileImage || ''} alt='' />
 						</div>
 					</div>
 					<div className='flex justify-center gap-x-2'>
@@ -194,9 +217,13 @@ const UserProfile: React.FC = () => {
 							<p>{userData.email}</p>
 							<p className='text-gray-500 mt-2'>Teléfono</p>
 							<p>{userData.phone}</p>
+							<p className='text-gray-500 mt-2'>Contraseña</p>
+							<p>*******</p>
 						</div>
 					) : (
-						<p>Loading...</p>
+						<div>
+							<LoadingState />
+						</div>
 					)}
 					<div className='pl-5'>
 						<Button2 onClick={handleLogout}>Cerrar Sesión</Button2>

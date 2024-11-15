@@ -3,9 +3,10 @@ import InputForm from '../../../components/InputForm';
 import Button from '../../../components/Buttons/Regular';
 import { Link, Navigate } from 'react-router-dom';
 import { prefix, searchRoute } from '../../../utils/Routes';
+import { FaExchangeAlt } from 'react-icons/fa';
 
 interface signInForms {
-	type: 'email' | 'password';
+	type: 'email' | 'password' | 'text';
 	placeholder: string;
 	label: string;
 	value: string;
@@ -14,14 +15,15 @@ interface signInForms {
 }
 
 function ViewLogInUser() {
-	const [email, setEmail] = useState<string>('');
+	const [user, setUser] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false); // Para manejar el estado de carga
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // Para manejar mensajes de error
+	const [userPreference, setUserPreference] = useState<string>('email');
 
 	const ApiLogIn = async () => {
 		// Validación simple de que el email y password no estén vacíos
-		if (!email || !password) {
+		if (!user || !password) {
 			setErrorMessage('Por favor, ingresa un correo y una contraseña.');
 			return;
 		}
@@ -32,15 +34,23 @@ function ViewLogInUser() {
 		try {
 			const url = localStorage.getItem('API') + '/user/login';
 
+			const body =
+				userPreference === 'email'
+					? {
+							email: user,
+							password: password,
+						}
+					: {
+							userName: user,
+							password: password,
+						};
+
 			const response = await fetch(url, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json', // Indicar que el contenido es JSON
 				},
-				body: JSON.stringify({
-					email: email,
-					password: password,
-				}),
+				body: JSON.stringify(body),
 			});
 
 			const data = await response.json();
@@ -73,10 +83,10 @@ function ViewLogInUser() {
 
 	const listForms: signInForms[] = [
 		{
-			type: 'email',
+			type: userPreference === 'email' ? 'email' : 'text',
 			label: 'Usuario',
-			handleInputChange: setEmail,
-			value: email,
+			handleInputChange: setUser,
+			value: user,
 			required: false,
 			placeholder: ' ',
 		},
@@ -138,6 +148,17 @@ function ViewLogInUser() {
 						>
 							Haz click aquí
 						</Link>
+					</div>
+					<div className='text-left ml-5 mt-2 text-xs cursor-pointer'>
+						Log in con {userPreference}{' '}
+						<FaExchangeAlt
+							className='inline'
+							onClick={() =>
+								setUserPreference((prev) =>
+									prev === 'email' ? 'username' : 'email'
+								)
+							}
+						/>
 					</div>
 				</form>
 			</div>

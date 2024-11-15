@@ -36,6 +36,7 @@ function ViewRegisterUser() {
 	const [loading, setLoading] = useState<boolean>(false); // Para manejar el estado de carga
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // Para manejar mensajes de error
 	const [file, setFile] = useState<File>();
+	const [isChecked, setIsChecked] = useState<boolean>(false);
 
 	const apiRegister = async () => {
 		if (
@@ -76,6 +77,7 @@ function ViewRegisterUser() {
 					},
 					body: formData,
 				});
+				console.log(responseImage);
 			}
 			const imageProfile = responseImage || '';
 			const response = await fetch(url, {
@@ -180,8 +182,6 @@ function ViewRegisterUser() {
 		},
 	];
 
-	const [isChecked, setIsChecked] = useState<boolean>(false);
-
 	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setIsChecked(event.target.checked);
 	};
@@ -257,6 +257,3 @@ function ViewRegisterUser() {
 }
 
 export default ViewRegisterUser;
-function DataForm() {
-	throw new Error('Function not implemented.');
-}
