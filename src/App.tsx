@@ -1,7 +1,6 @@
 // import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-
 import { routesList } from './utils/Routes';
 
 // Importación de vistas
@@ -11,7 +10,7 @@ import RoutesBefore from './utils/RoutesBefore';
 function App() {
 	useEffect(() => {
 		// Establece la URL de la API en el localStorage solo una vez al cargar
-		localStorage.setItem('API', '/api');
+		localStorage.setItem('API', 'http://149.130.182.245:3001/api-wheels/v1');
 	}, []); // Dependencia vacía para que se ejecute solo una vez
 
 	return (

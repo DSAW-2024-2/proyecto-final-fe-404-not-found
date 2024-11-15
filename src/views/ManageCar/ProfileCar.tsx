@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProfileData } from '../../utils/fetchProfileData';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import Button2 from '../../components/Buttons/TextButton';
@@ -11,6 +11,8 @@ const CarProfile: React.FC = () => {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		const loadCarData = async () => {
 			const data = await fetchProfileData('car', setErrorMessage);
@@ -18,6 +20,76 @@ const CarProfile: React.FC = () => {
 		};
 		loadCarData();
 	}, []);
+
+	const handleEdit = async () => {
+		try {
+			const result = await Swal.fire({
+				title: 'Edit Profile',
+				html: `
+				<style>
+					.swal2-popup .swal2-input {
+						margin: 0; 
+						width: 100%; 
+						box-sizing: border-box; 
+						margin-bottom: 10px;
+					}
+					.swal2-popup .swal2-content {
+						padding: 0 20px; 
+						
+					}
+				</style>
+				<input id="swal-input1" class="swal2-input" placeholder="Capacidad" value="${carData?.capacity || ''}">
+				
+
+			`,
+				preConfirm: () => {
+					const capacity = (
+						document.getElementById('swal-input1') as HTMLInputElement
+					).value;
+
+					return { capacity };
+				},
+				showCancelButton: true,
+				confirmButtonText: 'OK',
+				cancelButtonText: 'Cancel',
+				confirmButtonColor: '#6D9773',
+				cancelButtonColor: 'black',
+			});
+			if (result.isConfirmed) {
+				const formValues = result.value;
+
+				setLoading(true);
+				const url = `${localStorage.getItem('API')}/user`; // Update the endpoint as per your API
+				const token = localStorage.getItem('token');
+
+				const response = await fetch(url, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(formValues),
+				});
+
+				if (response.ok) {
+					setCarData({ ...carData, ...formValues });
+					Swal.fire('Profile updated!', '', 'success');
+				} else {
+					const error = await response.json();
+					Swal.fire(
+						'Error',
+						error.message || 'Failed to update profile',
+						'error'
+					);
+				}
+			}
+		} catch (error) {
+			setErrorMessage(`Failed to edit data: ${error}`);
+			Swal.fire('Error', 'Failed to update profile', 'error');
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	const handleDeleteAccount = async () => {
 		const result = await Swal.fire({
@@ -47,6 +119,7 @@ const CarProfile: React.FC = () => {
 
 				if (response.ok) {
 					Swal.fire('Eliminada', 'Tu vehículo ha sido eliminada.', 'success');
+					navigate(searchRoute('HomePage')?.path || prefix);
 				} else {
 					Swal.fire(
 						'Error',
@@ -79,6 +152,12 @@ const CarProfile: React.FC = () => {
 							<Link to={searchRoute('HomeDriver')?.path || prefix}>
 								<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
 							</Link>
+						</div>
+						<div className='flex justify-center gap-x-2'>
+							<p className='text-center'>Vehículo</p>
+							<div className='mt-1 text-[#0C3B2E]'>
+								<FaEdit onClick={handleEdit}>Editar Vehículo</FaEdit>
+							</div>
 						</div>
 
 						{/* Car Image and License Plate */}

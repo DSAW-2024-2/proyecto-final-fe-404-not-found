@@ -6,7 +6,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/api': {
-				target: 'http://149.130.182.245:3001/api-wheels/v1', // Cambia esta URL por la de tu backend
+				target: 'https://proyecto-final-be-404-not-found.vercel.app/', // Cambia esta URL por la de tu backend
 				changeOrigin: true,
 				secure: false, // Permite usar HTTP sin errores de certificado
 			},

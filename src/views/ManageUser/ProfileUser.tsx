@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProfileData } from '../../utils/fetchProfileData';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import Button2 from '../../components/Buttons/TextButton';
@@ -112,7 +112,7 @@ const UserProfile: React.FC = () => {
 
 	const handleLogout = () => {
 		localStorage.removeItem('token');
-		navigate('/');
+		<Navigate to={searchRoute('InicialPage')?.path || prefix} />;
 	};
 
 	const handleDeleteAccount = async () => {

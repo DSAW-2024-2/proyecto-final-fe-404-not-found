@@ -1,6 +1,8 @@
-import { Dispatch, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import InputForm from '../../components/InputForm';
 import Button from '../../components/Buttons/Regular';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { prefix, searchRoute } from '../../utils/Routes';
 
 interface itemForms {
 	type: 'text';
@@ -12,6 +14,9 @@ interface itemForms {
 }
 
 function ViewRegisterCar() {
+	const navigate = useNavigate();
+
+	const [car, setCar] = useState<boolean>(false);
 	const [brand, setBrand] = useState<string>('');
 	const [model, setModel] = useState<string>('');
 	const [plate, setPlate] = useState<string>('');
@@ -59,9 +64,9 @@ function ViewRegisterCar() {
 
 			if (data._id) {
 				console.log(data);
+				setCar(true);
 				localStorage.setItem('car', 'true');
-				alert('User created successfully');
-				window.location.href = '/home';
+				alert('Car created successfully');
 			} else {
 				setErrorMessage(
 					'Error al crear el vehículo. Inténtalo nuevamente.\n' + data.message
@@ -74,6 +79,12 @@ function ViewRegisterCar() {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		if (car) {
+			navigate(searchRoute('HomeDriver')?.path || prefix); // Programmatic navigation
+		}
+	}, [car, navigate]);
 
 	const listForms: itemForms[] = [
 		{

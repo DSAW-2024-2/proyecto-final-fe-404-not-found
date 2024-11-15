@@ -28,6 +28,7 @@ export default function EmailConfirmationView() {
 					},
 				});
 
+				console.log(response);
 				if (!response.ok) {
 					throw new Error('Error al confirmar el correo electrónico');
 				}

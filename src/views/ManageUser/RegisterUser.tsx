@@ -78,11 +78,7 @@ function ViewRegisterUser() {
 				}),
 			});
 			const data = await response.json();
-			if (data.status === 200) {
-				alert('Email sent');
-			} else {
-				alert('Error creating user');
-			}
+			console.log(data);
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -91,7 +87,7 @@ function ViewRegisterUser() {
 	};
 
 	if (localStorage.getItem('token')) {
-		return <Navigate to='/home' />;
+		return <Navigate to={searchRoute('HomePage')?.path || prefix} />;
 	}
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
