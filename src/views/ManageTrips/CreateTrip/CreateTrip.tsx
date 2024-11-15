@@ -6,6 +6,7 @@ import SingleSelect from '../../../components/Inputs/Select';
 import MultiSelect from '../../../components/Inputs/MultipleSelect';
 import { Link } from 'react-router-dom';
 import { PiHouseLine } from 'react-icons/pi';
+import { prefix, searchRoute } from '../../../utils/Routes';
 
 interface itemForms {
 	type: 'text' | 'date' | 'time';
@@ -121,7 +122,7 @@ function ViewCreateTrip() {
 					<img className='w-[20px] h-[20px]' src={whiteLogo} alt='Logo' />
 				</div>
 				<h1 className='text-xl text-center font-bold mb-4'>NUEVO VIAJE</h1>
-				<Link to='/user/info'>
+				<Link to={searchRoute('HomeDriver')?.path || prefix}>
 					<div className='w-[33px] h-[33px] bg-black rounded-full flex items-center justify-center border border-gray-300'>
 						<PiHouseLine className='text-white w-[15px] h-[15px]' />
 					</div>

@@ -111,7 +111,7 @@ const UserProfile: React.FC = () => {
 
 	const handleLogout = () => {
 		localStorage.removeItem('token');
-		<Navigate to={searchRoute('InicialPage')?.path || prefix} />;
+		navigate(searchRoute('Login')?.path || prefix);
 	};
 
 	const handleDeleteAccount = async () => {

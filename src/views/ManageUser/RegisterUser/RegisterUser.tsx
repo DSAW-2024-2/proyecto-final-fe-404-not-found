@@ -62,16 +62,33 @@ function ViewRegisterUser() {
 		try {
 			const url = localStorage.getItem('API') + '/email/validate';
 
+			const formData = new FormData();
+			let responseImage;
+			if (file) {
+				formData.append('image', file);
+				const urlImage = localStorage.getItem('API') + '/firebase/upload';
+				responseImage = await fetch(urlImage, {
+					method: 'POST',
+					headers: {
+						Authorization:
+							'Bearer ' +
+							'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVzZXIxIiwiaWQiOiI2NzEyNWYzMTYyZTljOTA3ZmQ1MzU0MWEiLCJpYXQiOjE3Mjk0NzMwODB9.yJIBDgnomJzNrFyc_NpEZ_zC0wvsG2d5mfNJ2nlT8F8',
+					},
+					body: formData,
+				});
+			}
+			const imageProfile = responseImage || '';
 			const response = await fetch(url, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					name: name,
+					imageProfile,
+					firstName: name,
 					lastName: lastName,
 					userName: userName,
-					id: id,
+					idUniversidad: id,
 					email: email,
 					phone: phone,
 					password: password,
@@ -181,7 +198,7 @@ function ViewRegisterUser() {
 					<InputForm
 						type='image'
 						handleImageChange={setFile}
-						label={'Agrega Foto Perfil'}
+						label={'Perfil'}
 						value={'Hola'}
 					/>
 				</div>
@@ -240,3 +257,6 @@ function ViewRegisterUser() {
 }
 
 export default ViewRegisterUser;
+function DataForm() {
+	throw new Error('Function not implemented.');
+}

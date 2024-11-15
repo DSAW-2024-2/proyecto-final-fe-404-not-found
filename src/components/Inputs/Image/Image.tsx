@@ -5,7 +5,7 @@ import React, {
 	Dispatch,
 	SetStateAction,
 } from 'react';
-import { FaUpload, FaImage } from 'react-icons/fa';
+import { FaUpload, FaImage, FaPlus } from 'react-icons/fa';
 
 interface ImageUploadProps {
 	handleImageChange: Dispatch<SetStateAction<File | undefined>>;
@@ -46,7 +46,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 		<div className={`flex flex-col items-center ${className}`}>
 			<div
 				onClick={handleClick}
-				className='w-64 h-64 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-green-500 transition duration-300 ease-in-out'
+				className='w-16 h-16 border-2 border-dashed border-gray-300 rounded-full flex flex-col items-center justify-center cursor-pointer hover:border-green-500 transition duration-300 ease-in-out'
 			>
 				{previewUrl ? (
 					<img
@@ -56,10 +56,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 					/>
 				) : (
 					<>
-						<FaUpload className='text-4xl text-gray-400 mb-2' />
-						<p className='text-sm text-gray-500'>
-							Click or drag to upload an image
-						</p>
+						<FaPlus className='mt-2 text-1xl text-gray-400 mb-2' />
 					</>
 				)}
 			</div>
