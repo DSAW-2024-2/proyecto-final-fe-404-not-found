@@ -25,7 +25,7 @@ function Input({
 	}, [valueNumber, handleInputChange]);
 
 	return (
-		<div className={'flex items-center space-x-2 ' + className}>
+		<div className={'flex  justify-center items-center space-x-2 ' + className}>
 			<span
 				onClick={decrement}
 				className='bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg p-2 focus:outline-none'

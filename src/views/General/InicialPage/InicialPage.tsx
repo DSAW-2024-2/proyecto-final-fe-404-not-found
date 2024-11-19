@@ -1,41 +1,54 @@
 import { Link } from 'react-router-dom';
 import Button from '../../../components/Buttons/Regular';
 import whiteLogo from '../../../components/pictures/whiteLogo.png';
-import { Navigate } from 'react-router-dom';
 import { prefix, searchRoute } from '../../../utils/Routes';
 
 function ViewInitialPage() {
-	if (localStorage.getItem('token')) {
-		return <Navigate to={searchRoute('HomePage')?.path || prefix} />;
-	}
 	return (
-		<div className='container sm:p-4 md:w-screen lg:w-screen h-full'>
-			<div className='absolute inset-0 overflow-hidden'>
-				{/* Circles */}
-				<div className='absolute w-[320px] h-[338px] border border-[#6D9773] rounded-full top-[-150px] left-[160px] opacity-40 z-0 md:w-[480px] md:h-[508px] md:top-[-250px] md:left-[200px]'></div>
-				<div className='absolute w-[320px] h-[338px] border border-[#6D9773] rounded-full top-[25px] left-[-190px] opacity-40 z-0 md:w-[480px] md:h-[508px] md:top-[50px] md:left-[-250px]'></div>
-				<div className='absolute w-[320px] h-[338px] border border-[#6D9773] rounded-full top-[-250px] right-[100px] opacity-40 z-0 md:w-[480px] md:h-[508px] md:top-[-300px] md:right-[150px]'></div>
-				<div className='absolute w-[320px] h-[338px] border border-[#6D9773] rounded-full bottom-[-220px] left-[170px] opacity-40 z-0 md:w-[480px] md:h-[508px] md:bottom-[-250px] md:left-[200px]'></div>
-				<div className='absolute w-[320px] h-[338px] border border-[#6D9773] rounded-full bottom-0 left-3/4 opacity-40 z-0 md:w-[480px] md:h-[508px] md:bottom-[-100px] md:left-3/4'></div>
-				<div className='absolute w-[320px] h-[338px] border border-[#6D9773] rounded-full bottom-[-150px] right-1/3 opacity-40 z-0 md:w-[480px] md:h-[508px] md:bottom-[-200px] md:right-[150px]'></div>
+		<div className='container mx-auto flex flex-col items-center justify-center h-dvh relative p-6'>
+			{/* Background Circles */}
+			<div className='absolute inset-0 overflow-hidden z-0'>
+				<div className='absolute w-[320px] h-[320px] border border-[#6D9773] rounded-full top-[-150px] left-[160px] opacity-40 md:w-[480px] md:h-[480px] md:top-[-200px] md:left-[200px]'></div>
+				<div className='absolute w-[320px] h-[320px] border border-[#6D9773] rounded-full top-[50px] left-[-150px] opacity-40 md:w-[480px] md:h-[480px] md:top-[80px] md:left-[-200px]'></div>
+				<div className='absolute w-[320px] h-[320px] border border-[#6D9773] rounded-full top-[-200px] right-[100px] opacity-40 md:w-[480px] md:h-[480px] md:top-[-250px] md:right-[150px]'></div>
+				<div className='absolute w-[320px] h-[320px] border border-[#6D9773] rounded-full bottom-[-150px] left-[170px] opacity-40 md:w-[480px] md:h-[480px] md:bottom-[-200px] md:left-[200px]'></div>
+				<div className='absolute w-[320px] h-[320px] border border-[#6D9773] rounded-full bottom-0 left-3/4 opacity-40 md:w-[480px] md:h-[480px] md:bottom-[-100px] md:left-3/4'></div>
+				<div className='absolute w-[320px] h-[320px] border border-[#6D9773] rounded-full bottom-[-120px] right-1/3 opacity-40 md:w-[480px] md:h-[480px] md:bottom-[-180px] md:right-[150px]'></div>
 			</div>
 
+			<h1 className='text-[22px] leading-[28px] font-normal text-center text-gray-800 pt-5'>
+				Bienvenido a UNIHOP
+				<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-12'></div>
+			</h1>
+
 			{/* Logo */}
-			<div className='w-[156px] h-[156px] bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300 z-10 relative mt-[80px] mx-auto md:w-[160px] md:h-[160px] md:mt-[140px]'>
-				<img
-					className='w-[89px] h-[94px] md:w-[120px] md:h-[130px]'
-					src={whiteLogo}
-					alt='Logo'
-				/>
+			<div className='z-10 relative'>
+				<div className='w-40 h-40 bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300 md:w-44 md:h-44'>
+					<img
+						className='w-24 h-24 md:w-32 md:h-32'
+						src={whiteLogo}
+						alt='Logo'
+					/>
+				</div>
 			</div>
 
 			{/* Buttons */}
-			<div className='flex w-full justify-center p-5 mt-[60px] space-x-[10px] z-10 relative md:space-x-[52px] md:mt-[80px] md:pr-[220px]'>
+			<div className='z-10 relative flex flex-col items-center space-y-4 mt-10 md:space-y-0 md:flex-row md:space-x-8 md:mt-14'>
 				<Button onClick={() => {}}>
-					<Link to={searchRoute('Login')?.path || prefix}>Iniciar Sesión</Link>
+					<Link
+						to={searchRoute('Login')?.path || prefix}
+						className='flex items-center justify-center h-full w-full'
+					>
+						Iniciar Sesión
+					</Link>
 				</Button>
 				<Button onClick={() => {}}>
-					<Link to={searchRoute('Register')?.path || prefix}>Registrarse</Link>
+					<Link
+						to={searchRoute('Register')?.path || prefix}
+						className='flex items-center justify-center h-full w-full'
+					>
+						Registrarse
+					</Link>
 				</Button>
 			</div>
 		</div>

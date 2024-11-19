@@ -10,7 +10,18 @@ import RoutesBefore from './utils/RoutesBefore';
 function App() {
 	useEffect(() => {
 		// Establece la URL de la API en el localStorage solo una vez al cargar
-		localStorage.setItem('API', 'http://149.130.182.245:3001/api-wheels/v1');
+		localStorage.setItem(
+			'API',
+			'https://proyecto-final-be-404-not-found.vercel.app/api-wheels/v1'
+		);
+		localStorage.setItem(
+			'FotoDefaultUser',
+			'https://firebasestorage.googleapis.com/v0/b/wheels-b53db.firebasestorage.app/o/FotoDefaultPerfil.jpeg?alt=media&token=b7b2b015-ab6d-4fe2-bbf4-f1ffcd6c57b8'
+		);
+		localStorage.setItem(
+			'FotoDefaultCar',
+			'https://firebasestorage.googleapis.com/v0/b/wheels-b53db.firebasestorage.app/o/FotoDefaultCarro.jpeg?alt=media&token=659acc01-7680-4958-8e66-33149ab76cd2'
+		);
 	}, []); // Dependencia vacía para que se ejecute solo una vez
 
 	return (
