@@ -109,7 +109,12 @@ function Input({
 					/>
 				);
 			case 'image':
-				return <Image handleImageChange={handleImageChange} />;
+				return (
+					<Image
+						handleImageChange={handleImageChange}
+						placeholder={placeholder}
+					/>
+				);
 			default:
 				return (
 					<input

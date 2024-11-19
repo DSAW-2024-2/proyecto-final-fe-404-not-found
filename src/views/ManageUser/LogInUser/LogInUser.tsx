@@ -99,7 +99,7 @@ function ViewLogInUser() {
 				<form onSubmit={handleSubmit} onClick={() => setErrorMessage(null)}>
 					{/* Campos del formulario */}
 					{listForms.map((data: signInForms, index) => (
-						<div className='w-full max-w-[290px] mx-auto'>
+						<div key={index} className='w-full max-w-[290px] mx-auto'>
 							<InputForm
 								key={index}
 								type={data.type}

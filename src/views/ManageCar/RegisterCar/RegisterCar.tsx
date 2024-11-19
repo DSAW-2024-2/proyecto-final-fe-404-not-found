@@ -1,11 +1,12 @@
 import { Dispatch, useEffect, useState } from 'react';
 import InputForm from '../../../components/InputForm';
 import Button from '../../../components/Buttons/Regular';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { prefix, searchRoute } from '../../../utils/Routes';
+import { FaArrowLeft } from 'react-icons/fa';
 
 interface itemForms {
-	type: 'text';
+	type: 'text' | 'number' | 'image';
 	placeholder: string;
 	label: string;
 	value: string;
@@ -21,15 +22,9 @@ function ViewRegisterCar() {
 	const [model, setModel] = useState<string>('');
 	const [plate, setPlate] = useState<string>('');
 	const [capacity, setCapacity] = useState<string>('');
-	const [soat, setSoat] = useState<string>(
-		'https://example.com/soat-photo.jpg'
-	);
-	const [license, setLicense] = useState<string>(
-		'https://example.com/license-photo.jpg'
-	);
-	const [vehiclePhoto, setVehiclePhoto] = useState<string>(
-		'https://example.com/vehicle-photo.jpg'
-	);
+	const [soat, setSoat] = useState<string>('');
+	const [license, setLicense] = useState<string>('');
+	const [vehiclePhoto, setVehiclePhoto] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -37,6 +32,17 @@ function ViewRegisterCar() {
 		event.preventDefault();
 		setLoading(true);
 		setErrorMessage(null);
+
+		if (!brand || !model || !plate || !capacity) {
+			setErrorMessage('Please fill all the fields');
+			setLoading(false);
+			return;
+		}
+		if (capacity === '0' || capacity > '7') {
+			setErrorMessage('The capacity must be between 1 and 7');
+			setLoading(false);
+			return;
+		}
 
 		const url = localStorage.getItem('API') + '/car';
 		const token = localStorage.getItem('token');
@@ -67,6 +73,7 @@ function ViewRegisterCar() {
 				setCar(true);
 				localStorage.setItem('car', 'true');
 				alert('Car created successfully');
+				navigate(searchRoute('HomeDriver')?.path || prefix); // Programmatic navigation
 			} else {
 				setErrorMessage(
 					'Error al crear el vehículo. Inténtalo nuevamente.\n' + data.message
@@ -111,8 +118,33 @@ function ViewRegisterCar() {
 			required: true,
 			placeholder: ' ',
 		},
+
 		{
-			type: 'text',
+			type: 'image',
+			label: 'Foto del vehículo',
+			handleInputChange: setVehiclePhoto,
+			value: vehiclePhoto,
+			required: true,
+			placeholder: 'cuadrado',
+		},
+		{
+			type: 'image',
+			label: 'Foto de la licencia',
+			handleInputChange: setLicense,
+			value: license,
+			required: true,
+			placeholder: 'cuadrado',
+		},
+		{
+			type: 'image',
+			label: 'Foto del SOAT',
+			handleInputChange: setSoat,
+			value: soat,
+			required: true,
+			placeholder: 'cuadrado',
+		},
+		{
+			type: 'number',
 			label: 'Capacidad',
 			handleInputChange: setCapacity,
 			value: capacity,
@@ -122,39 +154,47 @@ function ViewRegisterCar() {
 	];
 
 	return (
-		<div className='container p-4 max-w-80 bg-white'>
+		<div className='container p-4 max-w-full bg-white h-lvh'>
+			<Link
+				to={searchRoute('HomePage')?.path || prefix}
+				className='absolute top-5 left-5 text-lg font-bold text-gray-800'
+			>
+				<FaArrowLeft className='h-7 w-7 cursor-pointer text-gray-500 hover:text-black' />
+			</Link>
 			<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
 				VEHÍCULO
 			</h1>
 			<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-7'></div>
-			<div className='flex flex-col items-center'>
-				<div className='w-10 h-10 bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300'>
-					<span className='text-2xl mb-[5px] text-white'>+</span>
-				</div>
-				<p className='text-sm text-gray-500 mb-3'>Añadir imagen</p>
-			</div>
-			<form onSubmit={createCar}>
-				{listForms.map((data: itemForms, index) => (
-					<InputForm
-						key={index}
-						type={data.type}
-						label={data.label}
-						handleInputChange={data.handleInputChange}
-						placeholder={data.placeholder}
-						value={data.value}
-						required={data.required}
-					/>
-				))}
-				<div className='ml-7'>SOAT+</div>
-				<div className='ml-7'>Licencia de conducción+</div>
 
+			<form
+				onSubmit={createCar}
+				className='max-w-screen-lg w-screen flex justify-center flex-col items-center mx-auto md:w-3/4 md:mx-auto pb-10'
+			>
+				{/* Contenedor para las columnas */}
+				<div className='md:flex md:flex-wrap md:justify-center md:items-center gap-6'>
+					{listForms.map((data, index) => (
+						<InputForm
+							key={index}
+							type={data.type}
+							label={data.label}
+							handleInputChange={data.handleInputChange}
+							placeholder={data.placeholder}
+							value={data.value}
+							required={data.required}
+						/>
+					))}
+				</div>
+
+				{/* Mensaje de error */}
 				{errorMessage && (
-					<p className='text-red-500 text-center'>{errorMessage}</p>
+					<p className='text-red-500 text-center mt-3'>{errorMessage}</p>
 				)}
-				<div className='ml-5'>
+
+				{/* Botón de guardar */}
+				<div className='text-center mt-5 flex justify-center w-scren'>
 					<Button onClick={() => {}} disabled={loading}>
 						{loading ? 'Guardando...' : 'Guardar'}
-					</Button>{' '}
+					</Button>
 				</div>
 			</form>
 		</div>
