@@ -31,7 +31,7 @@ function Input({
 				placeholder={placeholder}
 				maxLength={20}
 				className={
-					'ml-5 border border-gray-300 rounded-lg w-[87%] py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500 ' +
+					' sm:w-full py-2 px-2 bg-black text-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6D9773] ' +
 					className
 				}
 			/>

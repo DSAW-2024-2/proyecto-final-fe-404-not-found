@@ -9,7 +9,17 @@ import { PiHouseLine } from 'react-icons/pi';
 import { prefix, searchRoute } from '../../../utils/Routes';
 
 interface itemForms {
-	type: 'text' | 'date' | 'time';
+	type: 'text';
+	placeholder: string;
+	label: string;
+	value: string;
+	required: boolean;
+	handleInputChange: Dispatch<React.SetStateAction<string>>;
+	style_label?: string;
+}
+
+interface dateHourForms {
+	type: 'date' | 'time';
 	placeholder: string;
 	label: string;
 	value: string;
@@ -23,55 +33,47 @@ function ViewCreateTrip() {
 	const [endPoint, setEndPoint] = useState<string>('');
 	const [date, setDate] = useState<string>('');
 	const [time, setTime] = useState<string>('');
-	const [route, setRoute] = useState<string>('');
 	const [fare, setFare] = useState<string>('');
+	const [route, setRoute] = useState<string>('');
 	const [seatCount, setSeatCount] = useState<string>('');
 	const [paymentMethods, setPaymentMethods] = useState<Array<string>>([]);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [locations, setLocations] = useState<
+		Array<{ name: string; location: string }>
+	>([]);
+	const [showStartPointSuggestions, setShowStartPointSuggestions] =
+		useState<boolean>(false);
+	const [showEndPointSuggestions, setShowEndPointSuggestions] =
+		useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-	const listForms: itemForms[] = [
-		{
-			type: 'date',
-			placeholder: 'Select a date',
-			label: 'Fecha',
-			value: date,
-			required: true,
-			handleInputChange: setDate,
-			style_label: 'text-white-300',
-		},
-		{
-			type: 'time',
-			placeholder: 'Select a time',
-			label: 'Hora',
-			value: time,
-			required: true,
-			handleInputChange: setTime,
-		},
-		{
-			type: 'text',
-			label: 'Punto de partida',
-			handleInputChange: setStartPoint,
-			value: startPoint,
-			required: true,
-			placeholder: ' ',
-		},
-		{
-			type: 'text',
-			label: 'Punto de llegada',
-			handleInputChange: setEndPoint,
-			value: endPoint,
-			required: true,
-			placeholder: ' ',
-		},
-	];
+	const fetchLocations = async (search: string) => {
+		if (!search) return [];
 
-	const optionsPayment = [
-		'Efectivo',
-		'Nequi',
-		'DaviPlata',
-		'Transferencia a cuentas bancarias',
-	];
+		const url = `https://gis.transmilenio.gov.co/arcgis/rest/services/Troncal/consulta_estaciones_troncales/FeatureServer/0/query?where=1%3D1&outFields=nombre_estacion,ubicacion_estacion,troncal_estacion&outSR=4326&f=json`;
+
+		try {
+			const response = await fetch(url);
+			const data = await response.json();
+			return data.features.map((item: any) => ({
+				name: item.attributes.nombre_estacion,
+				location: item.attributes.ubicacion_estacion,
+			}));
+		} catch (error) {
+			console.error('Error fetching information:', error);
+			return [];
+		}
+	};
+
+	const handleSelectLocation = (
+		location: any,
+		setter: Dispatch<React.SetStateAction<string>>,
+		setShowSuggestions: Dispatch<React.SetStateAction<boolean>>
+	) => {
+		setter(location.name);
+		setLocations([]);
+		setShowSuggestions(false);
+	};
 
 	const createTrip = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -115,6 +117,51 @@ function ViewCreateTrip() {
 		}
 	};
 
+	const dateForms: dateHourForms[] = [
+		{
+			type: 'date',
+			placeholder: 'Select a date',
+			label: 'Fecha',
+			value: date,
+			required: true,
+			handleInputChange: setDate,
+		},
+		{
+			type: 'time',
+			placeholder: 'Select a time',
+			label: 'Hora',
+			value: time,
+			required: true,
+			handleInputChange: setTime,
+		},
+	];
+
+	const listForms: itemForms[] = [
+		{
+			type: 'text',
+			label: 'Punto de partida',
+			handleInputChange: setStartPoint,
+			value: startPoint,
+			required: true,
+			placeholder: ' ',
+		},
+		{
+			type: 'text',
+			label: 'Punto de llegada',
+			handleInputChange: setEndPoint,
+			value: endPoint,
+			required: true,
+			placeholder: ' ',
+		},
+	];
+
+	const optionsPayment = [
+		'Efectivo',
+		'Nequi',
+		'DaviPlata',
+		'Transferencia a cuentas bancarias',
+	];
+
 	return (
 		<div className='container p-4 max-w-80'>
 			<div className='flex mt-3 gap-x-9'>
@@ -128,13 +175,13 @@ function ViewCreateTrip() {
 					</div>
 				</Link>
 			</div>
-			<h2 className='mt-2 text-xs font-bold text-center'>Fecha y hora</h2>
-			<div className='container w-[100%] bg-[#6D9773] pt-4 pb-5 mt-7 rounded-md'>
-				<h2 className=' text-white text-xs text-center mb-3 font-medium'>
-					¿A dónde quieres ir hoy?
-				</h2>
-				<form onSubmit={createTrip}>
-					{listForms.map((data: itemForms, index) => (
+
+			<div className='w-full mt-4'>
+				<form
+					onSubmit={createTrip}
+					className='flex justify-center items-center'
+				>
+					{dateForms.map((data, index) => (
 						<InputForm
 							key={index}
 							type={data.type}
@@ -145,11 +192,86 @@ function ViewCreateTrip() {
 							required={data.required}
 						/>
 					))}
+				</form>
+			</div>
+
+			<div className='container w-[100%] bg-[#6D9773] pt-4 pb-5 mt-7 rounded-md'>
+				<h2 className='text-white text-xs text-center mb-3 font-medium'>
+					¿A dónde quieres ir hoy?
+				</h2>
+
+				<form onSubmit={createTrip}>
+					{listForms.map((data, index) => (
+						<div key={index} className='relative'>
+							<InputForm
+								type={data.type}
+								label={data.label}
+								handleInputChange={data.handleInputChange}
+								placeholder={data.placeholder}
+								value={data.value}
+								required={data.required}
+							/>
+							{/* Suggestions for StartPoint */}
+							{data.label === 'Punto de partida' &&
+								showStartPointSuggestions && (
+									<ul className='absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto'>
+										{locations.map((location, index) => (
+											<li
+												key={index}
+												onClick={() =>
+													handleSelectLocation(
+														location,
+														setStartPoint,
+														setShowStartPointSuggestions
+													)
+												}
+												className='px-4 py-2 cursor-pointer hover:bg-gray-100'
+											>
+												{location.name}
+											</li>
+										))}
+									</ul>
+								)}
+							{/* Suggestions for EndPoint */}
+							{data.label === 'Punto de llegada' && showEndPointSuggestions && (
+								<ul className='absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto'>
+									{locations.map((location, index) => (
+										<li
+											key={index}
+											onClick={() =>
+												handleSelectLocation(
+													location,
+													setEndPoint,
+													setShowEndPointSuggestions
+												)
+											}
+											className='px-4 py-2 cursor-pointer hover:bg-gray-100'
+										>
+											{location.name}
+										</li>
+									))}
+								</ul>
+							)}
+						</div>
+					))}
 
 					<div className='ml-5'>
 						<SingleSelect
-							options={['Ruta 1', 'Ruta 2', 'Ruta 3']}
-							label='Selecciona una ruta'
+							options={[
+								'NQS',
+								'Cr 7-10',
+								'Calle 80',
+								'Caracas',
+								'Suba',
+								'Calle 26',
+								'Americas',
+								'Soacha',
+								'Autonorte',
+								'Eje Ambiental',
+								'Tunal',
+								'Calle 6',
+							]}
+							label='Selecciona una ruta principal'
 						/>
 					</div>
 					<div className='ml-5 mt-5'>
@@ -162,7 +284,7 @@ function ViewCreateTrip() {
 					{errorMessage && (
 						<p className='text-red-500 text-center'>{errorMessage}</p>
 					)}
-					<div className='ml-5'>
+					<div className='ml-5 mt-5'>
 						<Button onClick={() => {}} disabled={loading}>
 							{loading ? 'Guardando...' : 'Crear viaje'}
 						</Button>
