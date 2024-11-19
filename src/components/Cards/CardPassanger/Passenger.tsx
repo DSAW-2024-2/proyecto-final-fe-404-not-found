@@ -3,18 +3,25 @@ import Swal from 'sweetalert2';
 import Button from '../../Buttons/Accept';
 
 interface CardProps {
-	title: string;
-	description: string;
-	additionalInfo: string;
+	user: User;
 	className?: string;
 	isHovered?: boolean;
 	request: boolean;
 }
 
+interface User {
+	idCreator: string;
+	userName: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	phone: string;
+	stop: string;
+	paymentMethod: string;
+}
+
 const Card: FC<CardProps> = ({
-	title,
-	description,
-	additionalInfo,
+	user,
 	className = '',
 	isHovered = false,
 	request,
@@ -45,7 +52,7 @@ const Card: FC<CardProps> = ({
 				throw new Error('Failed to accept passenger');
 			}
 
-			Swal.fire('Accepted', `${title} has been accepted.`, 'success');
+			Swal.fire('Accepted', `El pasajero ha sido aceptado.`, 'success');
 		} catch (error) {
 			Swal.fire('Error', (error as Error).message, 'error');
 		}
@@ -66,7 +73,7 @@ const Card: FC<CardProps> = ({
 				throw new Error('Failed to deny passenger');
 			}
 
-			Swal.fire('Denied', `${title} has been denied.`, 'info');
+			Swal.fire('Denied', `El pasajero ha sido rechazado`, 'info');
 		} catch (error) {
 			Swal.fire('Error', (error as Error).message, 'error');
 		}
@@ -74,8 +81,8 @@ const Card: FC<CardProps> = ({
 
 	const handleClick = () => {
 		Swal.fire({
-			title: `<strong>${title}</strong>`,
-			html: `<p>${description}</p><p>${additionalInfo}</p>`,
+			title: `<strong>${user.firstName}</strong>`,
+			html: `<p>${user.lastName}</p><p>${user.paymentMethod}</p>`,
 			icon: 'info',
 			confirmButtonText: 'Close',
 		});
@@ -87,8 +94,8 @@ const Card: FC<CardProps> = ({
 			onClick={handleClick}
 		>
 			<div className='p-4'>
-				<h3 className='text-xl font-semibold'>{title}</h3>
-				<p className='text-gray-600'>{description}</p>
+				<h3 className='text-xl font-semibold'>{user.firstName}</h3>
+				<p className='text-gray-600'>{user.paymentMethod}</p>
 				{request && (
 					<div className='flex mt-4'>
 						<Button acceptFun={acceptPassenger} denyFun={denyPassenger} />

@@ -86,15 +86,6 @@ export default function ViewHomePage() {
 			<header className='bg-white border-b'>
 				<div className='container mx-auto px-4 py-4'>
 					<div className='flex justify-center items-center m-4 mt-3 gap-[50px] sm:flex-row sm:justify-center sm:gap-x-8'>
-						<Link to={searchRoute('ProfileUser')?.path || prefix}>
-							<div className='w-[40px] h-[40px] bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300'>
-								<img className='w-[20px] h-[20px]' src={whiteLogo} alt='Logo' />
-							</div>
-						</Link>
-						<h1 className='mt-3 text-xl text-center font-normal mb-4 sm:text-2xl'>
-							Bienvenido
-						</h1>
-
 						{/* Car Icon Button */}
 						<div
 							onClick={handleCarLinkClick} // No need for stopPropagation here
@@ -102,6 +93,14 @@ export default function ViewHomePage() {
 						>
 							<FaCar className='text-white' style={{ cursor: 'pointer' }} />
 						</div>
+						<h1 className='mt-3 text-xl text-center font-normal mb-4 sm:text-2xl'>
+							Bienvenido
+						</h1>
+						<Link to={searchRoute('ProfileUser')?.path || prefix}>
+							<div className='w-[40px] h-[40px] bg-[#0C3B2E] rounded-full flex items-center justify-center border border-gray-300'>
+								<img className='w-[20px] h-[20px]' src={whiteLogo} alt='Logo' />
+							</div>
+						</Link>
 					</div>
 				</div>
 			</header>

@@ -26,7 +26,7 @@ function Input({
 			required={required}
 			onChange={changeTime}
 			className={
-				' w-full py-2 px-4 bg-black text-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6D9773] ' +
+				' w-full py-2 px-1 bg-black text-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6D9773] ' +
 				className
 			}
 		/>

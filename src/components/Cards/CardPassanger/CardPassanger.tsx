@@ -5,42 +5,30 @@ interface CardProps {
 	type: string; // Used for API endpoint type
 	className?: string;
 	isHovered?: boolean;
-	request?: boolean;
+	request: boolean;
+	users: User[];
 }
 
 interface User {
-	id: string; // Add this if needed for keys
-	name: string;
-	lastname: string;
-	startPoint: string;
+	idCreator: string;
+	userName: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	phone: string;
+	stop: string;
+	paymentMethod: string;
 }
 
-const Card1: FC<CardProps> = ({ type, className = '', isHovered = false }) => {
-	const [users, setUsers] = useState<User[]>([]); // State to store fetched data
-	const [loading, setLoading] = useState<boolean>(true);
+const Card1: FC<CardProps> = ({
+	type,
+	users,
+	request,
+	className = '',
+	isHovered = false,
+}) => {
+	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
-
-	const fetchUsers = async () => {
-		try {
-			const url = `${localStorage.getItem('API')}/${type}`;
-			const response = await fetch(url);
-
-			if (!response.ok) {
-				throw new Error(`Error fetching data: ${response.statusText}`);
-			}
-
-			const data = await response.json();
-			setUsers(data); // Assuming the API response is an array of users
-			setLoading(false);
-		} catch (err) {
-			setError((err as Error).message);
-			setLoading(false);
-		}
-	};
-
-	useEffect(() => {
-		fetchUsers();
-	}, [type]);
 
 	const baseClasses = `
     ${isHovered ? 'hover:shadow-lg hover:bg-gray-100' : ''}
@@ -53,16 +41,10 @@ const Card1: FC<CardProps> = ({ type, className = '', isHovered = false }) => {
 	return (
 		<div className={`${baseClasses} ${className}`}>
 			<div className='p-4'>
-				<h3 className='text-xl font-semibold'>Passenger List</h3>
+				<h3 className='text-xl font-semibold'>{type}</h3>
 				<div className='grid gap-4 mt-4'>
-					{users.map((user) => (
-						<Card
-							title={`${user.name} ${user.lastname}`}
-							description={`Starting Point: ${user.startPoint}`}
-							additionalInfo='Click to view more details'
-							className='max-w-sm'
-							request={false}
-						/>
+					{users.map((user, key) => (
+						<Card key={key} user={user} request={request} />
 					))}
 				</div>
 			</div>
