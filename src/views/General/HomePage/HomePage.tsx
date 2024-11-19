@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import whiteLogo from '../../../components/pictures/whiteLogo.png';
-import { Button } from '../../../components/Buttons/searchButton';
+import { Button } from '../../../components/Buttons/SearchButton';
 import { Input } from '../../../components/Inputs/Search';
 import {
 	Card,
@@ -21,6 +21,11 @@ export default function ViewHomePage() {
 	const [query, setQuery] = useState('');
 	//const [cardsData, setCardsData]= useState([]) PARA MOSTRAR LOS VIAJES RECOMENDADOS
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		document.title = 'Home - User';
+		const fetchData = async () => {};
+	}, []);
 
 	const handleSearch = useCallback(async () => {
 		if (!query.trim()) return;

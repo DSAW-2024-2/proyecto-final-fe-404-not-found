@@ -2,6 +2,7 @@ import whiteLogo from '../../../components/pictures/whiteLogo.png';
 import { Link } from 'react-router-dom';
 import { BsPeopleFill } from 'react-icons/bs';
 import { prefix, searchRoute } from '../../../utils/Routes';
+<<<<<<< HEAD
 import SwitchPage from '../SwitchPage';
 import { useState } from 'react';
 
@@ -11,6 +12,70 @@ function HomeDriverPage() {
 	if (loading) {
 		return <SwitchPage />;
 	}
+=======
+import { useEffect, useState } from 'react';
+import SwitchPage from '../SwitchPage';
+
+interface Passenger {
+	idCreator: string;
+	userName: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	phone: string;
+	stop: string;
+	paymentMethod: string;
+}
+
+function HomeDriverPage() {
+	const [accepted, setAccepted] = useState<Array<Passenger>>();
+	const [requests, setRequests] = useState<Array<Passenger>>();
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		// Cambia el título de la página
+		document.title = 'Home - Driver';
+
+		// Función para hacer solicitudes genéricas
+		const fetchData = async (endpoint: string) => {
+			try {
+				const response = await fetch(
+					`${localStorage.getItem('API')}/trip/${endpoint}`
+				);
+				if (!response.ok) throw new Error(`Error fetching ${endpoint}`);
+				return await response.json();
+			} catch (error) {
+				console.error(`Error fetching ${endpoint}:`, error);
+				return null; // Maneja errores devolviendo null
+			}
+		};
+
+		const fetchAllData = async () => {
+			setLoading(true);
+			try {
+				// Realiza ambas solicitudes en paralelo
+				const [waitData, acceptedData] = await Promise.all([
+					fetchData('waiting'),
+					fetchData('accepted'),
+				]);
+
+				// Actualiza los estados
+				if (waitData) setRequests(waitData);
+				if (acceptedData) setAccepted(acceptedData);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		// Llama a la función para cargar datos
+		fetchAllData();
+	}, []);
+
+	if (loading) return <SwitchPage />;
+
+>>>>>>> 70f4b580486acfd8a21b651baa59a0392c622915
 	return (
 		<div className='container  mx-auto'>
 			{/* Contenedor centralizado */}
