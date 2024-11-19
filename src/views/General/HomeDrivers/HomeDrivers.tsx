@@ -60,7 +60,7 @@ function HomeDriverPage() {
 
 		// Llama a la función para cargar datos
 		fetchAllData();
-	}, []);
+	}, [requests, accepted]);
 
 	if (loading) return <SwitchPage />;
 
