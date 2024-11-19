@@ -26,9 +26,7 @@ const Card: FC<CardProps> = ({
 
 	const token = localStorage.getItem('token');
 
-	const bodyRequest = {
-		id: user.id,
-	};
+	const bodyRequest = {};
 
 	const apiBaseUrl = localStorage.getItem('API') || '';
 
