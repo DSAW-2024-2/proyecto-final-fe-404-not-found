@@ -9,7 +9,7 @@ import {
 	CardContent,
 	CardHeader,
 	CardTitle,
-} from '../../../utils/cardSeach';
+} from '../../../components/Cards/CardSearch/CardSeach';
 import { prefix, searchRoute } from '../../../utils/Routes';
 import { FaCar } from 'react-icons/fa';
 
@@ -19,6 +19,7 @@ const TOKEN = localStorage.getItem('token') || '';
 export default function ViewHomePage() {
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
+	//const [cardsData, setCardsData]= useState([]) PARA MOSTRAR LOS VIAJES RECOMENDADOS
 	const navigate = useNavigate();
 
 	const handleSearch = useCallback(async () => {
@@ -122,6 +123,7 @@ export default function ViewHomePage() {
 				</div>
 
 				{/* Card Components */}
+
 				<Card className='mb-6 bg-sage-600 text-white'>
 					<CardHeader>
 						<CardTitle>Mis viajes</CardTitle>

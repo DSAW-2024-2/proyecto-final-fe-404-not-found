@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProfileData } from '../../../utils/fetchProfileData';
+import { fetchProfileData } from '../../../utils/FetchProfileData';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
