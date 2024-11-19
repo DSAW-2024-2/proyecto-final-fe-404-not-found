@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Swal from 'sweetalert2';
-import Accept from '../../Buttons/Accept';
+import Button from '../../Buttons/Accept';
 
 interface CardProps {
 	title: string;
@@ -24,6 +24,54 @@ const Card: FC<CardProps> = ({
     transition duration-200
   `;
 
+	const token = localStorage.getItem('token');
+
+	const bodyRequest = {};
+
+	const apiBaseUrl = localStorage.getItem('API') || '';
+
+	const acceptPassenger = async () => {
+		try {
+			const response = await fetch(`${apiBaseUrl}/trip/accept`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ bodyRequest }),
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to accept passenger');
+			}
+
+			Swal.fire('Accepted', `${title} has been accepted.`, 'success');
+		} catch (error) {
+			Swal.fire('Error', (error as Error).message, 'error');
+		}
+	};
+
+	const denyPassenger = async () => {
+		try {
+			const response = await fetch(`${apiBaseUrl}/trip/deny`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ bodyRequest }),
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to deny passenger');
+			}
+
+			Swal.fire('Denied', `${title} has been denied.`, 'info');
+		} catch (error) {
+			Swal.fire('Error', (error as Error).message, 'error');
+		}
+	};
+
 	const handleClick = () => {
 		Swal.fire({
 			title: `<strong>${title}</strong>`,
@@ -41,7 +89,11 @@ const Card: FC<CardProps> = ({
 			<div className='p-4'>
 				<h3 className='text-xl font-semibold'>{title}</h3>
 				<p className='text-gray-600'>{description}</p>
-				{request && <Accept></Accept>}
+				{request && (
+					<div className='flex mt-4'>
+						<Button acceptFun={acceptPassenger} denyFun={denyPassenger} />
+					</div>
+				)}
 			</div>
 		</div>
 	);
