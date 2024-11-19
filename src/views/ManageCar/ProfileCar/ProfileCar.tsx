@@ -5,133 +5,128 @@ import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import Button2 from '../../../components/Buttons/TextButton';
 import { prefix, searchRoute } from '../../../utils/Routes';
+import LoadingPage from '../../General/LoadingPage';
+
+interface Car {
+	id: number;
+	brand: string;
+	model: string;
+	licensePlate: string;
+	capacity: number;
+	licensePhoto: string;
+	vehiclePhoto: string;
+	soatPhoto: string;
+}
 
 const CarProfile: React.FC = () => {
-	const [carData, setCarData] = useState<any | null>(null);
+	const [carData, setCarData] = useState<Car | null>(null);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
-
 	const navigate = useNavigate();
 
+	// Cargar datos del vehículo
 	useEffect(() => {
+		setLoading(true);
 		const loadCarData = async () => {
-			const data = await fetchProfileData('car', setErrorMessage);
-			if (data) setCarData(data);
+			try {
+				const data = await fetchProfileData('car', setErrorMessage);
+				if (data) setCarData(data);
+				setLoading(false);
+			} catch {
+				setErrorMessage('Error al cargar los datos del vehículo.');
+			}
 		};
 		loadCarData();
 	}, []);
 
+	// Manejar edición del perfil
 	const handleEdit = async () => {
 		try {
 			const result = await Swal.fire({
-				title: 'Edit Profile',
+				title: 'Editar Vehículo',
 				html: `
-				<style>
-					.swal2-popup .swal2-input {
-						margin: 0; 
-						width: 100%; 
-						box-sizing: border-box; 
-						margin-bottom: 10px;
-					}
-					.swal2-popup .swal2-content {
-						padding: 0 20px; 
-						
-					}
-				</style>
-				<input id="swal-input1" class="swal2-input" placeholder="Capacidad" value="${carData?.capacity || ''}">
-				
-
-			`,
+          <input id="swal-input-capacity" class="swal2-input" placeholder="Capacidad" value="${carData?.capacity || ''}" />
+        `,
 				preConfirm: () => {
 					const capacity = (
-						document.getElementById('swal-input1') as HTMLInputElement
+						document.getElementById('swal-input-capacity') as HTMLInputElement
 					).value;
-
 					return { capacity };
 				},
 				showCancelButton: true,
-				confirmButtonText: 'OK',
-				cancelButtonText: 'Cancel',
+				confirmButtonText: 'Guardar',
 				confirmButtonColor: '#6D9773',
-				cancelButtonColor: 'black',
+				cancelButtonColor: '#d33',
 			});
+
 			if (result.isConfirmed) {
-				const formValues = result.value;
-
+				const updatedData = result.value;
 				setLoading(true);
-				const url = `${localStorage.getItem('API')}/user`; // Update the endpoint as per your API
-				const token = localStorage.getItem('token');
-
-				const response = await fetch(url, {
+				const response = await fetch(`${localStorage.getItem('API')}/car`, {
 					method: 'PUT',
 					headers: {
 						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
+						Authorization: `Bearer ${localStorage.getItem('token')}`,
 					},
-					body: JSON.stringify(formValues),
+					body: JSON.stringify(updatedData),
 				});
 
 				if (response.ok) {
-					setCarData({ ...carData, ...formValues });
-					Swal.fire('Profile updated!', '', 'success');
-				} else {
-					const error = await response.json();
+					setCarData({ ...carData, ...updatedData });
 					Swal.fire(
-						'Error',
-						error.message || 'Failed to update profile',
-						'error'
+						'Actualizado',
+						'Los datos del vehículo se han actualizado.',
+						'success'
 					);
+				} else {
+					throw new Error('No se pudo actualizar el perfil.');
 				}
 			}
 		} catch (error) {
-			setErrorMessage(`Failed to edit data: ${error}`);
-			Swal.fire('Error', 'Failed to update profile', 'error');
+			Swal.fire(
+				'Error',
+				(error as Error).message || 'Ocurrió un error al actualizar.',
+				'error'
+			);
 		} finally {
 			setLoading(false);
 		}
 	};
 
+	// Manejar eliminación del vehículo
 	const handleDeleteAccount = async () => {
 		const result = await Swal.fire({
 			title: '¿Estás seguro?',
 			text: 'Esta acción eliminará tu vehículo de forma permanente.',
 			icon: 'warning',
 			showCancelButton: true,
-			cancelButtonColor: '#6D9773',
+			confirmButtonText: 'Eliminar',
 			confirmButtonColor: '#d33',
-			confirmButtonText: 'Sí, eliminar vehículo',
-			cancelButtonText: 'Cancelar',
+			cancelButtonColor: '#6D9773',
 		});
 
 		if (result.isConfirmed) {
 			try {
 				setLoading(true);
-				const url = `${localStorage.getItem('API')}/car`;
-				const token = localStorage.getItem('token');
-
-				const response = await fetch(url, {
+				const response = await fetch(`${localStorage.getItem('API')}/car`, {
 					method: 'DELETE',
 					headers: {
 						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
+						Authorization: `Bearer ${localStorage.getItem('token')}`,
 					},
 				});
 
 				if (response.ok) {
-					Swal.fire('Eliminada', 'Tu vehículo ha sido eliminada.', 'success');
+					Swal.fire('Eliminado', 'El vehículo ha sido eliminado.', 'success');
 					navigate(searchRoute('HomePage')?.path || prefix);
 				} else {
-					Swal.fire(
-						'Error',
-						'No se pudo eliminar tu vehículo. Intenta de nuevo.',
-						'error'
-					);
+					throw new Error('No se pudo eliminar el vehículo.');
 				}
 			} catch (error) {
-				console.error('Error al eliminar el vehículo:', error);
 				Swal.fire(
 					'Error',
-					'Hubo un problema al eliminar tu vehículo.',
+					(error as Error).message ||
+						'Ocurrió un problema al eliminar el vehículo.',
 					'error'
 				);
 			} finally {
@@ -140,71 +135,113 @@ const CarProfile: React.FC = () => {
 		}
 	};
 
+	// Subcomponente para renderizar datos
+	const CarDetails = ({ label, value }: { label: string; value: string }) => (
+		<div className='mb-2'>
+			<p className='text-gray-500'>{label}</p>
+			<p className='font-semibold'>{value || 'N/A'}</p>
+		</div>
+	);
+
+	if (loading) {
+		return <LoadingPage />;
+	}
+
 	return (
-		<div className='container mx-auto p-6 max-w-sm  rounded-lg shadow-lg'>
-			<div className='w-full h-full p-5 border border-black'>
-				{errorMessage ? (
-					<p className='text-red-500'>{errorMessage}</p>
-				) : (
-					<div>
-						{/* Header */}
-						<div className='flex items-center mb-4'>
-							<Link to={searchRoute('HomeDriver')?.path || prefix}>
-								<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
-							</Link>
-						</div>
-						<div className='flex justify-center gap-x-2'>
-							<p className='text-center'>Vehículo</p>
-							<div className='mt-1 text-[#0C3B2E]'>
-								<FaEdit onClick={handleEdit}>Editar Vehículo</FaEdit>
-							</div>
-						</div>
+		<div className='container md:w-screen mx-auto p-6 bg-[#6D9773] shadow rounded-lg md:overflow-hidden'>
+			<div className='flex items-center justify-between mb-4'>
+				{/* Icono FaArrowLeft en el extremo izquierdo */}
+				<Link to={searchRoute('HomeDriver')?.path || prefix}>
+					<FaArrowLeft className='h-5 w-5 text-gray-500 hover:text-black cursor-pointer' />
+				</Link>
 
-						{/* Car Image and License Plate */}
-						<div className='text-center'>
-							<div className='w-full h-[150px] mb-4'>
-								<img
-									src={carData?.image || 'path/to/car-image.png'}
-									alt='Car'
-									className='w-full h-full object-contain'
+				{/* Icono FaEdit en el extremo derecho */}
+				<FaEdit
+					className='h-6 w-6 text-gray-500 hover:text-black cursor-pointer'
+					onClick={handleEdit}
+				/>
+			</div>
+
+			{errorMessage ? (
+				<p className='text-red-500 text-center'>{errorMessage}</p>
+			) : (
+				<div className='bg-slate-100 shadow-md rounded-lg p-6 w-full max-w-6xl mx-auto md:flex md:justify-center md:items-center'>
+					{/* Encabezado */}
+					<div className='text-center mb-6 md:mt-4 md:w-1/2'>
+						<div className='w-full h-40 mb-4'>
+							<img
+								src={
+									carData?.vehiclePhoto ||
+									localStorage.getItem('FotoDefaultCar') ||
+									''
+								}
+								alt='Foto del vehículo'
+								className='w-full h-full object-contain rounded-md border border-gray-200'
+							/>
+						</div>
+						<h2 className='text-2xl font-bold text-gray-800'>
+							{carData?.licensePlate || 'Placa no disponible'}
+						</h2>
+					</div>
+					<div className='md:border-t md:border-gray-200 md:my-4 md:w-1/2 md:p-6'>
+						{/* Detalles del vehículo */}
+						<div className='space-y-4'>
+							<CarDetails label='Marca' value={carData?.brand || 'N/A'} />
+							<CarDetails label='Modelo' value={carData?.model || 'N/A'} />
+							<CarDetails
+								label='Capacidad'
+								value={carData?.capacity?.toString() || 'N/A'}
+							/>
+
+							{/* SOAT */}
+							<div className='flex items-center justify-between bg-gray-50 p-3 rounded-lg'>
+								<CarDetails
+									label='SOAT'
+									value={carData?.soatPhoto ? 'Disponible' : 'No disponible'}
 								/>
+								{carData?.soatPhoto && (
+									<Button2
+										onClick={() => {
+											window.open(carData.soatPhoto, '_blank');
+										}}
+										className='text-sm bg-green-600 text-white hover:bg-green-700 px-4 py-2 rounded-md'
+									>
+										Ver aquí
+									</Button2>
+								)}
 							</div>
-							<div className='flex items-center justify-center mb-4'>
-								<h2 className='text-xl font-semibold'>
-									{carData?.licensePlate}
-								</h2>
-								<FaEdit className='ml-2 h-4 w-4 text-gray-500 cursor-pointer' />
+
+							{/* Licencia */}
+							<div className='flex items-center justify-between bg-gray-50 p-3 rounded-lg'>
+								<CarDetails
+									label='Licencia de Conducir'
+									value={carData?.licensePhoto ? 'Disponible' : 'No disponible'}
+								/>
+								{carData?.licensePhoto && (
+									<Button2
+										onClick={() => {
+											window.open(carData.licensePhoto, '_blank');
+										}}
+										className='text-sm bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md'
+									>
+										Ver aquí
+									</Button2>
+								)}
 							</div>
 						</div>
 
-						{/* Car Details */}
-						<div className=' mb-4'>
-							<p className='text-gray-500'>Marca</p>
-							<p className='font-semibold'>{carData?.brand}</p>
-
-							<p className='text-gray-500 mt-2'>Modelo</p>
-							<p className='font-semibold'>{carData?.model}</p>
-
-							<p className='text-gray-500 mt-2'>Capacidad</p>
-							<p className='font-semibold'>{carData?.capacity}</p>
-
-							<p className='text-gray-500 mt-2'>SOAT</p>
-							<a
-								href={carData?.soatPdf || '#'}
-								target='_blank'
-								className='inline-block mt-1 px-3 py-1 border border-gray-500 rounded-md text-gray-700 text-sm'
+						{/* Botón de eliminación */}
+						<div className='mt-6 text-right flex justify-center'>
+							<Button2
+								onClick={handleDeleteAccount}
+								className='bg-red-600 text-white hover:bg-red-700 px-6 py-2 rounded-lg'
 							>
-								📄 SOAT PDF
-							</a>
-						</div>
-
-						{/* Delete Button */}
-						<div className='flex justify-center'>
-							<Button2 onClick={handleDeleteAccount}>Eliminar vehículo</Button2>
+								Eliminar Vehículo
+							</Button2>
 						</div>
 					</div>
-				)}
-			</div>
+				</div>
+			)}
 		</div>
 	);
 };

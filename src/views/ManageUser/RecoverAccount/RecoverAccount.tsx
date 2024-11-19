@@ -11,6 +11,7 @@ import {
 	ArrowLeftIcon,
 } from '@heroicons/react/16/solid';
 import Input from '../../../components/InputForm';
+import { prefix, searchRoute } from '../../../utils/Routes';
 
 interface itemForms {
 	type: 'text';
@@ -79,7 +80,7 @@ function recoverView() {
 		<div className='container max-w-md mx-auto px-4 py-8'>
 			<div className='mb-8'>
 				<Link
-					to='/'
+					to={searchRoute('Login')?.path || prefix}
 					className='inline-flex items-center text-sm hover:opacity-80'
 				>
 					<ArrowLeftIcon className='w-4 h-4 mr-2' />

@@ -4,7 +4,6 @@ import InputForm from '../../../components/InputForm';
 import Button from '../../../components/Buttons/Regular';
 import Checkbox from '../../../components/Buttons/Checkbox';
 import Button2 from '../../../components/Buttons/TextButton';
-import { Navigate } from 'react-router-dom';
 import { prefix, searchRoute } from '../../../utils/Routes';
 
 interface itemForms {
@@ -106,13 +105,13 @@ function ViewRegisterUser() {
 		}
 	};
 
-	if (localStorage.getItem('token')) {
-		return <Navigate to={searchRoute('HomePage')?.path || prefix} />;
-	}
-
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		apiRegister();
+	};
+
+	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setIsChecked(event.target.checked);
 	};
 
 	const listForms: itemForms[] = [
@@ -182,12 +181,101 @@ function ViewRegisterUser() {
 		},
 	];
 
-	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setIsChecked(event.target.checked);
-	};
-
 	return (
-		<div className='md:flex'>
+		<div className='md:flex md:mt-0 justify-center items-center min-h-dvh bg-[#6D9773]'>
+			{/* Fondo del lado izquierdo en pantallas pequeñas */}
+			<div className='sm:hidden w-full h-full '></div>
+
+			<div className='container block md:flex p-6 max-w-md bg-white rounded-lg shadow-xl md:max-w-full md:p-0'>
+				<div className='md:bg-[#6D9773] md:p-6 md:w-2/5'>
+					{/* Título */}
+					<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
+						UNIHOP
+					</h1>
+					<div className='border-t border-black border-[1.5px] w-2/3 mx-auto mt-2 mb-2'></div>
+
+					{/* Imagen de perfil */}
+					<div className='flex flex-col items-center mb-6 pt-3 md:justify-center md:h-2/4'>
+						<InputForm
+							type='image'
+							handleImageChange={setFile}
+							label={''}
+							value={''}
+						/>
+						<p className='text-sm text-gray-500'>Sube una foto de perfil</p>
+					</div>
+				</div>
+
+				<div className='md:p-6 md:w-3/5 md:py-10'>
+					{/* Formulario */}
+					<form
+						onSubmit={handleSubmit}
+						className='w-full max-w-[290px] mx-auto md:max-w-fit'
+					>
+						{/* Campos del formulario */}
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+							{listForms.map((data: itemForms, index) => (
+								<div key={index}>
+									<InputForm
+										type={data.type}
+										label={data.label}
+										handleInputChange={data.handleInputChange}
+										placeholder={data.placeholder}
+										value={data.value}
+										required={data.required}
+									/>
+								</div>
+							))}
+						</div>
+
+						{/* Mensaje de error */}
+						{errorMessage && (
+							<p className='text-red-500 text-sm mt-2'>{errorMessage}</p>
+						)}
+
+						{/* Términos y condiciones */}
+						<div className='flex flex-col items-center mt-6'>
+							<Checkbox
+								id='checkbox'
+								label='Aceptar términos y condiciones'
+								checked={isChecked}
+								onChange={handleCheckboxChange}
+							/>
+							<div className='ml-4'>
+								<Button2 onClick={() => {}}>
+									<Link to={searchRoute('Conditions')?.path || prefix}>
+										Leer términos y condiciones
+									</Link>
+								</Button2>
+							</div>
+						</div>
+						<div className='md:flex md:items-center md:gap-10 '>
+							{/* Botón de registro */}
+							<div className=' flex justify-center mt-8'>
+								<Button onClick={() => {}} disabled={loading}>
+									{loading ? 'Cargando...' : 'Registrarse'}
+								</Button>
+							</div>
+							{/* Enlace para redirigir a login */}
+							<div className='text-center mt-4 text-sm md:text-base md:flex md:items-end'>
+								¿Ya estás registrado?{' '}
+								<Link
+									to={searchRoute('Login')?.path || prefix}
+									className='text-green-600 hover:underline'
+								>
+									Haz click aquí
+								</Link>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+/*
+<div className='md:flex'>
 			<div className='sm:hidden w-full h-full bg-[#6D9773]'></div>
 			<div className='container p-4 max-w-80 md:w-full md:h-full'>
 				<h1 className='text-[22px] leading-[28px] font-normal text-center pt-5'>
@@ -215,7 +303,6 @@ function ViewRegisterUser() {
 							required={data.required}
 						/>
 					))}
-					{/* Mostrar mensaje de error si existe */}
 					{errorMessage && (
 						<p className='text-red-500 text-sm'>{errorMessage}</p>
 					)}
@@ -253,7 +340,6 @@ function ViewRegisterUser() {
 				</div>
 			</div>
 		</div>
-	);
-}
+		*/
 
 export default ViewRegisterUser;

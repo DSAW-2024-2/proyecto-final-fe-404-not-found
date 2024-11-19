@@ -12,7 +12,7 @@ import withReactContent from 'sweetalert2-react-content';
 interface UserProfile {
 	firstName: string;
 	lastName: string;
-	profileImage: string;
+	imageProfile: string;
 	idUniversidad: string;
 	userName: string;
 	email: string;
@@ -183,7 +183,103 @@ const UserProfile: React.FC = () => {
 	}
 
 	return (
-		<div className='container p-4 max-w-80'>
+		<div className='bg-[#6D9773] md:h-screen md:overflow-hidden flex justify-center items-center'>
+			<div className='container p-6 mx-auto md:bg-[#9fcca6]  shadow-lg rounded-lg '>
+				{errorMessage ? (
+					<p className='text-red-500 text-center mb-4'>{errorMessage}</p>
+				) : (
+					<div className='md:flex md:h-screen'>
+						<div className='md:w-1/2 md:h-fit md:p-10'>
+							{/* Encabezado del perfil */}
+							<Link
+								to={searchRoute('HomePage')?.path || prefix}
+								className='text-lg font-bold text-gray-800 mb-4'
+							>
+								<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
+							</Link>
+							<div className='flex flex-col items-center mb-6 md:gap-10 md:h-6/7 md:justify-center md:pt-10'>
+								<div className='flex justify-center w-screen'>
+									<div className='w-[100px] md:w-[250px] h-[100px] md:h-[250px] rounded-full border-2 border-gray-300 overflow-hidden'>
+										<img
+											src={
+												userData?.imageProfile ||
+												localStorage.getItem('FotoDefaultUser') ||
+												''
+											}
+											alt='Foto de perfil'
+											className='object-cover w-full h-full'
+										/>
+									</div>
+								</div>
+								<div className='text-center hidden md:block'>
+									<p className='text-4xl font-bold text-gray-800'>
+										Bienvenido {userData?.firstName}
+									</p>
+								</div>
+							</div>
+						</div>
+						<div className='relative md:flex md:flex-col md:h-fit bg-white md:w-1/2 md:p-10 rounded-md md:m-auto'>
+							{/* Botón de editar en la esquina superior derecha */}
+							<button
+								className='absolute top-4 right-4 flex items-center justify-center text-sm text-[#0C3B2E] hover:text-green-700 md:top-4 '
+								onClick={handleEdit}
+							>
+								<FaEdit className='mr-1' /> Editar Perfil
+							</button>
+
+							{/* Información del usuario */}
+							{userData ? (
+								<div className='grid grid-cols-1 gap-y-4 text-base text-gray-700 pt-8 pl-5 md:grid-cols-2 md:gap-x-6'>
+									<div>
+										<p className='text-gray-500 font-medium'>Nombre</p>
+										<p>{userData.firstName}</p>
+									</div>
+									<div>
+										<p className='text-gray-500 font-medium'>Apellido</p>
+										<p>{userData.lastName}</p>
+									</div>
+									<div>
+										<p className='text-gray-500 font-medium'>ID</p>
+										<p>{userData.idUniversidad}</p>
+									</div>
+									<div>
+										<p className='text-gray-500 font-medium'>User Name</p>
+										<p>{userData.userName}</p>
+									</div>
+									<div>
+										<p className='text-gray-500 font-medium'>Email</p>
+										<p>{userData.email}</p>
+									</div>
+									<div>
+										<p className='text-gray-500 font-medium'>Teléfono</p>
+										<p>{userData.phone}</p>
+									</div>
+									<div>
+										<p className='text-gray-500 font-medium'>Contraseña</p>
+										<p>*******</p>
+									</div>
+								</div>
+							) : (
+								<div className='flex justify-center items-center py-10'>
+									<LoadingState />
+								</div>
+							)}
+
+							{/* Botones */}
+							<div className=' flex flex-col items-center md:flex-row gap-4 mt-6'>
+								<Button2 onClick={handleLogout}>Cerrar Sesión</Button2>
+								<Button2 onClick={handleDeleteAccount}>Eliminar Cuenta</Button2>
+							</div>
+						</div>
+					</div>
+				)}
+			</div>
+		</div>
+	);
+};
+
+/*
+<div className='container p-4 max-w-80'>
 			{errorMessage ? (
 				<p className='text-red-500'>{errorMessage}</p>
 			) : (
@@ -193,7 +289,7 @@ const UserProfile: React.FC = () => {
 							<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
 						</Link>
 						<div className='w-[120px] h-[120px] mt-5 border rounded-full border-black'>
-							<img src={userData?.profileImage || ''} alt='' />
+							<img src={userData?.imageProfile || ''} alt='' />
 						</div>
 					</div>
 					<div className='flex justify-center gap-x-2'>
@@ -232,7 +328,6 @@ const UserProfile: React.FC = () => {
 				</div>
 			)}
 		</div>
-	);
-};
+*/
 
 export default UserProfile;

@@ -2,12 +2,13 @@ import whiteLogo from '../../../components/pictures/whiteLogo.png';
 
 function ViewLoadingPage() {
 	return (
-		<div className='container p-4 max-w-80 h-[480px] bg-[#6D9773]'>
-			<img
-				className='ml-[105px] mt-[185px] flex items-center justify-center w-[89px] h-[94px]'
-				src={whiteLogo}
-				alt='Logo'
-			/>
+		<div className='flex items-center justify-center h-screen bg-[#6D9773]'>
+			<div className='flex flex-col items-center'>
+				<img className='w-[89px] h-[94px]' src={whiteLogo} alt='Logo' />
+				<h1 className='mt-4 text-white text-lg font-semibold text-center md:text-xl'>
+					Bienvenido a UniHop
+				</h1>
+			</div>
 		</div>
 	);
 }

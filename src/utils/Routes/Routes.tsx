@@ -39,7 +39,7 @@ const routesList = [
 		name: 'InicialPage',
 		path: `${prefix}/`,
 		component: InicialPage,
-		filter: 'General',
+		filter: 'notAuthenticated',
 	},
 	{
 		name: 'Login',
