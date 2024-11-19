@@ -4,10 +4,54 @@ import { FaCar } from 'react-icons/fa';
 import whiteLogo from '../../../components/pictures/whiteLogo.png';
 import { Link } from 'react-router-dom';
 import { prefix, searchRoute } from '../../../utils/Routes';
+import SearchBar from '../../../components/Inputs/Search/searchBar';
 
 function ViewHomePage() {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+	const [query, setQuery] = useState<string>('');
+
+	const handleSearch = async () => {
+		if (!query.trim()) return; // No realizar búsqueda si el input está vacío
+
+		setLoading(true);
+		try {
+			const url = `${localStorage.getItem('API')}/search?query=${encodeURIComponent(query)}`;
+			const token = localStorage.getItem('token');
+
+			const response = await fetch(url, {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error(`Error: ${response.status}`);
+			}
+
+			const data = await response.json();
+
+			// Lógica en función de los resultados
+			if (data.results && data.results.length > 0) {
+				// Redirige al usuario con resultados específicos
+				navigate(`/results?query=${encodeURIComponent(query)}`);
+			} else {
+				// Manejo si no hay resultados
+				navigate('/no-results');
+			}
+		} catch (error) {
+			console.error('Error al realizar la búsqueda:', error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			handleSearch();
+		}
+	};
 
 	const handleCarLinkClick = async () => {
 		setLoading(true);
@@ -35,6 +79,76 @@ function ViewHomePage() {
 		} finally {
 			setLoading(false);
 		}
+
+		interface SearchBarProps {
+			placeholder?: string;
+		}
+
+		const SearchBar: React.FC<SearchBarProps> = ({
+			placeholder = 'Buscar...',
+		}) => {
+			const [query, setQuery] = useState<string>('');
+			const [loading, setLoading] = useState<boolean>(false);
+			const navigate = useNavigate();
+
+			const handleSearch = async () => {
+				if (!query.trim()) return; // No realizar búsqueda si el input está vacío
+
+				setLoading(true);
+				try {
+					const url = `${localStorage.getItem('API')}/search?query=${encodeURIComponent(query)}`;
+					const token = localStorage.getItem('token');
+
+					const response = await fetch(url, {
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					});
+
+					if (!response.ok) {
+						throw new Error(`Error: ${response.status}`);
+					}
+
+					const data = await response.json();
+
+					// Lógica en función de los resultados
+					if (data.results && data.results.length > 0) {
+						// Redirige al usuario con resultados específicos
+						navigate(`/results?query=${encodeURIComponent(query)}`);
+					} else {
+						// Manejo si no hay resultados
+						navigate('/no-results');
+					}
+				} catch (error) {
+					console.error('Error al realizar la búsqueda:', error);
+				} finally {
+					setLoading(false);
+				}
+			};
+
+			const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+				if (e.key === 'Enter') {
+					handleSearch();
+				}
+			};
+
+			return (
+				<div className='search-bar'>
+					<input
+						type='text'
+						placeholder={placeholder}
+						value={query}
+						onChange={(e) => setQuery(e.target.value)}
+						onKeyPress={handleKeyPress}
+						disabled={loading}
+					/>
+					<button onClick={handleSearch} disabled={loading}>
+						Buscar
+					</button>
+				</div>
+			);
+		};
 	};
 
 	return (
@@ -62,18 +176,46 @@ function ViewHomePage() {
 				</div>
 			</div>
 			<div className='w-full bg-[#6D9773] p-4'>
-				<div className='bg-white rounded-lg p-3 mb-4'>
-					<h3 className='text-gray-800 font-semibold mb-2'>Mis viajes</h3>
-					<div className='info viaje'></div>
+				<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+					<input
+						type='text'
+						value={query}
+						onChange={(e) => setQuery(e.target.value)}
+						onKeyPress={handleKeyPress}
+						placeholder='Buscar...'
+						disabled={loading}
+						style={{
+							padding: '8px',
+							border: '1px solid #ccc',
+							borderRadius: '4px',
+							flex: 1,
+						}}
+					/>
+					<button
+						onClick={handleSearch}
+						disabled={loading}
+						style={{
+							padding: '8px 12px',
+							border: 'none',
+							backgroundColor: loading ? '#aaa' : '#007bff',
+							color: 'white',
+							borderRadius: '4px',
+							cursor: loading ? 'not-allowed' : 'pointer',
+						}}
+					>
+						{loading ? 'Buscando...' : 'Buscar'}
+					</button>
 				</div>
+				<h3 className='text-gray-800 font-semibold mb-2'>Mis viajes</h3>
+				<div className='info viaje'></div>
+			</div>
 
-				<div className='bg-white rounded-lg p-3 shadow-md'>
-					<h3 className='text-gray-800 font-semibold mb-2'>VIAJES</h3>
-					<p className='text-gray-600 mb-2'>Recomendaciones</p>
-					<div className='flex items-center'>
-						<span className='text-yellow-500 mr-2'>★</span>
-						<div className='info tarjetas'></div>
-					</div>
+			<div className='bg-white rounded-lg p-3 shadow-md'>
+				<h3 className='text-gray-800 font-semibold mb-2'>VIAJES</h3>
+				<p className='text-gray-600 mb-2'>Recomendaciones</p>
+				<div className='flex items-center'>
+					<span className='text-yellow-500 mr-2'>★</span>
+					<div className='info tarjetas'></div>
 				</div>
 			</div>
 		</div>
