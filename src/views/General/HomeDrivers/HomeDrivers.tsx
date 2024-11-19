@@ -2,19 +2,8 @@ import whiteLogo from '../../../components/pictures/whiteLogo.png';
 import { Link } from 'react-router-dom';
 import { BsPeopleFill } from 'react-icons/bs';
 import { prefix, searchRoute } from '../../../utils/Routes';
-<<<<<<< HEAD
 import SwitchPage from '../SwitchPage';
-import { useState } from 'react';
-
-function HomeDriverPage() {
-	const [loading, setLoading] = useState(false);
-
-	if (loading) {
-		return <SwitchPage />;
-	}
-=======
 import { useEffect, useState } from 'react';
-import SwitchPage from '../SwitchPage';
 
 interface Passenger {
 	idCreator: string;
@@ -75,7 +64,6 @@ function HomeDriverPage() {
 
 	if (loading) return <SwitchPage />;
 
->>>>>>> 70f4b580486acfd8a21b651baa59a0392c622915
 	return (
 		<div className='container  mx-auto'>
 			{/* Contenedor centralizado */}
