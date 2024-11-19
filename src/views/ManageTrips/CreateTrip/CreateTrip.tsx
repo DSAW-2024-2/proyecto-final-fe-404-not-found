@@ -9,7 +9,7 @@ import { PiHouseLine } from 'react-icons/pi';
 import { prefix, searchRoute } from '../../../utils/Routes';
 
 interface itemForms {
-	type: 'text' | 'date' | 'time';
+	type: 'text' | 'date' | 'time' | 'number';
 	placeholder: string;
 	label: string;
 	value: string;
@@ -126,8 +126,8 @@ function ViewCreateTrip() {
 				time,
 				route,
 				fare,
-				seatCount,
 				paymentMethods,
+				seatCount,
 			};
 
 			const response = await fetch(url, {
@@ -189,6 +189,22 @@ function ViewCreateTrip() {
 			value: endPoint,
 			required: true,
 			placeholder: ' ',
+		},
+		{
+			type: 'text',
+			placeholder: 'Ingresa la tarifa',
+			label: 'Tarifa',
+			value: fare,
+			required: true,
+			handleInputChange: setFare,
+		},
+		{
+			type: 'number',
+			placeholder: 'Selecciona la cantidad de asientos',
+			label: 'Asientos disponibles',
+			value: seatCount,
+			required: true,
+			handleInputChange: setSeatCount,
 		},
 	];
 
@@ -273,9 +289,9 @@ function ViewCreateTrip() {
 
 					<div className='container w-full bg-[#6D9773] pt-4 pb-5 mt-2 rounded-md'>
 						<form onSubmit={createTrip}>
-							<div className='w-full p-6  rounded-lg shadow-sm '>
+							<div className='w-full p-6 pt-3 rounded-lg shadow-sm '>
 								{/* Título */}
-								<h2 className='md:text-gray-800 text-slate-300 text-xl font-semibold text-center mb-4'>
+								<h2 className='text-white sm:text-md font-bold md:text-xl font-semibold text-center mb-4 mr-2'>
 									¿A dónde quieres ir hoy?
 								</h2>
 
@@ -325,7 +341,7 @@ function ViewCreateTrip() {
 								</div>
 
 								{/* Opciones Adicionales */}
-								<div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6 md:pl-6'>
+								<div className='grid grid-cols-1 center lg:grid-cols-2 gap-8 mt-6 md:pl-6'>
 									<SingleSelect
 										handleChange={handleMainRoute}
 										options={optionsRoute}
@@ -342,7 +358,7 @@ function ViewCreateTrip() {
 							{errorMessage && (
 								<p className='text-red-500 text-center'>{errorMessage}</p>
 							)}
-							<div className='ml-5 mt-5 flex justify-center'>
+							<div className=' mt-5 flex justify-center'>
 								<Button onClick={() => {}} disabled={loading}>
 									{loading ? 'Guardando...' : 'Crear viaje'}
 								</Button>

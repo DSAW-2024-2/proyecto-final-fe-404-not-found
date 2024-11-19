@@ -38,7 +38,7 @@ function Input({
 				onChange={(e) => setvalueNumber(Number(e.target.value))}
 				required={required}
 				placeholder={placeholder}
-				className='border border-gray-300 rounded-lg py-2 px-4 w-16 text-center focus:outline-none focus:ring-2 focus:ring-green-700'
+				className='border border-gray-300 rounded-lg py-2 px-4 w-full text-center focus:outline-none focus:ring-2 focus:ring-green-700'
 			/>
 			<span
 				onClick={increment}

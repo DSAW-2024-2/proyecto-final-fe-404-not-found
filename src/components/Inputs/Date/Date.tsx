@@ -41,7 +41,7 @@ const Input: React.FC<InputProps> = ({
 					onChange={changeDate}
 					required={required}
 					placeholderText={placeholder}
-					className='w-full py-3 px-4 bg-green-50 text-green-700 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-lg'
+					className='w-full py-3 px-1 bg-green-50 text-green-700 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-lg'
 					calendarClassName='custom-calendar bg-white text-green-700 rounded-lg shadow-lg p-3'
 					dropdownMode='select'
 					inline

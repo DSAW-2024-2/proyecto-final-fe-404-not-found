@@ -89,7 +89,7 @@ const UserProfile: React.FC = () => {
 				const changedData: Partial<UserData> = {};
 				Object.entries(formValues).forEach(([key, value]) => {
 					if (value !== '' && value !== userData?.[key as keyof UserProfile]) {
-						changedData[key as keyof UserData] = value;
+						changedData[key as keyof UserData] = value as string;
 					}
 				});
 
