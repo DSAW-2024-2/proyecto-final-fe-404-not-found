@@ -5,7 +5,7 @@ interface CardProps {
 	type: string; // Used for API endpoint type
 	className?: string;
 	isHovered?: boolean;
-	request?: boolean;
+	request: boolean;
 	users: User[];
 }
 
@@ -23,10 +23,11 @@ interface User {
 const Card1: FC<CardProps> = ({
 	type,
 	users,
+	request,
 	className = '',
 	isHovered = false,
 }) => {
-	const [loading, setLoading] = useState<boolean>(true);
+	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 
 	const baseClasses = `
@@ -40,10 +41,10 @@ const Card1: FC<CardProps> = ({
 	return (
 		<div className={`${baseClasses} ${className}`}>
 			<div className='p-4'>
-				<h3 className='text-xl font-semibold'>Passenger List</h3>
+				<h3 className='text-xl font-semibold'>{type}</h3>
 				<div className='grid gap-4 mt-4'>
 					{users.map((user, key) => (
-						<Card key={key} user={user} request={true} />
+						<Card key={key} user={user} request={request} />
 					))}
 				</div>
 			</div>
