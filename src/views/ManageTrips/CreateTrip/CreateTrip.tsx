@@ -34,6 +34,10 @@ interface StationsTransmilenio {
 	};
 }
 
+interface PaymentMethods {
+	method: string;
+}
+
 function ViewCreateTrip() {
 	const [startPoint, setStartPoint] = useState<string>('');
 	const [endPoint, setEndPoint] = useState<string>('');
@@ -42,9 +46,14 @@ function ViewCreateTrip() {
 	const [fare, setFare] = useState<string>('');
 	const [route, setRoute] = useState<string>('');
 	const [seatCount, setSeatCount] = useState<string>('');
-	const [paymentMethods, setPaymentMethods] = useState<Array<string>>([]);
+	const [paymentMethods, setPaymentMethods] = useState<Array<PaymentMethods>>(
+		[]
+	);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [locations, setLocations] = useState<
+	const [locationStart, setLocationStart] = useState<
+		Array<{ name: string; location: string }>
+	>([]);
+	const [locationEnd, setLocationEnd] = useState<
 		Array<{ name: string; location: string }>
 	>([]);
 	const [showStartPointSuggestions, setShowStartPointSuggestions] =
@@ -53,6 +62,7 @@ function ViewCreateTrip() {
 		useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+	//peticion a la api para obtener
 	const fetchLocations = async (search: string) => {
 		if (!search) return [];
 
@@ -80,14 +90,12 @@ function ViewCreateTrip() {
 		}
 	};
 
-	const handleSelectLocation = (
-		location: any,
-		setter: Dispatch<React.SetStateAction<string>>,
-		setShowSuggestions: Dispatch<React.SetStateAction<boolean>>
-	) => {
-		setter(location.name);
-		setLocations([]);
-		setShowSuggestions(false);
+	const handlePayment = (selected: string[]) => {
+		setPaymentMethods(selected.map((method) => ({ method })));
+	};
+
+	const handleMainRoute = (ruta: string) => {
+		setRoute(ruta);
 	};
 
 	const createTrip = async (event: React.FormEvent) => {
@@ -134,6 +142,7 @@ function ViewCreateTrip() {
 
 			if (response.ok) {
 				console.log(data);
+				localStorage.setItem('tripId', data._id);
 			} else {
 				setErrorMessage('Error al crear el viaje. Inténtalo nuevamente.');
 			}
@@ -185,15 +194,24 @@ function ViewCreateTrip() {
 
 	useEffect(() => {
 		fetchLocations(startPoint).then((data) => {
-			setLocations(data);
+			setLocationStart(data);
 		});
 	}, [startPoint]);
 
 	useEffect(() => {
 		fetchLocations(endPoint).then((data) => {
-			setLocations(data);
+			setLocationEnd(data);
 		});
 	}, [endPoint]);
+
+	const handleSelectLocation = (
+		location: { name: string },
+		setPoint: (value: string) => void,
+		setShowSuggestions: (value: boolean) => void
+	) => {
+		setPoint(location.name); // Actualiza el valor del input
+		setShowSuggestions(false); // Oculta las sugerencias
+	};
 
 	const optionsPayment = [
 		'Efectivo',
@@ -264,7 +282,7 @@ function ViewCreateTrip() {
 								{/* Formulario */}
 								<div className='flex flex-col items-center md:grid lg:grid-cols-2 md:gap-6'>
 									{listForms.map((data, index) => (
-										<div key={index}>
+										<div key={index} className='relative'>
 											<InputForm
 												type={data.type}
 												label={data.label}
@@ -273,51 +291,35 @@ function ViewCreateTrip() {
 												value={data.value}
 												required={data.required}
 											/>
-											<div className='relative'>
-												{/* Sugerencias para el Punto de Partida */}
-												{data.label === 'Punto de partida' &&
-													showStartPointSuggestions && (
-														<ul className='absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto'>
-															{locations.map((locationStart, index) => (
-																<li
-																	key={index}
-																	onClick={() =>
-																		handleSelectLocation(
-																			location,
-																			setStartPoint,
-																			setShowStartPointSuggestions
-																		)
-																	}
-																	className='px-4 py-2 cursor-pointer hover:bg-green-100 text-gray-800'
-																>
-																	{locationStart.name}
-																</li>
-															))}
-														</ul>
-													)}
 
-												{/* Sugerencias para el Punto de Llegada */}
-												{data.label === 'Punto de llegada' &&
-													showEndPointSuggestions && (
-														<ul className='absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto'>
-															{locations.map((locationEnd, index) => (
-																<li
-																	key={index}
-																	onClick={() =>
-																		handleSelectLocation(
-																			location,
-																			setEndPoint,
-																			setShowEndPointSuggestions
-																		)
-																	}
-																	className='px-4 py-2 cursor-pointer hover:bg-green-100 text-gray-800'
-																>
-																	{locationEnd.name}
-																</li>
-															))}
-														</ul>
-													)}
-											</div>
+											{/* Menú desplegable de sugerencias */}
+											{data.label === 'Punto de partida' &&
+												showStartPointSuggestions && (
+													<DropdownMenu
+														suggestions={locationStart}
+														handleSelect={(location) =>
+															handleSelectLocation(
+																location,
+																setStartPoint,
+																setShowStartPointSuggestions
+															)
+														}
+													/>
+												)}
+
+											{data.label === 'Punto de llegada' &&
+												showEndPointSuggestions && (
+													<DropdownMenu
+														suggestions={locationEnd}
+														handleSelect={(location) =>
+															handleSelectLocation(
+																location,
+																setEndPoint,
+																setShowEndPointSuggestions
+															)
+														}
+													/>
+												)}
 										</div>
 									))}
 								</div>
@@ -325,10 +327,12 @@ function ViewCreateTrip() {
 								{/* Opciones Adicionales */}
 								<div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6 md:pl-6'>
 									<SingleSelect
+										handleChange={handleMainRoute}
 										options={optionsRoute}
 										label='Selecciona una ruta principal'
 									/>
 									<MultiSelect
+										handleChange={handlePayment}
 										options={optionsPayment}
 										label='Métodos de pago que recibes'
 									/>
@@ -351,140 +355,31 @@ function ViewCreateTrip() {
 	);
 }
 
-/*
-<main className='flex justify-center'>
-			<section className='container p-4 max-w-80 md:bg-slate-400 md:max-w-screen-lg md:w-2/3'>
-				<header className='flex mt-3 gap-x-9 justify-center'>
-					<div className='ml-[5px] w-[35px] h-[35px] bg-black rounded-full flex items-center justify-center border border-gray-300'>
-						<img className='w-[20px] h-[20px]' src={whiteLogo} alt='Logo' />
-					</div>
-					<h1 className='text-xl text-center font-bold mb-4'>NUEVO VIAJE</h1>
-					<Link to={searchRoute('HomeDriver')?.path || prefix}>
-						<div className='w-[33px] h-[33px] bg-black rounded-full flex items-center justify-center border border-gray-300'>
-							<PiHouseLine className='text-white w-[15px] h-[15px]' />
-						</div>
-					</Link>
-				</header>
-				<main className='md:flex '>
-					<div className='w-full mt-4'>
-						<form
-							onSubmit={createTrip}
-							className='flex justify-center items-center'
-						>
-							{dateForms.map((data, index) => (
-								<InputForm
-									key={index}
-									type={data.type}
-									label={data.label}
-									handleInputChange={data.handleInputChange}
-									placeholder={data.placeholder}
-									value={data.value}
-									required={data.required}
-								/>
-							))}
-						</form>
-					</div>
-
-					<div className='container w-[100%] bg-[#6D9773] pt-4 pb-5 mt-7 rounded-md'>
-						<h2 className='text-white text-xs text-center mb-3 font-medium'>
-							¿A dónde quieres ir hoy?
-						</h2>
-
-						<form onSubmit={createTrip}>
-							{listForms.map((data, index) => (
-								<div key={index} className='relative'>
-									<InputForm
-										type={data.type}
-										label={data.label}
-										handleInputChange={data.handleInputChange}
-										placeholder={data.placeholder}
-										value={data.value}
-										required={data.required}
-									/>
-									{data.label === 'Punto de partida' &&
-										showStartPointSuggestions && (
-											<ul className='absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto'>
-												{locations.map((location, index) => (
-													<li
-														key={index}
-														onClick={() =>
-															handleSelectLocation(
-																location,
-																setStartPoint,
-																setShowStartPointSuggestions
-															)
-														}
-														className='px-4 py-2 cursor-pointer hover:bg-gray-100'
-													>
-														{location.name}
-													</li>
-												))}
-											</ul>
-										)}
-									{data.label === 'Punto de llegada' &&
-										showEndPointSuggestions && (
-											<ul className='absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto'>
-												{locations.map((location, index) => (
-													<li
-														key={index}
-														onClick={() =>
-															handleSelectLocation(
-																location,
-																setEndPoint,
-																setShowEndPointSuggestions
-															)
-														}
-														className='px-4 py-2 cursor-pointer hover:bg-gray-100'
-													>
-														{location.name}
-													</li>
-												))}
-											</ul>
-										)}
-								</div>
-							))}
-
-							<div className='ml-5'>
-								<SingleSelect
-									options={[
-										'NQS',
-										'Cr 7-10',
-										'Calle 80',
-										'Caracas',
-										'Suba',
-										'Calle 26',
-										'Americas',
-										'Soacha',
-										'Autonorte',
-										'Eje Ambiental',
-										'Tunal',
-										'Calle 6',
-									]}
-									label='Selecciona una ruta principal'
-								/>
-							</div>
-							<div className='ml-5 mt-5'>
-								<MultiSelect
-									options={optionsPayment}
-									label='Métodos de pago que recibes'
-								/>
-							</div>
-
-							{errorMessage && (
-								<p className='text-red-500 text-center'>{errorMessage}</p>
-							)}
-							<div className='ml-5 mt-5'>
-								<Button onClick={() => {}} disabled={loading}>
-									{loading ? 'Guardando...' : 'Crear viaje'}
-								</Button>
-							</div>
-						</form>
-					</div>
-				</main>
-			</section>
-		</main>
-*/
-export default ViewCreateTrip;
-function UseEffect(arg0: () => void, arg1: string[]) {
-	throw new Error('Function not implemented.');
+interface DropdownMenuProps {
+	suggestions: { name: string }[]; // Array de sugerencias
+	handleSelect: (location: { name: string }) => void; // Función para manejar la selección
 }
+
+const DropdownMenu: React.FC<DropdownMenuProps> = ({
+	suggestions,
+	handleSelect,
+}) => {
+	return (
+		<ul
+			className='absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto'
+			onWheel={(e) => e.stopPropagation()} // Detiene el scroll de la página al interactuar con el menú
+		>
+			{suggestions.map((suggestion, index) => (
+				<li
+					key={index}
+					onClick={() => handleSelect(suggestion)}
+					className='px-4 py-2 cursor-pointer hover:bg-green-100 text-gray-800'
+				>
+					{suggestion.name}
+				</li>
+			))}
+		</ul>
+	);
+};
+
+export default ViewCreateTrip;
