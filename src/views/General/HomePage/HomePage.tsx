@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import whiteLogo from '../../../components/pictures/whiteLogo.png';
-import { Button } from '../../../components/Buttons/SearchButton';
+import { Button } from '../../../components/Buttons/searchButton';
 import { Input } from '../../../components/Inputs/Search';
 import {
 	Card,

@@ -99,7 +99,7 @@ function ViewLogInUser() {
 				<form onSubmit={handleSubmit} onClick={() => setErrorMessage(null)}>
 					{/* Campos del formulario */}
 					{listForms.map((data: signInForms, index) => (
-						<div key={index} className='w-full max-w-[290px] mx-auto'>
+						<div key={index} className='w-full max-w-[290px] ml-8'>
 							<InputForm
 								key={index}
 								type={data.type}
@@ -118,7 +118,7 @@ function ViewLogInUser() {
 					)}
 
 					{/* Enlace para recuperar la contraseña */}
-					<div className='text-right text-xs mt-4'>
+					<div className='text-right text-xs mt-4 mr-12'>
 						<Link
 							to={searchRoute('RecoverPassword')?.path || prefix}
 							className='text-green-600 hover:underline'

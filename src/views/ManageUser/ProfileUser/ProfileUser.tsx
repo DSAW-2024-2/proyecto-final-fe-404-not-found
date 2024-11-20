@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProfileData } from '../../../utils/FetchProfileData';
+import { fetchProfileData } from '../../../utils/fetchProfileData';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
@@ -183,7 +183,7 @@ const UserProfile: React.FC = () => {
 	}
 
 	return (
-		<div className='bg-[#6D9773] md:h-screen md:overflow-hidden flex justify-center items-center'>
+		<div className='bg-[#6D9773] md:h-screen md:overflow-hidden flex justify-center items-center '>
 			<div className='container p-6 mx-auto md:bg-[#9fcca6]  shadow-lg rounded-lg '>
 				{errorMessage ? (
 					<p className='text-red-500 text-center mb-4'>{errorMessage}</p>
@@ -195,7 +195,7 @@ const UserProfile: React.FC = () => {
 								to={searchRoute('HomePage')?.path || prefix}
 								className='text-lg font-bold text-gray-800 mb-4'
 							>
-								<FaArrowLeft className='h-5 w-5 cursor-pointer text-gray-500 hover:text-black' />
+								<FaArrowLeft className='h-5 w-5 cursor-pointer text-white hover:text-black' />
 							</Link>
 							<div className='flex flex-col items-center mb-6 md:gap-10 md:h-6/7 md:justify-center md:pt-10'>
 								<div className='flex justify-center w-screen'>
@@ -266,7 +266,7 @@ const UserProfile: React.FC = () => {
 							)}
 
 							{/* Botones */}
-							<div className=' flex flex-col items-center md:flex-row gap-4 mt-6'>
+							<div className=' flex flex-col sm:gap-0 items-center sm:mb-4 md:flex-row gap-4 mt-6'>
 								<Button2 onClick={handleLogout}>Cerrar Sesión</Button2>
 								<Button2 onClick={handleDeleteAccount}>Eliminar Cuenta</Button2>
 							</div>
