@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProfileData } from '../../../utils/FetchProfileData';
+import { fetchProfileData } from '../../../utils/fetchProfileData';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 import Swal from 'sweetalert2';
@@ -152,12 +152,12 @@ const CarProfile: React.FC = () => {
 			<div className='flex items-center justify-between mb-4'>
 				{/* Icono FaArrowLeft en el extremo izquierdo */}
 				<Link to={searchRoute('HomeDriver')?.path || prefix}>
-					<FaArrowLeft className='h-5 w-5 text-gray-500 hover:text-black cursor-pointer' />
+					<FaArrowLeft className='h-5 w-5 text-white hover:text-black cursor-pointer' />
 				</Link>
 
 				{/* Icono FaEdit en el extremo derecho */}
 				<FaEdit
-					className='h-6 w-6 text-gray-500 hover:text-black cursor-pointer'
+					className='h-6 w-6 text-white hover:text-black cursor-pointer'
 					onClick={handleEdit}
 				/>
 			</div>
