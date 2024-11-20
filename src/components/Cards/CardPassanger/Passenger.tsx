@@ -95,7 +95,11 @@ const Card: FC<CardProps> = ({
 		>
 			<div className='p-4 w-full flex gap-x-10'>
 				<div className='flex gap-x-2'>
-					<img src='https://via.placeholder.com/150' alt='user' />
+					<img
+						className='w-[16px] h-[16px] rounded-full'
+						src={localStorage.getItem('FotoDefaultUser') || ''}
+						alt='foto perfil'
+					/>
 					<div>
 						<h3 className='text-xl font-semibold'>
 							{user.firstName}
