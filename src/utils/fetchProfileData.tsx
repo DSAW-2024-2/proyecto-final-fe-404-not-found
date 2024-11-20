@@ -1,5 +1,5 @@
 export const fetchProfileData = async (
-	type: 'user' | 'car',
+	type: 'user' | 'car' | 'trip',
 	setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
 	const token = localStorage.getItem('token');
