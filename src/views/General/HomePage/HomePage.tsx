@@ -292,12 +292,23 @@ export default function ViewHomePage() {
 					</div>
 				</div>
 
-				<Card className='mb-6 bg-sage-600 text-white'>
+				<Card className='mb-6 bg-[#6D9773] text-white'>
 					<CardHeader>
 						<CardTitle>Mis viajes</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<Link to='/my-trips'>Ver viajes programados</Link>
+						{results.map((trip) => (
+							<div key={trip._id} className='mb-2'>
+								<p>
+									{trip.startPoint} - {trip.endPoint}
+								</p>
+								<p>{trip.date}</p>
+								<p>{trip.time}</p>
+							</div>
+						))}
+						{results.length === 0 && (
+							<p className='text-center'>No tienes viajes programados</p>
+						)}
 					</CardContent>
 				</Card>
 
