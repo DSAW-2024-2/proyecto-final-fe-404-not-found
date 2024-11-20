@@ -29,7 +29,7 @@ function HomeDriverPage() {
 		const fetchData = async (endpoint: string) => {
 			try {
 				const response = await fetch(
-					`${localStorage.getItem('API')}/trip/${endpoint}`
+					`${localStorage.getItem('API')}/trip/list/${endpoint}`
 				);
 				if (!response.ok) throw new Error(`Error fetching ${endpoint}`);
 				return await response.json();

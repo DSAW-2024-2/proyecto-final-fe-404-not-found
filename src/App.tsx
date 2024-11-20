@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { routesList } from './utils/Routes';
 
 // Importación de vistas
-import ProtectedRoutes from './utils/ProtectedRoutes';
-import RoutesBefore from './utils/RoutesBefore';
+import ProtectedRoutes from './utils/Protection/ProtectedRoutes';
+import RoutesBefore from './utils/Protection/RoutesBefore';
+import ProtectedCar from './utils/Protection/ProtectedCars';
+import ProtectedTrips from './utils/Protection/ProtectedTrips';
 
 function App() {
 	useEffect(() => {
@@ -55,6 +57,29 @@ function App() {
 					<Route element={<ProtectedRoutes />}>
 						{routesList.map((route, index) => {
 							return route.filter === 'authenticated' ? (
+								<Route
+									key={index}
+									path={route.path}
+									element={<route.component />}
+								/>
+							) : null;
+						})}
+					</Route>
+					{/* Rutas protegidas */}
+					<Route element={<ProtectedCar />}>
+						{routesList.map((route, index) => {
+							return route.filter === 'carRequire' ? (
+								<Route
+									key={index}
+									path={route.path}
+									element={<route.component />}
+								/>
+							) : null;
+						})}
+					</Route>
+					<Route element={<ProtectedTrips />}>
+						{routesList.map((route, index) => {
+							return route.filter === 'NoTrip' ? (
 								<Route
 									key={index}
 									path={route.path}

@@ -1,13 +1,12 @@
 import { Outlet, Navigate } from 'react-router-dom';
-import { searchRoute } from './Routes/Routes';
-import { prefix } from './Routes/Prefix';
+import { prefix, searchRoute } from '../Routes';
 
 const ProtectedRoutes = () => {
 	const user = localStorage.getItem('token');
-	return !user ? (
+	return user ? (
 		<Outlet />
 	) : (
-		<Navigate to={searchRoute('HomePage')?.path || prefix} />
+		<Navigate to={searchRoute('Login')?.path || prefix} />
 	);
 };
 

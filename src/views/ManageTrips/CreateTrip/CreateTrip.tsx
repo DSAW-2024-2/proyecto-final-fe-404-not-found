@@ -4,7 +4,7 @@ import Button from '../../../components/Buttons/Regular';
 import whiteLogo from '../../../components/pictures/whiteLogo.png';
 import SingleSelect from '../../../components/Inputs/Select';
 import MultiSelect from '../../../components/Inputs/MultipleSelect';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PiHouseLine } from 'react-icons/pi';
 import { prefix, searchRoute } from '../../../utils/Routes';
 
@@ -34,10 +34,6 @@ interface StationsTransmilenio {
 	};
 }
 
-interface PaymentMethods {
-	method: string;
-}
-
 function ViewCreateTrip() {
 	const [startPoint, setStartPoint] = useState<string>('');
 	const [endPoint, setEndPoint] = useState<string>('');
@@ -46,9 +42,7 @@ function ViewCreateTrip() {
 	const [fare, setFare] = useState<string>('');
 	const [route, setRoute] = useState<string>('');
 	const [seatCount, setSeatCount] = useState<string>('');
-	const [paymentMethods, setPaymentMethods] = useState<Array<PaymentMethods>>(
-		[]
-	);
+	const [paymentMethods, setPaymentMethods] = useState<Array<string>>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [locationStart, setLocationStart] = useState<
 		Array<{ name: string; location: string }>
@@ -61,6 +55,8 @@ function ViewCreateTrip() {
 	const [showEndPointSuggestions, setShowEndPointSuggestions] =
 		useState<boolean>(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const navigate = useNavigate();
 
 	//peticion a la api para obtener
 	const fetchLocations = async (search: string) => {
@@ -91,7 +87,7 @@ function ViewCreateTrip() {
 	};
 
 	const handlePayment = (selected: string[]) => {
-		setPaymentMethods(selected.map((method) => ({ method })));
+		setPaymentMethods(selected.map((method) => method));
 	};
 
 	const handleMainRoute = (ruta: string) => {
@@ -143,8 +139,11 @@ function ViewCreateTrip() {
 			if (response.ok) {
 				console.log(data);
 				localStorage.setItem('tripId', data._id);
+				navigate(searchRoute('HomeDriver')?.path || prefix);
 			} else {
-				setErrorMessage('Error al crear el viaje. Inténtalo nuevamente.');
+				setErrorMessage(
+					'Error al crear el viaje. Inténtalo nuevamente.' + data.error
+				);
 			}
 		} catch (error) {
 			console.error(error);
@@ -291,7 +290,7 @@ function ViewCreateTrip() {
 						<form onSubmit={createTrip}>
 							<div className='w-full p-6 pt-3 rounded-lg shadow-sm '>
 								{/* Título */}
-								<h2 className='text-white sm:text-md font-bold md:text-xl font-semibold text-center mb-4 mr-2'>
+								<h2 className='text-white sm:text-md font-bold md:text-xl  text-center mb-4 mr-2'>
 									¿A dónde quieres ir hoy?
 								</h2>
 

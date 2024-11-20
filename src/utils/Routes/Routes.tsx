@@ -75,13 +75,13 @@ const routesList = [
 		name: 'HomeDriver',
 		path: `${prefix}/driver`,
 		component: HomeDrivers,
-		filter: 'authenticated',
+		filter: 'carRequire',
 	},
 	{
 		name: 'ProfileCar',
 		path: `${prefix}/car-profile`,
 		component: ProfileCar,
-		filter: 'authenticated',
+		filter: 'carRequire',
 	},
 	{
 		name: 'RegisterCar',
@@ -93,7 +93,7 @@ const routesList = [
 		name: 'CreateTrip',
 		path: `${prefix}/trip-create`,
 		component: CreateTrip,
-		filter: 'authenticated',
+		filter: 'noTrip',
 	},
 	{
 		name: 'InfoTrip',
