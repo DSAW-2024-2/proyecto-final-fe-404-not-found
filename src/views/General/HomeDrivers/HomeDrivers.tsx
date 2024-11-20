@@ -311,10 +311,6 @@ function HomeDriverPage() {
 						<strong>Métodos de pago disponibles:</strong>
 						{TripData?.paymentMethod}
 					</p>
-					<div className='flex gap-x-3'>
-						<Button onClick={handleDeleteTrip}>Editar Viaje</Button>
-						<Button onClick={handleDeleteTrip}>Eliminar Viaje</Button>
-					</div>
 				</div>
 			</Modal>
 		</div>
