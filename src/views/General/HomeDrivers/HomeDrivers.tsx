@@ -1,11 +1,26 @@
 import whiteLogo from '../../../components/pictures/whiteLogo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BsPeopleFill } from 'react-icons/bs';
 import { prefix, searchRoute } from '../../../utils/Routes';
 import SwitchPage from '../SwitchPage';
 import { useEffect, useState } from 'react';
 import Card1 from '../../../components/Cards/CardPassanger/CardPassanger';
 import Modal from '../../../components/Modals/MainModal';
+import { Button } from 'storybook/internal/components';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import { fetchProfileData } from '../../../utils/fetchProfileData';
+import Time from '../../../components/Inputs/Time';
+
+interface Trip {
+	date: string;
+	time: string;
+	startPoint: string;
+	endPoint: string;
+	seatAvailable: number;
+	route: string;
+	paymentMethod: string;
+}
 
 interface User {
 	idCreator: string;
@@ -34,6 +49,141 @@ function HomeDriverPage() {
 	const [requests, setRequests] = useState<Array<Passenger>>();
 	const [loading, setLoading] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const [TripData, setTripData] = useState<Trip | null>(null);
+	const navigate = useNavigate();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const MySwal = withReactContent(Swal);
+
+	useEffect(() => {
+		const loadUserData = async () => {
+			try {
+				setLoading(true);
+				const data = await fetchProfileData('trip', setErrorMessage);
+				if (data) {
+					setTripData(data);
+				}
+			} catch (error) {
+				setErrorMessage(`Failed to load data: ${error}`);
+			} finally {
+				setLoading(false);
+			}
+		};
+		loadUserData();
+	}, []);
+
+	const handleEdit = async () => {
+		try {
+			const { value: formValues } = await MySwal.fire({
+				title: 'Edit Profile',
+				html: `
+          <input id="swal-input1" class="swal2-input" placeholder="Fecha" value="${TripData?.date || ''}">
+          <input id="swal-input3" class="swal2-input" placeholder="Hora" value="${TripData?.time || ''}">
+        `,
+				focusConfirm: false,
+				showCancelButton: true,
+				confirmButtonText: 'Save',
+				cancelButtonText: 'Cancel',
+				confirmButtonColor: '#6D9773',
+				cancelButtonColor: '#374151',
+				preConfirm: () => {
+					return {
+						Date: (document.getElementById('swal-input1') as HTMLInputElement)
+							.value,
+						Time: (document.getElementById('swal-input2') as HTMLInputElement)
+							.value,
+					};
+				},
+			});
+
+			if (formValues) {
+				const changedData: Partial<Trip> = {};
+				Object.entries(formValues).forEach(([key, value]) => {
+					if (value !== '' && value !== TripData?.[key as keyof Trip]) {
+						changedData[key as keyof Trip] = value as string | any;
+					}
+				});
+
+				if (Object.keys(changedData).length > 0) {
+					setLoading(true);
+					const url = `${localStorage.getItem('API')}/trip`;
+					const token = localStorage.getItem('token');
+
+					const response = await fetch(url, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify(changedData),
+					});
+
+					if (response.ok) {
+						setTripData((prevData) => ({ ...prevData!, ...changedData }));
+						Swal.fire('Viaje actualizado!', '', 'success');
+					} else {
+						const error = await response.json();
+						Swal.fire(
+							'Error',
+							error.message || 'Failed to update trip',
+							'error'
+						);
+					}
+				}
+			}
+		} catch (error) {
+			setErrorMessage(`Failed to edit data: ${error}`);
+			Swal.fire('Error', 'Failed to update trip', 'error');
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const handleDeleteTrip = async () => {
+		const result = await Swal.fire({
+			title: '¿Estás seguro?',
+			text: 'Esta acción eliminará tu cuenta de forma permanente.',
+			icon: 'warning',
+			showCancelButton: true,
+			cancelButtonColor: '#6D9773',
+			confirmButtonColor: '#d33',
+			confirmButtonText: 'Sí, eliminar cuenta',
+			cancelButtonText: 'Cancelar',
+		});
+
+		if (result.isConfirmed) {
+			try {
+				setLoading(true);
+				const url = `${localStorage.getItem('API')}/trip`;
+				const token = localStorage.getItem('token');
+
+				const response = await fetch(url, {
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				});
+
+				if (response.ok) {
+					Swal.fire('Eliminada', 'Tu viaje ha sido eliminado.', 'success');
+					navigate(searchRoute('CreateTrip')?.path || prefix);
+				} else {
+					Swal.fire(
+						'Error',
+						'No se pudo eliminar tu viaje. Intenta de nuevo.',
+						'error'
+					);
+				}
+			} catch (error) {
+				console.error('Error al eliminar el viaje:', error);
+				Swal.fire('Error', 'Hubo un problema al eliminar tu viaje.', 'error');
+			} finally {
+				setLoading(false);
+			}
+		}
+	};
 
 	useEffect(() => {
 		// Cambia el título de la página
@@ -140,23 +290,31 @@ function HomeDriverPage() {
 				<div className='space-y-4'>
 					<h2 className='text-xl font-bold'>Información del viaje</h2>
 					<p>
-						<strong>Punto de Partida:</strong> {}
+						<strong>Punto de Partida:</strong> {TripData?.startPoint}
 					</p>
 					<p>
-						<strong>Punto de llegada:</strong> {}
+						<strong>Punto de llegada:</strong> {TripData?.endPoint}
 					</p>
 					<p>
-						<strong>Ruta principal:</strong> {}
+						<strong>Ruta principal:</strong> {TripData?.route}
 					</p>
 					<p>
-						<strong>Fecha:</strong> {}
+						<strong>Fecha:</strong> {TripData?.date}
 					</p>
 					<p>
-						<strong>Hora:</strong> {}
+						<strong>Hora:</strong> {TripData?.time}
 					</p>
 					<p>
-						<strong>Asientos disponibles:</strong> {}
+						<strong>Asientos disponibles:</strong> {TripData?.seatAvailable}
 					</p>
+					<p>
+						<strong>Métodos de pago disponibles:</strong>
+						{TripData?.paymentMethod}
+					</p>
+					<div className='flex gap-x-3'>
+						<Button onClick={handleDeleteTrip}>Editar Viaje</Button>
+						<Button onClick={handleDeleteTrip}>Eliminar Viaje</Button>
+					</div>
 				</div>
 			</Modal>
 		</div>
