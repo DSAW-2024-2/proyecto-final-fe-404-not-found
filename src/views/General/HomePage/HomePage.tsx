@@ -273,7 +273,7 @@ export default function ViewHomePage() {
 					</div>
 				</div>
 
-				<Card className='mb-6 bg-sage-600 text-black'>
+				<Card className='mb-6 bg-[#6D9773] text-white'>
 					<CardHeader>
 						<CardTitle>Mis viajes</CardTitle>
 					</CardHeader>
