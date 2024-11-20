@@ -81,8 +81,8 @@ const Card: FC<CardProps> = ({
 
 	const handleClick = () => {
 		Swal.fire({
-			title: `<strong>${user.firstName}</strong>`,
-			html: `<p>${user.lastName}</p><p>${user.paymentMethod}</p>`,
+			title: `<strong>${user.firstName}${user.lastName}</strong>`,
+			html: `<p>${user.email}</p><p>${user.phone}</p><p>${user.stop}</p><p>${user.paymentMethod}</p>`,
 			icon: 'info',
 			confirmButtonText: 'Close',
 		});
@@ -93,9 +93,17 @@ const Card: FC<CardProps> = ({
 			className={`${baseClasses} ${className} cursor-pointer`}
 			onClick={handleClick}
 		>
-			<div className='p-4'>
-				<h3 className='text-xl font-semibold'>{user.firstName}</h3>
-				<p className='text-gray-600'>{user.paymentMethod}</p>
+			<div className='p-4 w-full flex gap-x-10'>
+				<div className='flex gap-x-2'>
+					<img src='https://via.placeholder.com/150' alt='user' />
+					<div>
+						<h3 className='text-xl font-semibold'>
+							{user.firstName}
+							{user.lastName}
+						</h3>
+						<p className='text-gray-600'>{user.stop}</p>
+					</div>
+				</div>
 				{request && (
 					<div className='flex mt-4'>
 						<Button acceptFun={acceptPassenger} denyFun={denyPassenger} />
