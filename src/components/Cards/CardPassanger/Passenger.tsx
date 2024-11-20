@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import Button from '../../Buttons/Accept';
 
@@ -26,10 +26,12 @@ const Card: FC<CardProps> = ({
 	isHovered = false,
 	request,
 }) => {
-	const baseClasses = `
-    ${isHovered ? 'hover:shadow-lg hover:bg-gray-100' : ''}
-    transition duration-200
-  `;
+	const [baseClasses, setBaseClasses] = useState<string>('');
+	useEffect(() => {
+		setBaseClasses(
+			`${isHovered ? 'hover:shadow-lg hover:bg-gray-100' : ''}transition duration-200`
+		);
+	}, [isHovered]);
 
 	const token = localStorage.getItem('token');
 

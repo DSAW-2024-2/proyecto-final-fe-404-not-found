@@ -60,7 +60,11 @@ function ViewRegisterUser() {
 		setLoading(true);
 
 		try {
-			const url = localStorage.getItem('API') + '/email/validate';
+			const url =
+				localStorage.getItem('API') ===
+				'https://proyecto-final-be-404-not-found.vercel.app/api-wheels/v1'
+					? localStorage.getItem('API') + '/user/backup/register'
+					: localStorage.getItem('API') + '/email/validate';
 
 			const formData = new FormData();
 			let responseImage;

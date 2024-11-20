@@ -12,6 +12,7 @@ import ProtectedTrips from './utils/Protection/ProtectedTrips';
 function App() {
 	useEffect(() => {
 		// Establece la URL de la API en el localStorage solo una vez al cargar
+		localStorage.setItem('API_Intento', 'unihop.shop/api-wheels/v1');
 		localStorage.setItem(
 			'API',
 			'https://proyecto-final-be-404-not-found.vercel.app/api-wheels/v1'

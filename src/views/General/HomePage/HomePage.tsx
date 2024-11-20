@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import Swal from 'sweetalert2';
 import whiteLogo from '../../../components/pictures/whiteLogo.png';
-import { Button } from '../../../components/Buttons/searchButton';
 import { Input } from '../../../components/Inputs/Search';
 import {
 	Card,
@@ -13,6 +12,7 @@ import {
 } from '../../../components/Cards/CardSearch/CardSeach';
 import { prefix, searchRoute } from '../../../utils/Routes';
 import { FaCar, FaStar } from 'react-icons/fa';
+import Button from '../../../components/Buttons/Button';
 
 interface Vehicle {
 	_id: string;
@@ -24,6 +24,16 @@ interface Vehicle {
 	vehiclePhoto: string;
 	soatPhoto: string;
 	__v: number;
+}
+interface Passenger {
+	idCreator: string; // ID del creador
+	userName: string; // Nombre de usuario
+	firstName: string; // Primer nombre
+	lastName: string; // Apellido
+	email: string; // Correo electrónico
+	phone: string; // Número de teléfono
+	stop: string; // Parada del pasajero
+	paymentMethod: string; // Método de pago
 }
 
 interface Driver {
@@ -53,8 +63,8 @@ interface Trip {
 	fare: string;
 	seatCount: number;
 	paymentMethods: string[];
-	waitingPassengers: any[];
-	acceptedPassengers: any[];
+	waitingPassengers: Passenger[];
+	acceptedPassengers: Passenger[];
 	__v: number;
 }
 
@@ -194,23 +204,32 @@ export default function ViewHomePage() {
 		});
 
 		if (formData) {
-			const { endpoint, paymentMethod } = formData;
+			const { paymentMethod } = formData;
 
 			try {
+				const responseUser = await fetch(`${API_URL}/user`, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${TOKEN}`,
+					},
+				});
+				const user = await responseUser.json();
+				const body = {
+					firstName: user.firstName,
+					lastName: user.lastName,
+					email: user.email,
+					phone: user.phone,
+					stop: stop,
+					paymentMethod: paymentMethod,
+				};
 				const response = await fetch(`${API_URL}/trip/booking/${trip._id}`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
 						Authorization: `Bearer ${TOKEN}`,
 					},
-					body: JSON.stringify({
-						firstName,
-						lastName,
-						email,
-						phone,
-						stop,
-						paymentMethod,
-					}),
+					body: JSON.stringify(body),
 				});
 
 				if (!response.ok) throw new Error(`Error: ${response.status}`);

@@ -29,11 +29,13 @@ const Card1: FC<CardProps> = ({
 }) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
+	const [baseClasses, setBaseClasses] = useState<string>('');
 
-	const baseClasses = `
-    ${isHovered ? 'hover:shadow-lg hover:bg-gray-100' : ''}
-    transition duration-200
-  `;
+	useEffect(() => {
+		setBaseClasses(
+			`${isHovered ? 'hover:shadow-lg hover:bg-gray-100' : ''}transition duration-200`
+		);
+	}, [isHovered]);
 
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>Error: {error}</div>;
@@ -43,9 +45,13 @@ const Card1: FC<CardProps> = ({
 			<div className='p-4'>
 				<h3 className='text-xl font-semibold'>{type}</h3>
 				<div className='grid gap-4 mt-4'>
-					{users.map((user, key) => (
-						<Card key={key} user={user} request={request} />
-					))}
+					{users.length > 0 ? (
+						users.map((user, key) => (
+							<Card key={key} user={user} request={request} />
+						))
+					) : (
+						<div>No users found</div>
+					)}
 				</div>
 			</div>
 		</div>

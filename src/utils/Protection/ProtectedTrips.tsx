@@ -14,6 +14,7 @@ const ProtectedTrips = () => {
 				const response = await fetch(`${localStorage.getItem('API')}/trip`, {
 					method: 'GET',
 					headers: {
+						'Content-Type': 'application/json',
 						Authorization: `Bearer ${localStorage.getItem('token')}`,
 					},
 				});
@@ -42,7 +43,7 @@ const ProtectedTrips = () => {
 	}
 
 	// Si tiene acceso, renderizar el contenido protegido
-	if (pass && localStorage.getItem('token') && localStorage.getItem('car')) {
+	if (pass) {
 		return <Outlet />;
 	}
 

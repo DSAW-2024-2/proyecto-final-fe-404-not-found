@@ -14,6 +14,7 @@ const ProtectedCar = () => {
 				const response = await fetch(`${localStorage.getItem('API')}/car`, {
 					method: 'GET',
 					headers: {
+						'Content-Type': 'application/json',
 						Authorization: `Bearer ${localStorage.getItem('token')}`,
 					},
 				});
@@ -41,7 +42,7 @@ const ProtectedCar = () => {
 	}
 
 	// Si tiene acceso, renderizar el contenido protegido
-	if (pass && localStorage.getItem('token')) {
+	if (pass) {
 		return <Outlet />;
 	}
 

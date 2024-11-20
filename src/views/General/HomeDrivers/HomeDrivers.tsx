@@ -3,14 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BsPeopleFill } from 'react-icons/bs';
 import { prefix, searchRoute } from '../../../utils/Routes';
 import SwitchPage from '../SwitchPage';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import Card1 from '../../../components/Cards/CardPassanger/CardPassanger';
-import Modal from '../../../components/Modals/MainModal';
-import { Button } from 'storybook/internal/components';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { fetchProfileData } from '../../../utils/fetchProfileData';
-import Time from '../../../components/Inputs/Time';
+import { FaTimes } from 'react-icons/fa';
 
 interface Trip {
 	date: string;
@@ -21,7 +19,6 @@ interface Trip {
 	route: string;
 	paymentMethod: string;
 }
-
 interface User {
 	idCreator: string;
 	userName: string;
@@ -32,7 +29,6 @@ interface User {
 	stop: string;
 	paymentMethod: string;
 }
-
 interface Passenger extends User {
 	idCreator: string;
 	userName: string;
@@ -45,12 +41,11 @@ interface Passenger extends User {
 }
 
 function HomeDriverPage() {
-	const [accepted, setAccepted] = useState<Array<Passenger>>();
-	const [requests, setRequests] = useState<Array<Passenger>>();
+	const [accepted, setAccepted] = useState<Array<Passenger>>([]);
+	const [requests, setRequests] = useState<Array<Passenger>>([]);
 	const [loading, setLoading] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-
-	const [TripData, setTripData] = useState<Trip | null>(null);
+	const [tripData, setTripData] = useState<Trip>();
 	const navigate = useNavigate();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -63,6 +58,7 @@ function HomeDriverPage() {
 				const data = await fetchProfileData('trip', setErrorMessage);
 				if (data) {
 					setTripData(data);
+					localStorage.setItem('tripId', data._id);
 				}
 			} catch (error) {
 				setErrorMessage(`Failed to load data: ${error}`);
@@ -78,8 +74,8 @@ function HomeDriverPage() {
 			const { value: formValues } = await MySwal.fire({
 				title: 'Edit Profile',
 				html: `
-          <input id="swal-input1" class="swal2-input" placeholder="Fecha" value="${TripData?.date || ''}">
-          <input id="swal-input3" class="swal2-input" placeholder="Hora" value="${TripData?.time || ''}">
+          <input id="swal-input1" class="swal2-input" placeholder="Fecha" value="${tripData?.date || ''}">
+          <input id="swal-input3" class="swal2-input" placeholder="Hora" value="${tripData?.time || ''}">
         `,
 				focusConfirm: false,
 				showCancelButton: true,
@@ -100,7 +96,7 @@ function HomeDriverPage() {
 			if (formValues) {
 				const changedData: Partial<Trip> = {};
 				Object.entries(formValues).forEach(([key, value]) => {
-					if (value !== '' && value !== TripData?.[key as keyof Trip]) {
+					if (value !== '' && value !== tripData?.[key as keyof Trip]) {
 						changedData[key as keyof Trip] = value as string | any;
 					}
 				});
@@ -193,7 +189,14 @@ function HomeDriverPage() {
 		const fetchData = async (endpoint: string) => {
 			try {
 				const response = await fetch(
-					`${localStorage.getItem('API')}/trip/list/${endpoint}`
+					`${localStorage.getItem('API')}/trip/list/${endpoint}`,
+					{
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${localStorage.getItem('token')}`,
+						},
+					}
 				);
 				if (!response.ok) throw new Error(`Error fetching ${endpoint}`);
 				return await response.json();
@@ -224,9 +227,19 @@ function HomeDriverPage() {
 
 		// Llama a la función para cargar datos
 		fetchAllData();
-	}, [requests, accepted]);
+	}, []);
 
 	if (loading) return <SwitchPage />;
+
+	if (errorMessage) {
+		return (
+			<div className='container mx-auto'>
+				<h1 className='text-2xl font-semibold text-center mt-8'>
+					{errorMessage}
+				</h1>
+			</div>
+		);
+	}
 
 	const tripId = localStorage.getItem('tripId');
 
@@ -255,10 +268,20 @@ function HomeDriverPage() {
 			<div className='bg-black text-white rounded-lg p-3 m-4 mb-4'>
 				{tripId ? (
 					<button
-						className='text-lg font-semibold w-full text-left'
-						onClick={openModal}
+						className='text-lg font-semibold w-full text-left pl-4'
+						onClick={() => {
+							if (tripData) {
+								openModal();
+							} else {
+								Swal.fire(
+									'Error',
+									'No se pudo cargar la información del viaje',
+									'error'
+								);
+							}
+						}}
 					>
-						View Current Trip
+						Viaje Actual
 					</button>
 				) : (
 					<Link to={searchRoute('CreateTrip')?.path || prefix}>
@@ -268,53 +291,71 @@ function HomeDriverPage() {
 			</div>
 			<div className='w-full bg-black p-4'>
 				<div className='bg-white rounded-lg p-3 shadow-md mb-4'>
-					<Card1
-						type={'Pasajeros'}
-						request={false}
-						users={accepted || []}
-					></Card1>
+					<Card1 type={'Pasajeros'} request={false} users={accepted}></Card1>
 				</div>
 
 				<div className='bg-white rounded-lg p-3 shadow-md'>
-					{
-						<Card1
-							type={'Solicitudes'}
-							request={true}
-							users={requests || []}
-						></Card1>
-					}
+					{<Card1 type={'Solicitudes'} request={true} users={requests}></Card1>}
 				</div>
 			</div>
 			{/* Modal */}
-			<Modal isOpen={isModalOpen} onClose={closeModal}>
-				<div className='space-y-4'>
-					<h2 className='text-xl font-bold'>Información del viaje</h2>
-					<p>
-						<strong>Punto de Partida:</strong> {TripData?.startPoint}
-					</p>
-					<p>
-						<strong>Punto de llegada:</strong> {TripData?.endPoint}
-					</p>
-					<p>
-						<strong>Ruta principal:</strong> {TripData?.route}
-					</p>
-					<p>
-						<strong>Fecha:</strong> {TripData?.date}
-					</p>
-					<p>
-						<strong>Hora:</strong> {TripData?.time}
-					</p>
-					<p>
-						<strong>Asientos disponibles:</strong> {TripData?.seatAvailable}
-					</p>
-					<p>
-						<strong>Métodos de pago disponibles:</strong>
-						{TripData?.paymentMethod}
-					</p>
-				</div>
-			</Modal>
+			<ModalLocal
+				isOpen={isModalOpen}
+				onClose={closeModal}
+				tripData={tripData}
+			></ModalLocal>
 		</div>
 	);
 }
 
 export default HomeDriverPage;
+
+const ModalLocal = ({
+	isOpen,
+	onClose,
+	tripData,
+}: {
+	isOpen: boolean;
+	onClose: () => void;
+	tripData: Trip;
+}) => {
+	if (!isOpen) return null;
+
+	return (
+		<div className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'>
+			<div className='bg-white border rounded-lg p-6 max-w-sm w-full'>
+				<button
+					onClick={onClose}
+					className='absolute top-2 right-2 text-gray-600'
+				>
+					<FaTimes size={30} />
+				</button>
+				<div className='space-y-4'>
+					<h2 className='text-xl font-bold'>Información del viaje</h2>
+					<p>
+						<strong>Punto de Partida:</strong> {tripData.startPoint}
+					</p>
+					<p>
+						<strong>Punto de llegada:</strong> {tripData.endPoint}
+					</p>
+					<p>
+						<strong>Ruta principal:</strong> {tripData.route}
+					</p>
+					<p>
+						<strong>Fecha:</strong> {tripData.date}
+					</p>
+					<p>
+						<strong>Hora:</strong> {tripData.time}
+					</p>
+					<p>
+						<strong>Asientos disponibles:</strong> {tripData.seatAvailable}
+					</p>
+					<p>
+						<strong>Métodos de pago disponibles:</strong>
+						{tripData.paymentMethod}
+					</p>
+				</div>
+			</div>
+		</div>
+	);
+};
