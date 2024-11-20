@@ -6,7 +6,7 @@ function ViewLoadingPage() {
 			<div className='flex flex-col items-center'>
 				<img className='w-[89px] h-[94px]' src={whiteLogo} alt='Logo' />
 				<h1 className='mt-4 text-white text-lg font-semibold text-center md:text-xl'>
-					Bienvenido a UniHop
+					UniHop
 				</h1>
 			</div>
 		</div>

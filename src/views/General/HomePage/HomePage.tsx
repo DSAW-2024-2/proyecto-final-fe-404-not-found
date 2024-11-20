@@ -13,18 +13,91 @@ import {
 import { prefix, searchRoute } from '../../../utils/Routes';
 import { FaCar } from 'react-icons/fa';
 
+interface Vehicle {
+	_id: string;
+	brand: string;
+	model: string;
+	licensePlate: string;
+	capacity: string;
+	licensePhoto: string;
+	vehiclePhoto: string;
+	soatPhoto: string;
+	__v: number;
+}
+
+interface Driver {
+	_id: string;
+	firstName: string;
+	lastName: string;
+	userName: string;
+	idUniversidad: string;
+	email: string;
+	phone: string;
+	password: string;
+	vehicle: Vehicle;
+	recommendations: string[];
+	ratings: { score: number; comment?: string }[];
+	__v: number;
+}
+
+interface Trip {
+	_id: string;
+	driver: Driver;
+	vehicle: Vehicle;
+	startPoint: string;
+	endPoint: string;
+	date: string;
+	time: string;
+	route: string;
+	fare: string;
+	seatCount: number;
+	paymentMethods: string[];
+	waitingPassengers: any[]; // Define una interfaz más específica si conoces la estructura
+	acceptedPassengers: any[]; // Define una interfaz más específica si conoces la estructura
+	__v: number;
+}
+
 const API_URL = localStorage.getItem('API') || '';
 const TOKEN = localStorage.getItem('token') || '';
 
 export default function ViewHomePage() {
 	const [loading, setLoading] = useState(false);
 	const [query, setQuery] = useState('');
+	const [results, setResults] = useState([] as Trip[]);
 	//const [cardsData, setCardsData]= useState([]) PARA MOSTRAR LOS VIAJES RECOMENDADOS
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		document.title = 'Home - User';
-		const fetchData = async () => {};
+		setLoading(true);
+
+		const fetchData = async () => {
+			let isCancelled = false;
+
+			try {
+				const response = await fetch(`${API_URL}/trip/list/complete`, {
+					method: 'GET',
+				});
+				const data = await response.json();
+				if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+				if (!isCancelled) {
+					setResults(data);
+					setLoading(false);
+				}
+			} catch (error) {
+				console.error(error);
+				if (!isCancelled) {
+					setLoading(false);
+				}
+			}
+
+			return () => {
+				isCancelled = true; // Marca como cancelada la solicitud.
+			};
+		};
+
+		fetchData();
 	}, []);
 
 	const handleSearch = useCallback(async () => {
@@ -135,18 +208,19 @@ export default function ViewHomePage() {
 					<CardContent>{/* 'Mis viajes' */}</CardContent>
 				</Card>
 
-				<Card>
-					<CardHeader>
-						<CardTitle>VIAJES</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<h3 className='font-semibold mb-2'>Recomendaciones</h3>
-						<div className='flex items-center'>
-							<span className='text-yellow-500 mr-2'>★</span>
-							{/* recommendations */}
-						</div>
-					</CardContent>
-				</Card>
+				{results.map((trip, key) => (
+					<Card key={key} className='max-w-sm'>
+						<CardHeader>
+							<CardTitle>
+								Desde {trip.startPoint} Hasta {trip.endPoint} Por
+								{trip.driver.userName}
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							Este es el contenido del card. Puedes usarlo para mostrar datos.
+						</CardContent>
+					</Card>
+				))}
 			</main>
 		</div>
 	);
