@@ -4,8 +4,21 @@ import { BsPeopleFill } from 'react-icons/bs';
 import { prefix, searchRoute } from '../../../utils/Routes';
 import SwitchPage from '../SwitchPage';
 import { useEffect, useState } from 'react';
+import Card1 from '../../../components/Cards/CardPassanger/CardPassanger';
+import Modal from '../../../components/Modals/MainModal';
 
-interface Passenger {
+interface User {
+	idCreator: string;
+	userName: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	phone: string;
+	stop: string;
+	paymentMethod: string;
+}
+
+interface Passenger extends User {
 	idCreator: string;
 	userName: string;
 	firstName: string;
@@ -20,6 +33,7 @@ function HomeDriverPage() {
 	const [accepted, setAccepted] = useState<Array<Passenger>>();
 	const [requests, setRequests] = useState<Array<Passenger>>();
 	const [loading, setLoading] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
 		// Cambia el título de la página
@@ -64,6 +78,11 @@ function HomeDriverPage() {
 
 	if (loading) return <SwitchPage />;
 
+	const tripId = localStorage.getItem('tripId');
+
+	const closeModal = () => setIsModalOpen(false);
+	const openModal = () => setIsModalOpen(true);
+
 	return (
 		<div className='container  mx-auto'>
 			{/* Contenedor centralizado */}
@@ -84,33 +103,62 @@ function HomeDriverPage() {
 				</Link>{' '}
 			</div>
 			<div className='bg-black text-white rounded-lg p-3 m-4 mb-4'>
-				<Link to={searchRoute('CreateTrip')?.path || prefix}>
-					<h3 className='text-lg font-semibold'>Nuevo viaje</h3>
-				</Link>{' '}
+				{tripId ? (
+					<button
+						className='text-lg font-semibold w-full text-left'
+						onClick={openModal}
+					>
+						View Current Trip
+					</button>
+				) : (
+					<Link to={searchRoute('CreateTrip')?.path || prefix}>
+						<h3 className='text-lg font-semibold'>Nuevo viaje</h3>
+					</Link>
+				)}
 			</div>
 			<div className='w-full bg-black p-4'>
 				<div className='bg-white rounded-lg p-3 shadow-md mb-4'>
-					<h3 className='text-gray-800 font-semibold mb-2'>PASAJEROS</h3>
-					<div className='flex items-center mb-2'>
-						<p className='text-gray-700'>Usuario 1</p>
-						<p className='ml-auto text-gray-500'>Paradero</p>
-					</div>
-					<div className='flex items-center'>
-						<p className='text-gray-700'>Usuario 2</p>
-						<p className='ml-auto text-gray-500'>Paradero</p>
-					</div>
+					<Card1
+						type={'Pasajeros'}
+						request={false}
+						users={accepted || []}
+					></Card1>
 				</div>
 
 				<div className='bg-white rounded-lg p-3 shadow-md'>
-					<h3 className='text-gray-800 font-semibold mb-2'>SOLICITUDES</h3>
-					<div className='flex items-center'>
-						<p className='text-gray-700'>Usuario 3</p>
-						<p className='ml-auto text-gray-500'>Paradero</p>
-						<button className='ml-2 text-green-500'>✔</button>
-						<button className='ml-1 text-red-500'>✖</button>
-					</div>
+					{
+						<Card1
+							type={'Solicitudes'}
+							request={true}
+							users={requests || []}
+						></Card1>
+					}
 				</div>
 			</div>
+			{/* Modal */}
+			<Modal isOpen={isModalOpen} onClose={closeModal}>
+				<div className='space-y-4'>
+					<h2 className='text-xl font-bold'>Información del viaje</h2>
+					<p>
+						<strong>Punto de Partida:</strong> {}
+					</p>
+					<p>
+						<strong>Punto de llegada:</strong> {}
+					</p>
+					<p>
+						<strong>Ruta principal:</strong> {}
+					</p>
+					<p>
+						<strong>Fecha:</strong> {}
+					</p>
+					<p>
+						<strong>Hora:</strong> {}
+					</p>
+					<p>
+						<strong>Asientos disponibles:</strong> {}
+					</p>
+				</div>
+			</Modal>
 		</div>
 	);
 }
